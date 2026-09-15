@@ -8,7 +8,7 @@ import Button from "../buttons/button";
 import CardWrapper from "./cardWrapper";
 
 import { aboutSection, generalInfo } from "../../config";
-import resolveFontAwesomeIcon from "../../utilities/resolveFontAwesomeIcon";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 
 const { connectWithMe, mySkills } = aboutSection;
 const { skills, featuredSkills } = mySkills;

@@ -57,5 +57,3 @@ export const resolveFontAwesomeIcon = (
   const pack = prefix === "fas" ? solidIcons : brandIcons;
   return pack[name] ?? null;
 };
-
-export default resolveFontAwesomeIcon;

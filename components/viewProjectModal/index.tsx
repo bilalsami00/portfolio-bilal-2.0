@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import resolveFontAwesomeIcon from "../../utilities/resolveFontAwesomeIcon";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 import ImageSlider from "../Image/ImageSlider";
 
 const externalLinkIcon = resolveFontAwesomeIcon("fas", "up-right-from-square");

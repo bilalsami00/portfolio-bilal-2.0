@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { ExperienceType } from "../../config.types";
-import resolveFontAwesomeIcon from "../../utilities/resolveFontAwesomeIcon";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 
 const calendarIcon = resolveFontAwesomeIcon("fas", "calendar-alt");
 
@@ -58,10 +58,7 @@ const timelineItem = ({
    "
     >
       {calendarIcon && (
-        <FontAwesomeIcon
-          className="w-[22px] text-white"
-          icon={calendarIcon}
-        />
+        <FontAwesomeIcon className="w-[22px] text-white" icon={calendarIcon} />
       )}
     </div>
     <div

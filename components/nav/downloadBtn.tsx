@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { generalInfo } from "../../config";
-import resolveFontAwesomeIcon from "../../utilities/resolveFontAwesomeIcon";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 import Button from "../buttons/button";
 
 const fileDownloadIcon = resolveFontAwesomeIcon("fas", "file-download");

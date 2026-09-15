@@ -1,7 +1,7 @@
 import { ElementType } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
-import resolveFontAwesomeIcon from "../../utilities/resolveFontAwesomeIcon";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 
 type Props = {
   // testing ci flow

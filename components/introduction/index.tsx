@@ -4,7 +4,7 @@ import Container from "../container";
 import Shapes from "../shapes";
 import HeaderRight from "./header-right";
 import { introSection } from "../../config";
-import resolveFontAwesomeIcon from "../../utilities/resolveFontAwesomeIcon";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 
 const btn1Icon = resolveFontAwesomeIcon(
   introSection.btn1.fontAwesomeType || "fas",

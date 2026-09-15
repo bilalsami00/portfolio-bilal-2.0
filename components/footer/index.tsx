@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import paths from "../../utilities/paths";
-import resolveFontAwesomeIcon from "../../utilities/resolveFontAwesomeIcon";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 import Container from "../container";
 import { generalInfo, footerSection } from "../../config";
 import IconButton from "../buttons/iconButton";

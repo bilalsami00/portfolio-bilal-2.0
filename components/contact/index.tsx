@@ -12,8 +12,8 @@ const Contact = () => {
       lastName: "",
       email: "",
     },
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: () => {
+      // Contact form submit handler (wire up API later)
     },
   });
   return (
