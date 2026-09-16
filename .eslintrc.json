@@ -63,7 +63,15 @@
       "specialLink": [ "hrefLeft", "hrefRight" ],
       "aspects": [ "invalidHref", "preferButton" ]
     }],
-    "@typescript-eslint/no-unsafe-argument": "warn"
+    "@typescript-eslint/no-unsafe-argument": "warn",
+    "@next/next/no-img-element": "off",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "either",
+        "depth": 3
+      }
+    ]
 
   }
 }

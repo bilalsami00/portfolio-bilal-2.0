@@ -16,6 +16,11 @@ import ElectronIcon from "./components/svgs/electronIcon";
 import JestIcon from "./components/svgs/jestIcon";
 import NextIcon from "./components/svgs/nextIcon";
 
+/**
+ * Legacy single-file config used by older section components.
+ * Public multi-page portfolio content now lives in `/data` — edit those modules first.
+ */
+
 export const socialMedia: IconButtonType[] = [
   {
     title: "Connect with me on linkedin",

@@ -21,7 +21,7 @@ const MenuIcon = ({ color, className }: Props) => (
   </svg>
 );
 MenuIcon.defaultProps = {
-  color: theme?.colors?.primary?.[500] || "#00BFA6",
+  color: theme?.colors?.primary?.[500] || "#b91c2c",
 };
 
 export default MenuIcon;

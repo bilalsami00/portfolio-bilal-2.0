@@ -22,7 +22,7 @@ const XIcon = ({ color, className }: Props) => (
 );
 
 XIcon.defaultProps = {
-  color: theme?.colors?.primary?.[500] || "#00BFA6",
+  color: theme?.colors?.primary?.[500] || "#b91c2c",
 };
 
 export default XIcon;

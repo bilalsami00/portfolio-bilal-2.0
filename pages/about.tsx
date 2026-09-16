@@ -1,26 +1,17 @@
 import type { NextPage } from "next";
-import About from "../components/about";
-import Experience from "../components/experience";
-import PageLayout from "../components/layout";
-import { aboutSection, experienceSection } from "../config";
+import PageShell from "../components/layout";
+import AboutPageContent from "../components/about/AboutPageContent";
+import { routePaths } from "../data/navigation";
+import { siteIdentity } from "../data/site";
 
-/**
- * About page: biography/skills plus professional experience timeline.
- * Experience has no dedicated route, so it lives here with related content.
- */
 const AboutPage: NextPage = () => (
-  <PageLayout
+  <PageShell
     title="About"
-    description={aboutSection.description || "About me and my experience."}
+    description={`Professional profile of ${siteIdentity.fullName} — engineering identity, experience, education, skills, and philosophy.`}
+    path={routePaths.about}
   >
-    {aboutSection.display && <About />}
-    {experienceSection.display && (
-      <>
-        <Experience />
-        <div className="w-full border-t border-primary-100 my-20" />
-      </>
-    )}
-  </PageLayout>
+    <AboutPageContent />
+  </PageShell>
 );
 
 export default AboutPage;

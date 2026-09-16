@@ -1,28 +1,17 @@
 import type { NextPage } from "next";
-import Head from "next/head";
+import PageShell from "../components/layout";
 import NotFoundContent from "../components/notFound";
-import { generalInfo } from "../config";
+import { siteIdentity } from "../data/site";
 
-/**
- * Custom 404 page for the Pages Router.
- * Next.js serves this automatically for unknown and invalid routes.
- */
 const NotFoundPage: NextPage = () => (
-  <>
-    <Head>
-      <title>{`Page Not Found | ${generalInfo.projectName}`}</title>
-      <meta
-        name="description"
-        content="The page you requested could not be found. Return home or browse projects."
-      />
-      <meta name="robots" content="noindex, follow" />
-      <link rel="icon" href="/assets/avatar.png" type="image/png" />
-    </Head>
-
-    <main>
-      <NotFoundContent />
-    </main>
-  </>
+  <PageShell
+    title="Page Not Found"
+    description={`The requested page could not be found on ${siteIdentity.siteName}.`}
+    path="/404"
+    noIndex
+  >
+    <NotFoundContent />
+  </PageShell>
 );
 
 export default NotFoundPage;

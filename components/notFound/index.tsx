@@ -1,96 +1,93 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Button from "../buttons/button";
-import Container from "../container";
-import { homePath, projectsPath } from "../../utilities/paths";
-import styles from "../../styles/notFound.module.css";
+import { routePaths } from "../../data/navigation";
+import Container from "../shared/Container";
+import { ButtonLink } from "../shared/Button";
 
 /**
- * Custom Not Found content.
- * Reuses portfolio layout primitives (Container, Button, route constants)
- * with a slightly darker atmosphere that can grow into the future visual identity.
+ * Custom 404 — intentional dark-fantasy dead end with clear exits.
  */
 const NotFoundContent = () => {
   const router = useRouter();
 
   const handleGoBack = () => {
-    // Prefer true history when available; otherwise land on Home safely.
     if (typeof window !== "undefined" && window.history.length > 1) {
       router.back();
       return;
     }
-
-    router.push(homePath).catch(() => undefined);
+    router.push(routePaths.home).catch(() => undefined);
   };
 
   return (
-    <section className={styles.notFoundShell} aria-labelledby="not-found-title">
-      <Container
-        className={`${styles.notFoundContent} w-full py-16 sm:py-20 md:py-24 text-center`}
-      >
-        <p className={styles.statusMark} aria-hidden="true">
+    <section
+      className="relative min-h-[70vh] flex items-center py-16 sm:py-24"
+      aria-labelledby="not-found-title"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-50"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(185,28,44,0.18), transparent 55%)",
+        }}
+        aria-hidden
+      />
+
+      <Container className="relative text-center">
+        <p
+          className="font-display text-[6rem] sm:text-[8rem] md:text-[10rem] leading-none text-crimson-700/80 select-none"
+          aria-hidden
+        >
           404
         </p>
-
-        <p className="mt-2 text-primary-300 font-bold text-sm sm:text-base uppercase tracking-[0.2em]">
-          Route unavailable
-        </p>
-
+        <p className="section-eyebrow mt-2">Path lost in the mist</p>
+        <div className="crimson-mark mx-auto mt-4 mb-5" />
         <h1
           id="not-found-title"
-          className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold text-white josefinSans"
+          className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-parchment-100"
         >
-          Page Not Found
+          This route does not exist
         </h1>
-
-        <p className="mt-5 mx-auto max-w-[34rem] text-sm sm:text-base text-slate-300 leading-relaxed px-1">
-          The page you requested does not exist, may have been moved, or is no
-          longer available. Use one of the options below to continue exploring
-          the portfolio.
+        <p className="mx-auto mt-5 max-w-xl text-parchment-400 leading-relaxed">
+          The page may have been moved, renamed, or never forged. Choose a known
+          path below.
         </p>
 
-        <div className="mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3 sm:gap-4">
-          <Link href={homePath} className="inline-flex justify-center">
-            <Button className="uppercase w-full sm:w-auto justify-center min-w-[10rem]">
-              Home
-            </Button>
-          </Link>
-
-          <Link href={projectsPath} className="inline-flex justify-center">
-            <Button
-              colorClass="bg-slate-800 active:bg-slate-950 hover:bg-slate-700"
-              className="uppercase w-full sm:w-auto justify-center min-w-[10rem]"
-            >
-              Projects
-            </Button>
-          </Link>
-
+        <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+          <ButtonLink href={routePaths.home} className="justify-center">
+            Return home
+          </ButtonLink>
+          <ButtonLink
+            href={routePaths.projects}
+            variant="secondary"
+            className="justify-center"
+          >
+            View projects
+          </ButtonLink>
           <button
             type="button"
             onClick={handleGoBack}
-            className="
-              uppercase
-              font-bold
-              py-2
-              px-4
-              rounded
-              min-w-[10rem]
-              w-full
-              sm:w-auto
-              border
-              border-primary-500/40
-              text-primary-200
-              hover:text-white
-              hover:border-primary-400
-              hover:bg-primary-500/10
-              transition-all
-              duration-300
-              ease-out
-            "
+            className="btn-secondary justify-center"
           >
-            Go Back
+            Back
           </button>
         </div>
+
+        <p className="mt-10 text-sm text-steel-500">
+          Or jump to{" "}
+          <Link
+            href={routePaths.about}
+            className="text-crimson-400 hover:text-crimson-300 underline-offset-2 hover:underline"
+          >
+            About
+          </Link>{" "}
+          /{" "}
+          <Link
+            href={routePaths.contact}
+            className="text-crimson-400 hover:text-crimson-300 underline-offset-2 hover:underline"
+          >
+            Contact
+          </Link>
+        </p>
       </Container>
     </section>
   );

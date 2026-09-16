@@ -1,38 +1,67 @@
 import Head from "next/head";
 import { ReactNode } from "react";
-import { generalInfo } from "../../config";
+import { siteIdentity, siteSeo } from "../../data/site";
+import { routePaths } from "../../data/navigation";
 
-type PageLayoutProps = {
+type PageShellProps = {
   children: ReactNode;
-  /** Page-specific document title segment (appended to the site name). */
   title?: string;
   description?: string;
+  path?: string;
+  ogImage?: string;
+  noIndex?: boolean;
 };
 
 /**
- * Shared page shell for document metadata and main content.
- * Site-wide navigation and footer are mounted in `_app`.
+ * Shared document metadata + main landmark for public pages.
  */
-const PageLayout = ({ children, title, description }: PageLayoutProps) => {
+const PageShell = ({
+  children,
+  title,
+  description,
+  path = routePaths.home,
+  ogImage,
+  noIndex = false,
+}: PageShellProps) => {
   const documentTitle = title
-    ? `${title} | ${generalInfo.projectName}`
-    : generalInfo.seoTitle;
+    ? siteSeo.titleTemplate.replace("%s", title)
+    : siteSeo.defaultTitle;
+  const metaDescription = description || siteSeo.defaultDescription;
+  const canonicalUrl = `${siteIdentity.siteUrl}${path === "/" ? "" : path}`;
+  const shareImage = `${siteIdentity.siteUrl}${ogImage || siteSeo.ogImage}`;
 
   return (
     <>
       <Head>
         <title>{documentTitle}</title>
-        <meta
-          name="description"
-          content={description || generalInfo.seoDescription}
-        />
-        <meta name="keywords" content={generalInfo.seoKeywords} />
-        <link rel="icon" href="/assets/avatar.png" type="image/png" />
+        <meta name="description" content={metaDescription} />
+        <meta name="keywords" content={siteSeo.keywords.join(", ")} />
+        <meta name="author" content={siteIdentity.fullName} />
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="icon" href={siteIdentity.logoImage} type="image/png" />
+
+        {noIndex ? (
+          <meta name="robots" content="noindex, follow" />
+        ) : (
+          <meta name="robots" content="index, follow" />
+        )}
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={siteIdentity.siteName} />
+        <meta property="og:title" content={documentTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={shareImage} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={documentTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={shareImage} />
       </Head>
 
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
     </>
   );
 };
 
-export default PageLayout;
+export default PageShell;

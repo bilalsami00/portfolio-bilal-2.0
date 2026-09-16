@@ -5,27 +5,31 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import "../styles/timeline.css";
 import type { AppProps } from "next/app";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import NavMenu from "../components/nav";
-import Footer from "../components/footer";
-import { footerSection } from "../config";
+import SiteNavigation from "../components/nav";
+import SiteFooter from "../components/footer";
 
-// Next.js owns CSS injection; prevent FA from injecting a second copy
 config.autoAddCss = false;
 
 /**
- * App-wide chrome: sticky navigation and footer wrap every page,
- * including the custom 404 route.
+ * Global chrome: atmosphere, navigation, and footer wrap every route.
  */
-const MyApp = ({ Component, pageProps }: AppProps) => (
-  <>
-    <NavMenu />
-    <Component {...pageProps} />
-    {footerSection.display && <Footer />}
-  </>
+const PortfolioApp = ({ Component, pageProps }: AppProps) => (
+  <div className="site-atmosphere min-h-screen flex flex-col">
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] btn-primary"
+    >
+      Skip to content
+    </a>
+    <SiteNavigation />
+    <div className="flex-1">
+      <Component {...pageProps} />
+    </div>
+    <SiteFooter />
+  </div>
 );
 
-export default MyApp;
+export default PortfolioApp;

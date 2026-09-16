@@ -1,19 +1,16 @@
 import type { NextPage } from "next";
-import PageLayout from "../components/layout";
-import Portfolio from "../components/portfolio";
-import { portfolioSection } from "../config";
+import PageShell from "../components/layout";
+import ProjectsPageContent from "../components/projects/ProjectsPageContent";
+import { routePaths } from "../data/navigation";
 
 const ProjectsPage: NextPage = () => (
-  <PageLayout
+  <PageShell
     title="Projects"
-    description={
-      portfolioSection.heading ||
-      portfolioSection.title ||
-      "Featured projects and portfolio work."
-    }
+    description="Explore web, mobile, desktop, and UI projects by Kashan Haider — filterable archive with case details."
+    path={routePaths.projects}
   >
-    {portfolioSection.display && <Portfolio />}
-  </PageLayout>
+    <ProjectsPageContent />
+  </PageShell>
 );
 
 export default ProjectsPage;

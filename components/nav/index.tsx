@@ -1,114 +1,119 @@
 import Link from "next/link";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { primaryNavigation, routePaths } from "../../data/navigation";
+import { siteIdentity } from "../../data/site";
 import useScrollPosition from "../../hooks/useScrollPosition";
-import Container from "../container";
-import paths, { homePath } from "../../utilities/paths";
-import DownloadResumeBtn from "./downloadBtn";
+import Container from "../shared/Container";
 import MenuIcon from "../svgs/menuIcon";
-import theme from "../../theme.json";
 import XIcon from "../svgs/xIcon";
-import { generalInfo } from "../../config";
-import Image from "../Image";
 
-const NavMenu = () => {
+/**
+ * Site-wide sticky navigation with dark-ink treatment.
+ */
+const SiteNavigation = () => {
+  const router = useRouter();
+  const scrollPosition = useScrollPosition();
+  const isScrolled = scrollPosition > 24;
   const [menuOpen, setMenuOpen] = useState(false);
-  const router: NextRouter = useRouter();
-  const scrollPosition: number = useScrollPosition();
-  const isScrolled: boolean = scrollPosition > 30;
 
   useEffect(() => {
-    if (window?.innerWidth >= parseInt(theme?.screens?.md, 10)) {
-      // by default menu is visible on large screens.
-      setMenuOpen(true);
-    }
-  }, []);
-
-  // Close the mobile menu after client-side navigation.
-  useEffect(() => {
-    const handleRouteChange = () => {
-      if (window?.innerWidth < parseInt(theme?.screens?.md, 10)) {
-        setMenuOpen(false);
-      }
-    };
-
-    router.events.on("routeChangeComplete", handleRouteChange);
+    const closeOnRoute = () => setMenuOpen(false);
+    router.events.on("routeChangeComplete", closeOnRoute);
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
+      router.events.off("routeChangeComplete", closeOnRoute);
     };
   }, [router.events]);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   return (
-    <nav
-      className={`${
-        isScrolled ? "bg-white bg-opacity-70  shadow-md" : ""
-      } top-0 p-2  w-full sticky transition-all  duration-1000 ease-out backdrop-blur-md z-50`}
+    <header
+      className={`
+        sticky top-0 z-50 transition-all duration-500
+        ${
+          isScrolled
+            ? "bg-ink-900/85 border-b border-steel-700/40 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.35)]"
+            : "bg-transparent"
+        }
+      `}
     >
-      <Container
-        paddingClass="sm:px-1"
-        className="md:flex block items-center justify-between"
-      >
-        <div
-          className={`flex align-center justify-between items-center ${
-            menuOpen ? "border-b-2 pb-2 md:border-b-0 md:pb-0" : ""
-          }`}
+      <Container className="flex items-center justify-between py-3 md:py-4">
+        <Link href={routePaths.home} className="flex items-center gap-3 group">
+          <img
+            src={siteIdentity.logoImage}
+            alt={`${siteIdentity.fullName} logo`}
+            width={40}
+            height={44}
+            className="h-10 w-auto object-contain"
+          />
+          <span className="font-display text-lg sm:text-xl md:text-2xl font-bold text-parchment-100 group-hover:text-crimson-300 transition-colors">
+            {siteIdentity.shortName}
+          </span>
+        </Link>
+
+        <button
+          type="button"
+          className="md:hidden inline-flex h-10 w-10 items-center justify-center border border-steel-700 text-parchment-200"
+          aria-expanded={menuOpen}
+          aria-controls="primary-navigation"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((open) => !open)}
         >
-          <Link
-            href={homePath}
-            className="flex align-center justify-center items-center"
-          >
-            <Image
-              src={generalInfo.projectLogo}
-              width={40}
-              height={45}
-              alt="Project-Logo"
-            />
-            <h1 className="m-3 text-2xl md:text-3xl   font-extrabold transition-all  duration-1000 ease-out">
-              {generalInfo.projectName}
-            </h1>
-          </Link>
+          {menuOpen ? <XIcon /> : <MenuIcon />}
+        </button>
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="block md:hidden hover:drop-shadow-lg mr-1"
-          >
-            {menuOpen ? (
-              <XIcon className="animate__animated animate__rotateIn" />
-            ) : (
-              <MenuIcon className="animate__animated animate__jackInTheBox" />
-            )}
-          </button>
-        </div>
-        {menuOpen && (
-          <span>
-            <DownloadResumeBtn className="md:hidden flex w-full mt-4 animate__animated animate__faster animate__fadeInDown" />
-
-            <ul className="block md:flex">
-              {paths.map((path) => (
-                <li
-                  key={path.href}
-                  className="lg:mx-6 md:mx-4 mx-2 my-4 md:my-0 animate__animated animate__faster animate__fadeInDown"
-                >
+        <nav
+          id="primary-navigation"
+          className={`
+            ${menuOpen ? "flex" : "hidden"}
+            md:flex absolute md:static left-0 right-0 top-full
+            flex-col md:flex-row md:items-center gap-1 md:gap-1
+            bg-ink-900/95 md:bg-transparent border-b md:border-0 border-steel-700/50
+            px-4 py-4 md:p-0
+          `}
+        >
+          <ul className="flex flex-col md:flex-row md:items-center gap-1 md:gap-0">
+            {primaryNavigation.map((item) => {
+              const isActive = router.pathname === item.href;
+              return (
+                <li key={item.id}>
                   <Link
-                    href={path.href}
-                    className={`${
-                      router.pathname === path.href
-                        ? "text-primary-500 font-bold"
-                        : ""
-                    }`}
+                    href={item.href}
+                    className={`
+                      block px-3 py-2.5 md:py-2 font-accent text-sm uppercase tracking-[0.16em]
+                      transition-colors duration-300
+                      ${
+                        isActive
+                          ? "text-crimson-400"
+                          : "text-parchment-300 hover:text-parchment-100"
+                      }
+                    `}
                   >
-                    {path.title}
+                    {item.label}
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </span>
-        )}
-        <DownloadResumeBtn className="animate__animated animate__fadeIn hidden md:flex" />
+              );
+            })}
+          </ul>
+
+          <a
+            href={siteIdentity.resumeUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-secondary mt-3 md:mt-0 md:ml-4 !px-4 !py-2 text-xs"
+          >
+            Resume
+          </a>
+        </nav>
       </Container>
-    </nav>
+    </header>
   );
 };
 
-export default NavMenu;
+export default SiteNavigation;

@@ -16,6 +16,8 @@ import {
 import {
   faArrowRight,
   faCalendarAlt,
+  faCode,
+  faEnvelope,
   faFileDownload,
   faHeart,
   faTimes,
@@ -38,6 +40,8 @@ const brandIcons: Partial<Record<string, IconDefinition>> = {
 const solidIcons: Partial<Record<string, IconDefinition>> = {
   "arrow-right": faArrowRight,
   "calendar-alt": faCalendarAlt,
+  code: faCode,
+  envelope: faEnvelope,
   "file-download": faFileDownload,
   heart: faHeart,
   times: faTimes,

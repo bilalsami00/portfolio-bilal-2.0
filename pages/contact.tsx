@@ -1,17 +1,17 @@
 import type { NextPage } from "next";
-import Contact from "../components/contact";
-import PageLayout from "../components/layout";
-import { contactSection } from "../config";
+import PageShell from "../components/layout";
+import ContactPageContent from "../components/contact/ContactPageContent";
+import { routePaths } from "../data/navigation";
+import { siteIdentity } from "../data/site";
 
 const ContactPage: NextPage = () => (
-  <PageLayout
+  <PageShell
     title="Contact"
-    description={
-      contactSection.description || contactSection.heading || "Get in touch."
-    }
+    description={`Contact ${siteIdentity.fullName} for software engineering roles, collaborations, and product work.`}
+    path={routePaths.contact}
   >
-    <div className="mt-20">{contactSection.display && <Contact />}</div>
-  </PageLayout>
+    <ContactPageContent />
+  </PageShell>
 );
 
 export default ContactPage;
