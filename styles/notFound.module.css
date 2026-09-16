@@ -1,0 +1,48 @@
+/**
+ * Scoped atmosphere for the Not Found page.
+ * Keeps site-wide styles untouched while priming a darker visual direction.
+ */
+.notFoundShell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: calc(100vh - 8rem);
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 50% 35%,
+      rgba(0, 191, 166, 0.12),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0b1220 0%, #111827 48%, #0f172a 100%);
+}
+
+.notFoundShell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  opacity: 0.45;
+}
+
+.notFoundContent {
+  position: relative;
+  z-index: 1;
+}
+
+.statusMark {
+  font-size: clamp(5.5rem, 18vw, 9rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: rgba(0, 191, 166, 0.14);
+  user-select: none;
+  pointer-events: none;
+}
