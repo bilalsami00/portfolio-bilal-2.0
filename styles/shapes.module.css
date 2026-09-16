@@ -3,7 +3,7 @@
     position: absolute;
     left: 0;
     top: 250px;
-    z-index: -1;
+    z-index: 0;
     -webkit-animation: animElement1 20s linear infinite;
     animation: animElement1 20s linear infinite;
 
@@ -14,8 +14,8 @@
 
     position: absolute;
     bottom: 120px;
-    right: 320px;
-    z-index: -1;
+    right: 12%;
+    z-index: 0;
     animation: linear 25s animElement2 infinite;
 
 }
@@ -26,7 +26,7 @@
     left: 50%;
     top: 130px;
     animation: animElement3 20s linear infinite;
-    z-index: -1;
+    z-index: 0;
 }
 
 .element4 {
@@ -34,16 +34,16 @@
     left: 45%;
     bottom: 0px;
     animation: animElement4 70s linear infinite;
-    z-index: -1;
+    z-index: 0;
     filter: grayscale(100%);
 }
 
 .element5 {
     position: absolute;
     left: 30%;
-    bottom: -20vh;
+    bottom: -10vh;
     animation: animElement5 40s linear infinite;
-    z-index: -1;
+    z-index: 0;
 
     filter: drop-shadow(8px 0px 2px rgba(0, 191, 166, 0.3));
 
@@ -193,5 +193,14 @@
         transform: translate(265, 50px) rotate(0deg);
         ;
 
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .element1,
+    .element2,
+    .element3,
+    .element4,
+    .element5 {
+        animation: none !important;
     }
 }

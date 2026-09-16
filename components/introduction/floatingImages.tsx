@@ -1,120 +1,95 @@
 import Image from "../Image";
 import styles from "../../styles/header.module.css";
 
-const styledBox = `
-absolute
-z-10
-sm:w-[60px] 
-sm:h-[60px] 
-md:w-[70px] 
-md:h-[70px]  
-lg:w-[90px] 
-lg:h-[90px]
-rounded-lg 
-pointer-events-none  
-bg-white 
-shadow-[0_5px_30px_rgba(0,0,0,0.2)]
+const floatBox = `
+  absolute z-10
+  w-[56px] h-[56px] sm:w-[60px] sm:h-[60px] md:w-[70px] md:h-[70px] lg:w-[84px] lg:h-[84px]
+  rounded-lg pointer-events-none
+  bg-white shadow-[0_5px_30px_rgba(0,0,0,0.12)]
+  flex items-center justify-center p-2
 `;
+
+/**
+ * Classic OpenFolio floating tech badges (light-mode hero charm).
+ * Kept free of invented metrics.
+ */
 const FloatingImages = () => (
-  <span>
+  <span className="pointer-events-none" aria-hidden>
     <div
-      title="React.JS"
-      className={`
-      ${styledBox}
-      top-[160px] 
-      left-10 
-      pt-3 p-2 
-      px-3 
-      ${styles?.floating_item || ""}`}
+      title="React"
+      className={`${floatBox} top-[12%] left-[4%] sm:left-6 ${
+        styles.floating_item || ""
+      }`}
+      style={{ animationDelay: "0s" }}
     >
       <Image
         loading="lazy"
-        alt="React.JS"
+        alt=""
         src="/assets/images/icons/react.png"
-        width={80}
-        height={80}
+        width={72}
+        height={72}
         className="pointer-events-none"
-        objectFit="contain"
       />
     </div>
 
     <div
-      title="Node.JS"
-      className={`
-      ${styledBox}
-      top-[160px] 
-      right-[60px] 
-      pt-3
-      p-2 
-      px-3 
-    
-      ${styles?.floating_item || ""}
-      `}
+      title="Node.js"
+      className={`${floatBox} top-[14%] right-[6%] sm:right-10 ${
+        styles.floating_item || ""
+      }`}
+      style={{ animationDelay: "0.8s" }}
     >
       <Image
         loading="lazy"
-        alt="Node.JS"
+        alt=""
         src="/assets/images/icons/nodejs.png"
-        width={80}
-        height={80}
+        width={72}
+        height={72}
         className="pointer-events-none"
-        objectFit="contain"
       />
     </div>
 
     <div
       title="MongoDB"
-      className={`
-       ${styledBox}
-       bottom-[80px] 
-       right-[60px] 
-       pt-3 
-       p-1 
-       px-3
-      ${styles?.floating_item || ""}
-      `}
+      className={`${floatBox} bottom-[18%] right-[8%] sm:right-12 ${
+        styles.floating_item || ""
+      }`}
+      style={{ animationDelay: "1.6s" }}
     >
       <Image
         loading="lazy"
-        alt="MongoDB"
+        alt=""
         src="/assets/images/icons/mongoDB.png"
-        width={80}
-        height={80}
-        layout="responsive"
+        width={72}
+        height={72}
         className="pointer-events-none"
-        objectFit="contain"
       />
     </div>
+
     <div
-      title="MongoDB"
+      title="Craft over claims"
       className={`
-      absolute 
-      z-10 
-      bg-white  
-      bottom-[80px] 
-      flex 
-      items-center 
-      justify-center 
-      left-10 
-      shadow-[0_5px_30px_rgba(0,0,0,0.2)] 
-      rounded-2xl
-       py-2  
-       px-3 
-       pointer-events-none 
-       ${styles?.floating_item || ""}`}
+        absolute z-10 bottom-[16%] left-[2%] sm:left-6
+        flex items-center gap-2 rounded-2xl bg-white
+        shadow-[0_5px_30px_rgba(0,0,0,0.12)]
+        py-2 px-3 pointer-events-none
+        ${styles.floating_item || ""}
+      `}
+      style={{ animationDelay: "2.2s" }}
     >
       <Image
         loading="lazy"
-        alt="completed"
+        alt=""
         src="/assets/images/icons/complete.png"
-        width={70}
-        height={70}
+        width={48}
+        height={48}
         className="pointer-events-none"
-        objectFit="contain"
       />
-      <div className="px-7 ">
-        <p className="font-bold">1500+</p>
-        <p>complete project</p>
+      <div className="pr-2 text-left">
+        <p className="text-sm font-bold text-slate-800 leading-tight">
+          Clean builds
+        </p>
+        <p className="text-xs text-slate-500">thoughtful delivery</p>
       </div>
     </div>
   </span>

@@ -494,3 +494,30 @@ html[data-theme="light"] .bg-crimson-500 {
     transform: none;
   }
 }
+
+/* Soft float on primary socials in classic light mode */
+html[data-theme="light"] .light-social-float > li:nth-child(1) a {
+  animation: lightSocialFloat 3.2s ease-in-out infinite;
+}
+html[data-theme="light"] .light-social-float > li:nth-child(2) a {
+  animation: lightSocialFloat 3.6s ease-in-out infinite 0.4s;
+}
+html[data-theme="light"] .light-social-float > li:nth-child(3) a {
+  animation: lightSocialFloat 4s ease-in-out infinite 0.8s;
+}
+
+@keyframes lightSocialFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="light"] .light-social-float a {
+    animation: none !important;
+  }
+}

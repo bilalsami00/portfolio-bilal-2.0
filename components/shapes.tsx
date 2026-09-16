@@ -39,8 +39,8 @@ type Props = {
   noLine?: boolean;
 };
 const shapes = ({ noLine }: Props) => (
-  <div>
-    {!noLine && <DesignLines className="mt-20 left-[-66px] top-0" />}
+  <div className="relative w-full h-full min-h-[inherit]" aria-hidden>
+    {!noLine && <DesignLines className="mt-20 left-[-66px] top-0 opacity-70" />}
     {shapesArr.map((shape, i) => (
       <span key={`${shape.src}${i}`} className={shape.className}>
         <Image
