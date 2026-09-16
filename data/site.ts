@@ -6,25 +6,25 @@ import type {
 } from "./types";
 
 /**
- * Core site identity derived from existing OpenFolio config / social profiles.
- * Do not invent personal claims beyond what the repository already contains.
+ * Core site identity for Muhammad Bilal Sami's portfolio.
+ * Contact fields marked as placeholders must be replaced with real details.
  */
 
 export const siteIdentity: SiteIdentity = {
-  fullName: "Kashan Haider",
-  shortName: "Kashan",
+  fullName: "Muhammad Bilal Sami",
+  shortName: "Bilal Sami",
   professionalTitle: "Software Engineer",
   tagline: "Building resilient web and mobile products with disciplined craft.",
   introduction:
     "I design and develop scalable web and mobile applications with a focus on clean architecture, thoughtful interfaces, and solutions that hold up under real-world pressure.",
-  location: "Available globally (remote-friendly)",
-  email: "contact@KashanHaider.com",
-  phone: "+1 (567)-257-8716",
+  location: "[Location — replace]",
+  email: "[your.email@example.com — replace]",
+  phone: "[Phone — replace]",
   profileImage: "/assets/images/hacker.jpg",
   logoImage: "/assets/images/avatar.png",
-  resumeUrl: "https://mutualfilesharing.com/UploadedFiles/exampleResume.pdf",
-  siteUrl: "https://openfolio.vercel.app",
-  siteName: "Kashan Haider",
+  resumeUrl: "#",
+  siteUrl: "https://github.com/bilalsami00/portfolio-bilal-2.0",
+  siteName: "Bilal Sami",
 };
 
 export const siteAvailability: SiteAvailability = {
@@ -35,12 +35,13 @@ export const siteAvailability: SiteAvailability = {
 };
 
 export const siteSeo: SiteSeo = {
-  defaultTitle: "Kashan Haider | Software Engineer Portfolio",
-  titleTemplate: "%s | Kashan Haider",
+  defaultTitle: "Bilal Sami | Software Engineer Portfolio",
+  titleTemplate: "%s | Bilal Sami",
   defaultDescription:
-    "Portfolio of Kashan Haider — software engineer specializing in web, mobile, and full-stack product development.",
+    "Portfolio of Muhammad Bilal Sami — software engineer specializing in web, mobile, and full-stack product development.",
   keywords: [
-    "Kashan Haider",
+    "Bilal Sami",
+    "Muhammad Bilal Sami",
     "Software Engineer",
     "React",
     "Next.js",

@@ -1,8 +1,7 @@
 import type { SkillGroup } from "./types";
 
 /**
- * Skills grounded in technologies present in the original OpenFolio config
- * and related SVG/icon assets (React, RN, Node, MongoDB, TS, Next, Electron, Jest).
+ * Skills grounded in technologies used across this portfolio stack.
  */
 
 export const skillGroups: SkillGroup[] = [

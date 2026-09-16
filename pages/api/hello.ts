@@ -1,13 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
-  name: string;
+type HealthResponse = {
+  status: string;
 };
-// handler
+
+/**
+ * Minimal health endpoint. No personal data; no external calls.
+ */
 export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+  _req: NextApiRequest,
+  res: NextApiResponse<HealthResponse>
 ) {
-  res.status(200).json({ name: "John Doe" });
+  res.status(200).json({ status: "ok" });
 }

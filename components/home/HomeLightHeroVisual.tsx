@@ -3,7 +3,7 @@ import RoundShape from "../svgs/roundShape";
 import { siteIdentity } from "../../data/site";
 
 /**
- * Classic cute OpenFolio hero visual — teal blob + floaties + illustration.
+ * Classic light-mode hero visual — teal blob + floaties + illustration.
  * Intended for light mode only.
  */
 const HomeLightHeroVisual = () => (

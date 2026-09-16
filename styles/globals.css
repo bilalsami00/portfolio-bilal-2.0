@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: JosefinSans;
-  src: url(/assets/fonts/JosefinSans.ttf);
+    font-family: JosefinSans;
+    src: url(/assets/fonts/JosefinSans.ttf);
   font-display: swap;
 }
 
@@ -15,14 +15,14 @@
 }
 
 @font-face {
-  font-family: Raleway;
-  src: url(/assets/fonts/Raleway.ttf);
+    font-family: Raleway;
+    src: url(/assets/fonts/Raleway.ttf);
   font-display: swap;
 }
 
 /* -------------------------------------------------------------------------
-   Dark (default) = Berserk / dark-fantasy portfolio theme
-   Light = classic OpenFolio teal theme from pre-berserk commit
+   Light = classic teal theme restored for light mode
+   Dark = dark-fantasy portfolio theme
 --------------------------------------------------------------------------- */
 :root,
 html[data-theme="dark"] {
@@ -62,7 +62,7 @@ html[data-theme="light"] {
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
   scroll-padding-top: 6rem;
 }
 
@@ -447,12 +447,12 @@ html[data-theme="light"] .shadow-\[0_10px_40px_rgba\(0\,0\,0\,0\.35\)\] {
 
 /* Timeline */
 .portfolio-timeline {
-  position: relative;
+    position: relative;
 }
 
 .portfolio-timeline::before {
   content: "";
-  position: absolute;
+    position: absolute;
   left: 0.55rem;
   top: 0.5rem;
   bottom: 0.5rem;
@@ -508,7 +508,7 @@ html[data-theme="light"] .light-social-float > li:nth-child(3) a {
 
 @keyframes lightSocialFloat {
   0%,
-  100% {
+    100% {
     transform: translateY(0);
   }
   50% {

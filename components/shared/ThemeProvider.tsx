@@ -33,8 +33,8 @@ type ThemeProviderProps = {
 };
 
 /**
- * Light = classic OpenFolio teal theme (pre-berserk).
- * Dark = current dark-fantasy / Berserk-inspired theme.
+ * Light = classic teal light theme.
+ * Dark = current dark-fantasy theme.
  */
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setThemeState] = useState<PortfolioTheme>("dark");

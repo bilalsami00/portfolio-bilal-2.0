@@ -60,20 +60,34 @@ const SiteFooter = () => {
             </h2>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <a
-                  href={`mailto:${siteIdentity.email}`}
-                  className="text-parchment-300 hover:text-parchment-100 transition-colors"
-                >
-                  {siteIdentity.email}
-                </a>
+                {siteIdentity.email.includes("replace") ||
+                siteIdentity.email.startsWith("[") ? (
+                  <span className="text-parchment-500">
+                    {siteIdentity.email}
+                  </span>
+                ) : (
+                  <a
+                    href={`mailto:${siteIdentity.email}`}
+                    className="text-parchment-300 hover:text-parchment-100 transition-colors"
+                  >
+                    {siteIdentity.email}
+                  </a>
+                )}
               </li>
               <li>
-                <a
-                  href={`tel:${siteIdentity.phone.replace(/[^\d+]/g, "")}`}
-                  className="text-parchment-300 hover:text-parchment-100 transition-colors"
-                >
-                  {siteIdentity.phone}
-                </a>
+                {siteIdentity.phone.includes("replace") ||
+                siteIdentity.phone.startsWith("[") ? (
+                  <span className="text-parchment-500">
+                    {siteIdentity.phone}
+                  </span>
+                ) : (
+                  <a
+                    href={`tel:${siteIdentity.phone.replace(/[^\d+]/g, "")}`}
+                    className="text-parchment-300 hover:text-parchment-100 transition-colors"
+                  >
+                    {siteIdentity.phone}
+                  </a>
+                )}
               </li>
               <li className="text-parchment-500">{siteIdentity.location}</li>
             </ul>
