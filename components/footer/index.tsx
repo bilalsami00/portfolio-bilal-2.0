@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import paths from "../../utilities/paths";
+import paths, { homePath } from "../../utilities/paths";
 import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
 import Container from "../container";
 import { generalInfo, footerSection } from "../../config";
@@ -56,7 +56,7 @@ const Footer = () => (
         {footerSection.bioData.display && (
           <div className="flex flex-wrap md:flex sm:block justify-center items-center">
             <Link
-              href="#home"
+              href={homePath}
               className="
               text-center
               p-1 

@@ -3,7 +3,7 @@ import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useScrollPosition from "../../hooks/useScrollPosition";
 import Container from "../container";
-import paths from "../../utilities/paths";
+import paths, { homePath } from "../../utilities/paths";
 import DownloadResumeBtn from "./downloadBtn";
 import MenuIcon from "../svgs/menuIcon";
 import theme from "../../theme.json";
@@ -23,6 +23,21 @@ const NavMenu = () => {
       setMenuOpen(true);
     }
   }, []);
+
+  // Close the mobile menu after client-side navigation.
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (window?.innerWidth < parseInt(theme?.screens?.md, 10)) {
+        setMenuOpen(false);
+      }
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <nav
       className={`${
@@ -38,7 +53,10 @@ const NavMenu = () => {
             menuOpen ? "border-b-2 pb-2 md:border-b-0 md:pb-0" : ""
           }`}
         >
-          <div className="flex align-center justify-center items-center">
+          <Link
+            href={homePath}
+            className="flex align-center justify-center items-center"
+          >
             <Image
               src={generalInfo.projectLogo}
               width={40}
@@ -48,7 +66,7 @@ const NavMenu = () => {
             <h1 className="m-3 text-2xl md:text-3xl   font-extrabold transition-all  duration-1000 ease-out">
               {generalInfo.projectName}
             </h1>
-          </div>
+          </Link>
 
           <button
             type="button"
