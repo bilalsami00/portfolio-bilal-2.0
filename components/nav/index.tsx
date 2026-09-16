@@ -5,11 +5,12 @@ import { primaryNavigation, routePaths } from "../../data/navigation";
 import { siteIdentity } from "../../data/site";
 import useScrollPosition from "../../hooks/useScrollPosition";
 import Container from "../shared/Container";
+import ThemeToggle from "../shared/ThemeToggle";
 import MenuIcon from "../svgs/menuIcon";
 import XIcon from "../svgs/xIcon";
 
 /**
- * Site-wide sticky navigation with dark-ink treatment.
+ * Site-wide sticky navigation with theme toggle.
  */
 const SiteNavigation = () => {
   const router = useRouter();
@@ -57,16 +58,23 @@ const SiteNavigation = () => {
           </span>
         </Link>
 
-        <button
-          type="button"
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center border border-steel-700 text-parchment-200"
-          aria-expanded={menuOpen}
-          aria-controls="primary-navigation"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <XIcon /> : <MenuIcon />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center border border-steel-700 text-parchment-200"
+            aria-expanded={menuOpen}
+            aria-controls="primary-navigation"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? (
+              <XIcon color="currentColor" />
+            ) : (
+              <MenuIcon color="currentColor" />
+            )}
+          </button>
+        </div>
 
         <nav
           id="primary-navigation"
@@ -102,14 +110,19 @@ const SiteNavigation = () => {
             })}
           </ul>
 
-          <a
-            href={siteIdentity.resumeUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-secondary mt-3 md:mt-0 md:ml-4 !px-4 !py-2 text-xs"
-          >
-            Resume
-          </a>
+          <div className="mt-3 md:mt-0 md:ml-4 flex items-center gap-2">
+            <span className="hidden md:inline-flex">
+              <ThemeToggle />
+            </span>
+            <a
+              href={siteIdentity.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-secondary !px-4 !py-2 text-xs"
+            >
+              Resume
+            </a>
+          </div>
         </nav>
       </Container>
     </header>

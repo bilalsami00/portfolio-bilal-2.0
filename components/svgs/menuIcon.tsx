@@ -1,5 +1,3 @@
-import theme from "../../theme.json";
-
 type Props = {
   color?: string;
   className?: string;
@@ -21,7 +19,7 @@ const MenuIcon = ({ color, className }: Props) => (
   </svg>
 );
 MenuIcon.defaultProps = {
-  color: theme?.colors?.primary?.[500] || "#b91c2c",
+  color: "currentColor",
 };
 
 export default MenuIcon;
