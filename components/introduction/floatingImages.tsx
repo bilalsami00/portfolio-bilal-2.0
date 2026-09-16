@@ -10,7 +10,7 @@ const floatBox = `
 `;
 
 /**
- * Classic OpenFolio floating tech badges (light-mode hero charm).
+ * Classic floating tech badges (light-mode hero charm).
  * Kept free of invented metrics.
  */
 const FloatingImages = () => (

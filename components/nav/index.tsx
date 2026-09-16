@@ -114,14 +114,18 @@ const SiteNavigation = () => {
             <span className="hidden md:inline-flex">
               <ThemeToggle />
             </span>
-            <a
-              href={siteIdentity.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-secondary !px-4 !py-2 text-xs"
-            >
-              Resume
-            </a>
+            {siteIdentity.resumeUrl &&
+              siteIdentity.resumeUrl !== "#" &&
+              !siteIdentity.resumeUrl.includes("replace") && (
+                <a
+                  href={siteIdentity.resumeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-secondary !px-4 !py-2 text-xs"
+                >
+                  Resume
+                </a>
+              )}
           </div>
         </nav>
       </Container>

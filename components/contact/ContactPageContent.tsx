@@ -84,23 +84,37 @@ const ContactPageContent = () => {
                   <p className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
                     Email
                   </p>
-                  <a
-                    href={`mailto:${siteIdentity.email}`}
-                    className="mt-1 inline-block text-parchment-100 hover:text-crimson-300 transition-colors"
-                  >
-                    {siteIdentity.email}
-                  </a>
+                  {siteIdentity.email.includes("replace") ||
+                  siteIdentity.email.startsWith("[") ? (
+                    <p className="mt-1 text-parchment-400">
+                      {siteIdentity.email}
+                    </p>
+                  ) : (
+                    <a
+                      href={`mailto:${siteIdentity.email}`}
+                      className="mt-1 inline-block text-parchment-100 hover:text-crimson-300 transition-colors"
+                    >
+                      {siteIdentity.email}
+                    </a>
+                  )}
                 </div>
                 <div>
                   <p className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
                     Phone
                   </p>
-                  <a
-                    href={`tel:${siteIdentity.phone.replace(/[^\d+]/g, "")}`}
-                    className="mt-1 inline-block text-parchment-100 hover:text-crimson-300 transition-colors"
-                  >
-                    {siteIdentity.phone}
-                  </a>
+                  {siteIdentity.phone.includes("replace") ||
+                  siteIdentity.phone.startsWith("[") ? (
+                    <p className="mt-1 text-parchment-400">
+                      {siteIdentity.phone}
+                    </p>
+                  ) : (
+                    <a
+                      href={`tel:${siteIdentity.phone.replace(/[^\d+]/g, "")}`}
+                      className="mt-1 inline-block text-parchment-100 hover:text-crimson-300 transition-colors"
+                    >
+                      {siteIdentity.phone}
+                    </a>
+                  )}
                 </div>
                 <div>
                   <p className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
