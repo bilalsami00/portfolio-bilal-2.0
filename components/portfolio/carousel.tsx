@@ -30,7 +30,7 @@ const Carousel = ({
       loop
       pagination={{
         clickable: true,
-        renderBullet(index, className) {
+        renderBullet(index: number, className: string) {
           return `<span class="${className} bg-white shadow-md text-primary-900 text-[10px]">${
             index + 1
           }</span>`;

@@ -1,16 +1,19 @@
-import { ReactNode } from "react";
+import { ReactElement } from "react";
 import { useTheme } from "./ThemeProvider";
 
 type LightModeOnlyProps = {
-  children: ReactNode;
+  children: ReactElement;
   /** Optional fallback while theme hydrates or in dark mode */
-  fallback?: ReactNode;
+  fallback?: ReactElement | null;
 };
 
 /**
  * Renders children only when the classic light theme is active.
  */
-const LightModeOnly = ({ children, fallback = null }: LightModeOnlyProps) => {
+const LightModeOnly = ({
+  children,
+  fallback = null,
+}: LightModeOnlyProps): ReactElement | null => {
   const { theme, isReady } = useTheme();
 
   if (!isReady || theme !== "light") {
