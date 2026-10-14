@@ -152,6 +152,8 @@ html[data-theme="light"] .site-atmosphere::after {
 }
 
 .site-atmosphere > header {
+  /* Must win over `.site-atmosphere > * { position: relative }` so Tailwind `sticky` sticks. */
+  position: sticky;
   z-index: 50;
 }
 
