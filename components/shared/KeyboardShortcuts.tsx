@@ -168,7 +168,10 @@ const KeyboardShortcuts = () => {
         onClick={closeHelp}
       />
 
-      <div className="relative z-10 w-full max-w-md ink-panel border-crimson-700/30 p-5 sm:p-6 shadow-[0_24px_48px_rgba(0,0,0,0.45)]">
+      <div
+        className="relative z-10 w-full max-w-md ink-panel border-crimson-700/30 p-5 sm:p-6 shadow-[0_24px_48px_rgba(0,0,0,0.45)]"
+        data-lenis-prevent
+      >
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="section-eyebrow">Keyboard</p>

@@ -7,6 +7,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import SiteNavigation from "../components/nav";
 import SiteFooter from "../components/footer";
 import KeyboardShortcuts from "../components/shared/KeyboardShortcuts";
+import SmoothScroll from "../components/shared/SmoothScroll";
 import { ThemeProvider } from "../components/shared/ThemeProvider";
 
 config.autoAddCss = false;
@@ -29,6 +30,7 @@ const PortfolioApp = ({ Component, pageProps }: AppProps) => (
       </div>
       <SiteFooter />
       <KeyboardShortcuts />
+      <SmoothScroll />
     </div>
   </ThemeProvider>
 );

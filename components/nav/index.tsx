@@ -119,6 +119,7 @@ const SiteNavigation = () => {
             bg-ink-900 md:bg-transparent border-b md:border-0 border-steel-700/50
             px-4 py-5 md:p-0 shadow-[0_18px_36px_rgba(0,0,0,0.35)] md:shadow-none
           `}
+          data-lenis-prevent
         >
           <ul className="flex flex-col md:flex-row md:items-center gap-1 md:gap-0.5">
             {primaryNavigation.map((item) => {
