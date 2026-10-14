@@ -71,15 +71,8 @@ export type ServiceCategory = {
   title: string;
   description: string;
   highlights: string[];
-  iconKey:
-    | "web"
-    | "frontend"
-    | "backend"
-    | "mobile"
-    | "uiux"
-    | "performance"
-    | "seo"
-    | "testing";
+  /** Resolves through `skillIconRegistry` (Skill Icons → Simple Icons). */
+  iconKey: string;
 };
 
 export type ProjectCategory =

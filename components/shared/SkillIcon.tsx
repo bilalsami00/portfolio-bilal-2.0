@@ -1,4 +1,7 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { resolveSkillIcon } from "../../data/skillIconRegistry";
+import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
+import { useTheme } from "./ThemeProvider";
 
 type SkillIconProps = {
   iconKey?: string;
@@ -7,22 +10,45 @@ type SkillIconProps = {
   title?: string;
 };
 
-const skillIconsUrl = (ids: string[]) =>
-  `https://skillicons.dev/icons?i=${ids.join(",")}&theme=dark`;
+const skillIconsUrl = (ids: string[], theme: "dark" | "light") =>
+  `https://skillicons.dev/icons?i=${ids.join(",")}&theme=${theme}`;
 
 const simpleIconsUrl = (slug: string, color: string) =>
   `https://cdn.simpleicons.org/${slug}/${color}`;
 
+/** Previous portfolio fallback for non-brand / placeholder skills. */
+const GenericFallbackIcon = ({
+  className,
+  title,
+}: {
+  className: string;
+  title?: string;
+}) => {
+  const icon = resolveFontAwesomeIcon("fas", "code");
+  if (!icon) return null;
+
+  return (
+    <FontAwesomeIcon
+      icon={icon}
+      className={`${className} text-crimson-400`}
+      aria-hidden={title ? undefined : true}
+      title={title}
+    />
+  );
+};
+
 /**
  * Official technology icons via Skill Icons, with Simple Icons fallback.
- * Decorative by default when a text label already names the technology.
+ * Generic skills reuse the existing Font Awesome code glyph (never left blank).
  */
 const SkillIcon = ({
   iconKey,
-  className = "h-6 w-6",
+  className = "h-8 w-8",
   title,
 }: SkillIconProps) => {
+  const { isDark, isReady } = useTheme();
   const definition = resolveSkillIcon(iconKey);
+  const skillTheme = !isReady || isDark ? "dark" : "light";
 
   if (definition.source === "skillicons") {
     const { ids } = definition;
@@ -30,14 +56,14 @@ const SkillIcon = ({
 
     return (
       <span
-        className={`inline-flex items-center ${isPair ? "gap-1" : ""}`}
+        className={`inline-flex items-center shrink-0 ${isPair ? "gap-1" : ""}`}
         aria-hidden={title ? undefined : true}
         title={title}
       >
         {ids.map((id) => (
           <img
             key={id}
-            src={skillIconsUrl([id])}
+            src={skillIconsUrl([id], skillTheme)}
             alt={title ? `${title} icon` : ""}
             width={48}
             height={48}
@@ -66,7 +92,7 @@ const SkillIcon = ({
     );
   }
 
-  return null;
+  return <GenericFallbackIcon className={className} title={title} />;
 };
 
 export default SkillIcon;

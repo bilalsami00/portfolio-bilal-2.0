@@ -26,10 +26,13 @@ const HomeCapabilitiesSection = () => (
             delayClass={`reveal-delay-${(index % 5) + 1}`}
             className="ink-panel ink-panel-hover p-6 h-full flex flex-col"
           >
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-crimson-700/40 bg-crimson-900/30 text-crimson-300">
-              <SkillIcon iconKey={service.iconKey} className="h-5 w-5" />
+            <div className="mb-1">
+              <SkillIcon
+                iconKey={service.iconKey}
+                className="h-9 w-9 shrink-0"
+              />
             </div>
-            <h3 className="mt-5 font-display text-xl text-parchment-100 font-bold leading-snug">
+            <h3 className="mt-4 font-display text-xl text-parchment-100 font-bold leading-snug">
               {service.title}
             </h3>
             <p className="mt-3 text-sm text-parchment-400 leading-relaxed">

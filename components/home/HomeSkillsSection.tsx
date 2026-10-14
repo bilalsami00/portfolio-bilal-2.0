@@ -15,7 +15,7 @@ const HomeSkillsSection = () => (
         <SectionHeading
           eyebrow="Skills & technologies"
           title="The arsenal"
-          description="Grouped by discipline. Icons use the project's existing SVG set where available."
+          description="Grouped by discipline. Brand marks come from Skill Icons, with Simple Icons only when no Skill Icon exists."
           align="center"
         />
       </RevealOnScroll>
@@ -38,20 +38,21 @@ const HomeSkillsSection = () => (
                 </div>
               </div>
 
-              <ul className="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              <ul className="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-5">
                 {group.skills.map((skill) => {
                   const isPlaceholder = skill.name.includes("[");
+
                   return (
                     <li
                       key={skill.id}
-                      className="flex flex-col items-start gap-3 border border-steel-700/60 bg-ink-800/50 p-3 sm:p-4 min-h-[5.5rem]"
+                      className="group flex items-center gap-3 min-h-[2.75rem]"
                     >
                       <SkillIcon
                         iconKey={skill.iconKey}
-                        className="h-7 w-7 shrink-0"
+                        className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 transition-opacity duration-300 group-hover:opacity-85"
                       />
-                      <div className="flex flex-col gap-1.5 min-w-0">
-                        <span className="text-sm text-parchment-200 font-medium leading-snug break-words">
+                      <div className="flex flex-col gap-1 min-w-0">
+                        <span className="text-sm text-parchment-200 font-medium leading-snug break-words transition-colors duration-300 group-hover:text-parchment-100">
                           {skill.name}
                         </span>
                         {isPlaceholder && <PlaceholderBadge />}

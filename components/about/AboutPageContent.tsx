@@ -263,17 +263,19 @@ const AboutPageContent = () => (
               <h3 className="font-display text-lg text-parchment-100 font-bold leading-snug">
                 {group.title}
               </h3>
-              <ul className="mt-4 flex flex-wrap gap-2">
+              <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-3">
                 {group.skills.map((skill) => (
                   <li
                     key={skill.id}
-                    className="inline-flex items-center gap-2 border border-steel-700/60 bg-ink-800/50 px-2.5 py-1.5 text-sm text-parchment-300"
+                    className="group inline-flex items-center gap-2 text-sm text-parchment-300"
                   >
                     <SkillIcon
                       iconKey={skill.iconKey}
-                      className="h-4 w-4 shrink-0"
+                      className="h-6 w-6 shrink-0 transition-opacity duration-300 group-hover:opacity-85"
                     />
-                    <span className="leading-snug">{skill.name}</span>
+                    <span className="leading-snug transition-colors duration-300 group-hover:text-parchment-100">
+                      {skill.name}
+                    </span>
                   </li>
                 ))}
               </ul>
