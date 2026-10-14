@@ -6,6 +6,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import SiteNavigation from "../components/nav";
 import SiteFooter from "../components/footer";
+import KeyboardShortcuts from "../components/shared/KeyboardShortcuts";
 import { ThemeProvider } from "../components/shared/ThemeProvider";
 
 config.autoAddCss = false;
@@ -27,6 +28,7 @@ const PortfolioApp = ({ Component, pageProps }: AppProps) => (
         <Component {...pageProps} />
       </div>
       <SiteFooter />
+      <KeyboardShortcuts />
     </div>
   </ThemeProvider>
 );
