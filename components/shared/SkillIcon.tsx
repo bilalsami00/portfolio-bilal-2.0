@@ -1,50 +1,72 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ElectronIcon from "../svgs/electronIcon";
-import JestIcon from "../svgs/jestIcon";
-import MongoDBIcon from "../svgs/mongoDBIcon";
-import NextIcon from "../svgs/nextIcon";
-import NodeJSIcon from "../svgs/nodeJSIcon";
-import ReactIcon from "../svgs/reactIcon";
-import ReactNativeIcon from "../svgs/reactNativeIcon";
-import TypescriptIcon from "../svgs/typescriptIcon";
-import { resolveFontAwesomeIcon } from "../../utilities/resolveFontAwesomeIcon";
+import { resolveSkillIcon } from "../../data/skillIconRegistry";
 
 type SkillIconProps = {
   iconKey?: string;
   className?: string;
+  /** Accessible name when no adjacent text label identifies the technology */
+  title?: string;
 };
 
+const skillIconsUrl = (ids: string[]) =>
+  `https://skillicons.dev/icons?i=${ids.join(",")}&theme=dark`;
+
+const simpleIconsUrl = (slug: string, color: string) =>
+  `https://cdn.simpleicons.org/${slug}/${color}`;
+
 /**
- * Maps skill icon keys to existing SVG components or Font Awesome glyphs.
+ * Official technology icons via Skill Icons, with Simple Icons fallback.
+ * Decorative by default when a text label already names the technology.
  */
-const SkillIcon = ({ iconKey, className = "h-6 w-6" }: SkillIconProps) => {
-  switch (iconKey) {
-    case "react":
-      return <ReactIcon className={className} />;
-    case "react-native":
-      return <ReactNativeIcon className={className} />;
-    case "typescript":
-      return <TypescriptIcon className={className} />;
-    case "mongodb":
-      return <MongoDBIcon className={className} />;
-    case "electron":
-      return <ElectronIcon className={className} />;
-    case "jest":
-      return <JestIcon className={className} />;
-    case "next":
-      return <NextIcon className={className} />;
-    case "nodejs":
-      return <NodeJSIcon className={className} />;
-    default: {
-      const fallback = resolveFontAwesomeIcon("fas", "code");
-      return fallback ? (
-        <FontAwesomeIcon
-          icon={fallback}
-          className={`${className} text-crimson-400`}
-        />
-      ) : null;
-    }
+const SkillIcon = ({
+  iconKey,
+  className = "h-6 w-6",
+  title,
+}: SkillIconProps) => {
+  const definition = resolveSkillIcon(iconKey);
+
+  if (definition.source === "skillicons") {
+    const { ids } = definition;
+    const isPair = ids.length > 1;
+
+    return (
+      <span
+        className={`inline-flex items-center ${isPair ? "gap-1" : ""}`}
+        aria-hidden={title ? undefined : true}
+        title={title}
+      >
+        {ids.map((id) => (
+          <img
+            key={id}
+            src={skillIconsUrl([id])}
+            alt={title ? `${title} icon` : ""}
+            width={48}
+            height={48}
+            loading="lazy"
+            decoding="async"
+            className={`${className} object-contain`}
+          />
+        ))}
+      </span>
+    );
   }
+
+  if (definition.source === "simpleicons") {
+    return (
+      <img
+        src={simpleIconsUrl(definition.slug, definition.color)}
+        alt={title ? `${title} icon` : ""}
+        width={48}
+        height={48}
+        loading="lazy"
+        decoding="async"
+        aria-hidden={title ? undefined : true}
+        title={title}
+        className={`${className} object-contain`}
+      />
+    );
+  }
+
+  return null;
 };
 
 export default SkillIcon;

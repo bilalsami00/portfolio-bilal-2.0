@@ -41,7 +41,7 @@ const SocialLinksRow = ({
       : socialLinks.filter((item) => !item.isPlaceholder);
 
   return (
-    <ul className={`flex flex-wrap items-center gap-2 sm:gap-3 ${className}`}>
+    <ul className={`flex flex-wrap items-center gap-2 sm:gap-2.5 ${className}`}>
       {links.map((link) => {
         const icon = resolveFontAwesomeIcon(
           platformIconMap[link.platform] || "fab",
@@ -57,10 +57,11 @@ const SocialLinksRow = ({
               title={link.title}
               aria-label={link.title}
               className="
-                inline-flex h-10 w-10 items-center justify-center
-                border border-steel-700 bg-ink-800/70 text-steel-300
-                transition-all duration-300
+                inline-flex h-11 w-11 items-center justify-center
+                border border-steel-700/80 bg-ink-800/70 text-steel-300
+                transition-colors duration-300
                 hover:border-crimson-500/60 hover:text-parchment-100 hover:bg-ink-700
+                focus-visible:border-crimson-500/60
               "
             >
               {icon && <FontAwesomeIcon icon={icon} className="h-4 w-4" />}

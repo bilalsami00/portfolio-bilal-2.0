@@ -2,6 +2,7 @@ import type { SkillGroup } from "./types";
 
 /**
  * Skills grounded in technologies used across this portfolio stack.
+ * `iconKey` values resolve through `skillIconRegistry` (Skill Icons → Simple Icons).
  */
 
 export const skillGroups: SkillGroup[] = [
@@ -13,8 +14,8 @@ export const skillGroups: SkillGroup[] = [
       { id: "skill-react", name: "React", iconKey: "react" },
       { id: "skill-next", name: "Next.js", iconKey: "next" },
       { id: "skill-typescript-fe", name: "TypeScript", iconKey: "typescript" },
-      { id: "skill-html-css", name: "HTML / CSS", iconKey: "frontend" },
-      { id: "skill-tailwind", name: "Tailwind CSS", iconKey: "frontend" },
+      { id: "skill-html-css", name: "HTML / CSS", iconKey: "html-css" },
+      { id: "skill-tailwind", name: "Tailwind CSS", iconKey: "tailwind" },
     ],
   },
   {
@@ -24,7 +25,7 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       { id: "skill-node", name: "Node.js", iconKey: "nodejs" },
       { id: "skill-typescript-be", name: "TypeScript", iconKey: "typescript" },
-      { id: "skill-rest", name: "REST APIs", iconKey: "backend" },
+      { id: "skill-rest", name: "REST APIs", iconKey: "rest" },
     ],
   },
   {
@@ -39,8 +40,8 @@ export const skillGroups: SkillGroup[] = [
     description: "Quality, packaging, and day-to-day engineering tooling.",
     skills: [
       { id: "skill-jest", name: "Jest", iconKey: "jest" },
-      { id: "skill-cypress", name: "Cypress", iconKey: "testing" },
-      { id: "skill-git", name: "Git", iconKey: "tools" },
+      { id: "skill-cypress", name: "Cypress", iconKey: "cypress" },
+      { id: "skill-git", name: "Git", iconKey: "git" },
       { id: "skill-electron", name: "Electron", iconKey: "electron" },
     ],
   },
@@ -62,7 +63,7 @@ export const skillGroups: SkillGroup[] = [
     title: "Cloud / Deployment",
     description: "Shipping and hosting surfaces used with this stack.",
     skills: [
-      { id: "skill-vercel", name: "Vercel", iconKey: "cloud" },
+      { id: "skill-vercel", name: "Vercel", iconKey: "vercel" },
       {
         id: "skill-cloud-placeholder",
         name: "[Additional cloud provider — replace]",

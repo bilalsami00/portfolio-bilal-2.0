@@ -11,11 +11,11 @@ const HomeEducationPreviewSection = () => {
 
   return (
     <section
-      className="py-16 sm:py-20 bg-ink-950/40"
+      className="py-16 sm:py-20 md:py-24 bg-ink-950/40"
       aria-labelledby="education-preview-title"
     >
       <Container>
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
           <RevealOnScroll className="lg:col-span-6">
             <SectionHeading
               eyebrow="Education"
@@ -27,13 +27,13 @@ const HomeEducationPreviewSection = () => {
           <RevealOnScroll delayClass="reveal-delay-2" className="lg:col-span-6">
             {primary && (
               <div className="ink-panel p-6 sm:p-8">
-                <div className="flex flex-wrap gap-2 mb-3">
+                <div className="flex flex-wrap items-center gap-2 mb-3">
                   {primary.isPlaceholder && <PlaceholderBadge />}
                   <span className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
                     {primary.startDate} — {primary.endDate}
                   </span>
                 </div>
-                <h3 className="font-display text-2xl text-parchment-100 font-bold">
+                <h3 className="font-display text-2xl text-parchment-100 font-bold leading-snug">
                   {primary.degree}
                 </h3>
                 <p className="mt-2 text-crimson-300">{primary.institution}</p>

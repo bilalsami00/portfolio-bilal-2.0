@@ -6,7 +6,7 @@ import SectionHeading from "../shared/SectionHeading";
 import TechTag from "../shared/TechTag";
 
 const HomeJourneySection = () => (
-  <section className="py-16 sm:py-20" aria-labelledby="journey-title">
+  <section className="py-16 sm:py-20 md:py-24" aria-labelledby="journey-title">
     <Container>
       <RevealOnScroll>
         <SectionHeading
@@ -16,7 +16,7 @@ const HomeJourneySection = () => (
         />
       </RevealOnScroll>
 
-      <ol className="portfolio-timeline mt-12 space-y-8 pl-8 md:pl-0">
+      <ol className="portfolio-timeline mt-10 sm:mt-12 space-y-8 pl-8 md:pl-0">
         {experienceEntries.map((entry, index) => (
           <RevealOnScroll
             key={entry.id}
@@ -24,7 +24,7 @@ const HomeJourneySection = () => (
           >
             <li className="relative md:grid md:grid-cols-2 md:gap-10">
               <span
-                className="absolute left-[-1.55rem] md:left-1/2 md:-translate-x-1/2 top-3 h-3 w-3 bg-crimson-500 shadow-[0_0_12px_rgba(185,28,44,0.6)]"
+                className="absolute left-[-1.55rem] md:left-1/2 md:-translate-x-1/2 top-3 h-3 w-3 bg-crimson-500 shadow-[0_0_10px_rgba(185,28,44,0.5)]"
                 aria-hidden
               />
 
@@ -36,16 +36,16 @@ const HomeJourneySection = () => (
                 }`}
               >
                 <div className="ink-panel p-5 sm:p-6 inline-block w-full text-left">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <div className="flex flex-wrap items-center gap-2 mb-2.5">
                     <p className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
                       {entry.startDate} — {entry.endDate}
                     </p>
                     {entry.isPlaceholder && <PlaceholderBadge />}
                   </div>
-                  <h3 className="font-display text-xl text-parchment-100 font-bold">
+                  <h3 className="font-display text-xl text-parchment-100 font-bold leading-snug">
                     {entry.role}
                   </h3>
-                  <p className="mt-1 text-crimson-300 font-accent text-sm tracking-wide">
+                  <p className="mt-1.5 text-crimson-300 font-accent text-sm tracking-wide">
                     {entry.company} · {entry.location}
                   </p>
                   <p className="mt-3 text-sm text-parchment-400 leading-relaxed">

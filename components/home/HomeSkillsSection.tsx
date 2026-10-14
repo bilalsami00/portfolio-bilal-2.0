@@ -7,7 +7,7 @@ import PlaceholderBadge from "../shared/PlaceholderBadge";
 
 const HomeSkillsSection = () => (
   <section
-    className="py-16 sm:py-20 bg-ink-950/50"
+    className="py-16 sm:py-20 md:py-24 bg-ink-950/50"
     aria-labelledby="skills-title"
   >
     <Container>
@@ -20,19 +20,19 @@ const HomeSkillsSection = () => (
         />
       </RevealOnScroll>
 
-      <div className="mt-12 space-y-8">
+      <div className="mt-10 sm:mt-12 space-y-6 sm:space-y-8">
         {skillGroups.map((group, index) => (
           <RevealOnScroll
             key={group.id}
             delayClass={`reveal-delay-${(index % 4) + 1}`}
           >
             <div className="ink-panel p-5 sm:p-7">
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-5">
-                <div>
-                  <h3 className="font-display text-2xl text-parchment-100 font-bold">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-5 sm:mb-6">
+                <div className="max-w-2xl">
+                  <h3 className="font-display text-2xl text-parchment-100 font-bold leading-snug">
                     {group.title}
                   </h3>
-                  <p className="mt-1 text-sm text-parchment-500">
+                  <p className="mt-1.5 text-sm text-parchment-500 leading-relaxed">
                     {group.description}
                   </p>
                 </div>
@@ -44,11 +44,14 @@ const HomeSkillsSection = () => (
                   return (
                     <li
                       key={skill.id}
-                      className="flex flex-col items-start gap-3 border border-steel-700/60 bg-ink-800/50 p-3 sm:p-4"
+                      className="flex flex-col items-start gap-3 border border-steel-700/60 bg-ink-800/50 p-3 sm:p-4 min-h-[5.5rem]"
                     >
-                      <SkillIcon iconKey={skill.iconKey} className="h-7 w-7" />
-                      <div className="flex flex-col gap-1">
-                        <span className="text-sm text-parchment-200 font-medium leading-snug">
+                      <SkillIcon
+                        iconKey={skill.iconKey}
+                        className="h-7 w-7 shrink-0"
+                      />
+                      <div className="flex flex-col gap-1.5 min-w-0">
+                        <span className="text-sm text-parchment-200 font-medium leading-snug break-words">
                           {skill.name}
                         </span>
                         {isPlaceholder && <PlaceholderBadge />}

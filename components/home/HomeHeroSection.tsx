@@ -28,7 +28,7 @@ const DarkHeroPortrait = () => (
         <p className="font-accent text-xs uppercase tracking-[0.22em] text-crimson-300">
           Currently
         </p>
-        <p className="mt-2 text-sm text-parchment-200 leading-relaxed">
+        <p className="mt-2 text-sm text-parchment-200 leading-relaxed max-w-prose">
           {siteAvailability.statusDetail}
         </p>
       </div>
@@ -45,7 +45,7 @@ const HomeHeroSection = () => {
 
   return (
     <section
-      className="relative overflow-hidden pt-10 pb-16 sm:pt-14 sm:pb-20 md:pt-20 md:pb-28"
+      className="relative overflow-hidden pt-10 pb-16 sm:pt-14 sm:pb-20 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28"
       aria-labelledby="home-hero-name"
     >
       <LightModeOnly>
@@ -59,27 +59,27 @@ const HomeHeroSection = () => {
 
       {showDarkVisual && (
         <div
-          className="pointer-events-none absolute inset-0 opacity-40"
+          className="pointer-events-none absolute inset-0 opacity-35"
           style={{
             backgroundImage:
-              "linear-gradient(120deg, rgba(185,28,44,0.12) 0%, transparent 42%), radial-gradient(ellipse at 80% 20%, rgba(111,120,136,0.18), transparent 50%)",
+              "linear-gradient(120deg, rgba(185,28,44,0.1) 0%, transparent 42%), radial-gradient(ellipse at 80% 20%, rgba(111,120,136,0.16), transparent 50%)",
           }}
           aria-hidden
         />
       )}
 
-      <Container className="relative z-[1] grid items-center gap-10 lg:grid-cols-12 lg:gap-8">
+      <Container className="relative z-[1] grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
         <RevealOnScroll className="lg:col-span-7">
           {siteAvailability.isAvailableForWork && (
             <p className="status-pill mb-6">{siteAvailability.statusLabel}</p>
           )}
 
           <p className="section-eyebrow">Software Developer Portfolio</p>
-          <div className="crimson-mark mt-4 mb-6" />
+          <div className="crimson-mark mt-3.5 mb-5 sm:mt-4 sm:mb-6" />
 
           <h1
             id="home-hero-name"
-            className="font-display text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold text-parchment-100 leading-[1.05]"
+            className="font-display text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold text-parchment-100 leading-[1.05] tracking-tight"
           >
             {siteIdentity.fullName}
           </h1>
@@ -108,7 +108,7 @@ const HomeHeroSection = () => {
             </ButtonLink>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-9 pt-1">
             <p className="mb-3 text-xs font-accent uppercase tracking-[0.2em] text-steel-400">
               Connect
             </p>

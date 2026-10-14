@@ -17,7 +17,7 @@ import { routePaths } from "../data/navigation";
 const HomePage: NextPage = () => (
   <PageShell description={siteSeo.defaultDescription} path={routePaths.home}>
     <HomeHeroSection />
-    <div className="steel-rule mx-auto max-w-[72rem]" />
+    <div className="steel-rule mx-auto max-w-[72rem] opacity-90" />
     <HomeCurrentFocusSection />
     <HomeAboutPreviewSection />
     <HomeCapabilitiesSection />

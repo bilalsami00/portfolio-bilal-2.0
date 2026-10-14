@@ -5,11 +5,14 @@ import RevealOnScroll from "../shared/RevealOnScroll";
 import SectionHeading from "../shared/SectionHeading";
 
 const HomeAboutPreviewSection = () => (
-  <section className="py-16 sm:py-20" aria-labelledby="about-preview-title">
+  <section
+    className="py-16 sm:py-20 md:py-24"
+    aria-labelledby="about-preview-title"
+  >
     <Container>
-      <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+      <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
         <RevealOnScroll className="lg:col-span-5">
-          <div className="relative">
+          <div className="relative max-w-md mx-auto lg:max-w-none lg:mx-0">
             <div
               className="absolute -inset-2 border border-steel-700/50"
               aria-hidden

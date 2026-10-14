@@ -25,14 +25,16 @@ const SectionHeading = ({
     <div className={`flex flex-col ${alignment} max-w-3xl ${className}`}>
       <p className="section-eyebrow">{eyebrow}</p>
       <div
-        className={`crimson-mark mt-4 mb-5 ${
+        className={`crimson-mark mt-3.5 mb-4 sm:mt-4 sm:mb-5 ${
           align === "center" ? "mx-auto" : ""
         }`}
       />
       <h2 className="section-title">{title}</h2>
       {description && (
         <p
-          className={`section-copy mt-4 ${align === "center" ? "mx-auto" : ""}`}
+          className={`section-copy mt-3.5 sm:mt-4 ${
+            align === "center" ? "mx-auto" : ""
+          }`}
         >
           {description}
         </p>

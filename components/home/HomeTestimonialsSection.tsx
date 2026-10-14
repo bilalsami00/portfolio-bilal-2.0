@@ -10,7 +10,7 @@ import SectionHeading from "../shared/SectionHeading";
  */
 const HomeTestimonialsSection = () => (
   <section
-    className="py-16 sm:py-20 bg-ink-950/40"
+    className="py-16 sm:py-20 md:py-24 bg-ink-950/40"
     aria-labelledby="testimonials-title"
   >
     <Container>
@@ -31,26 +31,26 @@ const HomeTestimonialsSection = () => (
         />
       </RevealOnScroll>
 
-      <div className="mt-10 grid gap-5 md:grid-cols-2">
+      <div className="mt-10 sm:mt-12 grid gap-5 md:grid-cols-2">
         {testimonials.map((item, index) => (
           <RevealOnScroll
             key={item.id}
             delayClass={`reveal-delay-${(index % 3) + 1}`}
-            className="ink-panel p-6 sm:p-8"
+            className="ink-panel p-6 sm:p-8 h-full flex flex-col"
           >
             {item.isPlaceholder && (
               <div className="mb-4">
                 <PlaceholderBadge label="Awaiting real testimonial" />
               </div>
             )}
-            <blockquote className="text-parchment-300 leading-relaxed text-base sm:text-lg">
+            <blockquote className="text-parchment-300 leading-relaxed text-base sm:text-lg flex-1">
               “{item.quote}”
             </blockquote>
             <footer className="mt-6 border-t border-steel-700/50 pt-4">
-              <p className="font-display text-parchment-100 font-semibold">
+              <p className="font-display text-parchment-100 font-semibold leading-snug">
                 {item.authorName}
               </p>
-              <p className="text-sm text-steel-400 mt-1">
+              <p className="text-sm text-steel-400 mt-1.5 leading-snug">
                 {item.authorRole} · {item.authorCompany}
               </p>
             </footer>
