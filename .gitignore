@@ -28,6 +28,14 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+
+# firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+*-firebase-adminsdk-*.json
+serviceAccount*.json
 
 # vercel
 .vercel

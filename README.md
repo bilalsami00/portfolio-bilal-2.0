@@ -32,6 +32,10 @@ Edit files under `data/`:
 
 Replace any field marked as a **placeholder** with your real details. Do not invent employment, clients, or metrics.
 
+## Mission Control (admin, contact inbox, visitor sessions)
+
+Setup, env vars, Firestore rules, and troubleshooting: [`documentation/mission-control.md`](documentation/mission-control.md). Copy `.env.example` to `.env.local` to get started.
+
 ## Scripts
 
 | Command | Purpose |

@@ -10,16 +10,23 @@ import KeyboardShortcuts from "../components/shared/KeyboardShortcuts";
 import PathMemory from "../components/shared/PathMemory";
 import SmoothScroll from "../components/shared/SmoothScroll";
 import { ThemeProvider } from "../components/shared/ThemeProvider";
-import { routePaths } from "../data/navigation";
+import VisitorTracker from "../components/shared/VisitorTracker";
+import { isMissionControlPath } from "../data/navigation";
+import type { NextPageWithLayout } from "../utilities/pageLayout";
 
 config.autoAddCss = false;
+
+type PortfolioAppProps = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 /**
  * Global chrome: theme, atmosphere, navigation, and footer wrap every route.
  */
-const PortfolioApp = ({ Component, pageProps }: AppProps) => {
+const PortfolioApp = ({ Component, pageProps }: PortfolioAppProps) => {
   const { pathname } = useRouter();
-  const isMissionControl = pathname.startsWith(routePaths.missionControl);
+  const isMissionControl = isMissionControlPath(pathname);
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <ThemeProvider>
@@ -34,13 +41,12 @@ const PortfolioApp = ({ Component, pageProps }: AppProps) => {
           Skip to content
         </a>
         <SiteNavigation />
-        <div className="flex-1">
-          <Component {...pageProps} />
-        </div>
+        <div className="flex-1">{getLayout(<Component {...pageProps} />)}</div>
         <SiteFooter />
         <KeyboardShortcuts />
         <SmoothScroll />
         <PathMemory />
+        <VisitorTracker />
       </div>
     </ThemeProvider>
   );

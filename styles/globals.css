@@ -602,6 +602,32 @@ html[data-theme="light"] .site-atmosphere::after {
   color: var(--color-text-muted);
 }
 
+/* Inline status notices (forms + Mission Control) */
+.form-notice {
+  @apply text-sm p-3 border;
+  color: rgba(253, 230, 138, 0.9);
+  border-color: rgba(180, 83, 9, 0.4);
+  background: rgba(69, 26, 3, 0.3);
+}
+
+.form-notice--success {
+  color: rgba(167, 243, 208, 0.9);
+  border-color: rgba(4, 120, 87, 0.4);
+  background: rgba(2, 44, 34, 0.3);
+}
+
+html[data-theme="light"] .form-notice {
+  color: #92400e;
+  border-color: rgba(217, 119, 6, 0.4);
+  background: #fffbeb;
+}
+
+html[data-theme="light"] .form-notice--success {
+  color: #065f46;
+  border-color: rgba(5, 150, 105, 0.35);
+  background: #ecfdf5;
+}
+
 /* -------------------------------------------------------------------------
    Light-mode remaps for Tailwind utility classes used across pages
    (so existing JSX keeps working without a full class rewrite)

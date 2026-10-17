@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import { siteAvailability, siteIdentity } from "../../data/site";
+import {
+  CONTACT_HONEYPOT_FIELD,
+  contactMessageSchema,
+  toFieldErrors,
+} from "../../utilities/schemas/contact";
 import { contactFaqItems } from "../../data/faq";
 import Container from "../shared/Container";
 import RevealOnScroll from "../shared/RevealOnScroll";
@@ -18,11 +23,30 @@ type ContactFormValues = {
   message: string;
 };
 
+type SubmitNotice = { tone: "success" | "error"; text: string };
+
+type ContactApiResponse = {
+  ok?: boolean;
+  error?: string;
+  fieldErrors?: Partial<Record<keyof ContactFormValues, string>>;
+};
+
+const FieldError = ({ id, message }: { id: string; message?: string }) =>
+  message ? (
+    <span
+      id={id}
+      className="mt-1.5 block normal-case tracking-normal text-xs text-crimson-300"
+    >
+      {message}
+    </span>
+  ) : null;
+
 /**
- * Contact page: information, availability, form (client-only for now), FAQ.
+ * Contact page: information, availability, form, FAQ.
  */
 const ContactPageContent = () => {
-  const [submitNotice, setSubmitNotice] = useState<string | null>(null);
+  const [submitNotice, setSubmitNotice] = useState<SubmitNotice | null>(null);
+  const [honeypot, setHoneypot] = useState("");
 
   const formik = useFormik<ContactFormValues>({
     initialValues: {
@@ -33,18 +57,55 @@ const ContactPageContent = () => {
       subject: "",
       message: "",
     },
-    onSubmit: (values, helpers) => {
-      // Backend submission not implemented yet — keep UX honest.
-      setSubmitNotice(
-        `Thanks, ${
-          values.fullName || "there"
-        }. The form UI is ready; server submission is not wired yet. Please email ${
-          siteIdentity.email
-        } directly for now.`
-      );
-      helpers.setSubmitting(false);
+    validateOnChange: false,
+    validate: (values) => {
+      const parsed = contactMessageSchema.safeParse(values);
+      return parsed.success
+        ? {}
+        : toFieldErrors<ContactFormValues>(parsed.error);
+    },
+    onSubmit: async (values, helpers) => {
+      setSubmitNotice(null);
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...values,
+            [CONTACT_HONEYPOT_FIELD]: honeypot,
+          }),
+        });
+        const result = (await response
+          .json()
+          .catch(() => ({}))) as ContactApiResponse;
+
+        if (response.ok && result.ok) {
+          helpers.resetForm();
+          setSubmitNotice({
+            tone: "success",
+            text: `Thanks, ${values.fullName.trim()}. Your message is in — I will reply to ${values.email.trim()} soon.`,
+          });
+          return;
+        }
+
+        if (result.fieldErrors) helpers.setErrors(result.fieldErrors);
+        setSubmitNotice({
+          tone: "error",
+          text:
+            result.error ||
+            `Something went wrong. Please try again or email ${siteIdentity.email}.`,
+        });
+      } catch {
+        setSubmitNotice({
+          tone: "error",
+          text: "Network error. Check your connection and try again.",
+        });
+      }
     },
   });
+
+  const fieldError = (field: keyof ContactFormValues) =>
+    formik.submitCount > 0 ? formik.errors[field] : undefined;
 
   return (
     <>
@@ -152,8 +213,7 @@ const ContactPageContent = () => {
                   Send a message
                 </h2>
                 <p className="mt-2 text-sm text-parchment-500">
-                  Form submission is UI-only for now. Use email for guaranteed
-                  delivery.
+                  Messages are delivered straight to my inbox.
                 </p>
 
                 <form
@@ -161,6 +221,20 @@ const ContactPageContent = () => {
                   onSubmit={formik.handleSubmit}
                   noValidate
                 >
+                  <div className="sr-only" aria-hidden>
+                    <label htmlFor="contact-website">
+                      Website
+                      <input
+                        id="contact-website"
+                        name={CONTACT_HONEYPOT_FIELD}
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={honeypot}
+                        onChange={(event) => setHoneypot(event.target.value)}
+                      />
+                    </label>
+                  </div>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <label
                       htmlFor="contact-full-name"
@@ -175,6 +249,12 @@ const ContactPageContent = () => {
                         value={formik.values.fullName}
                         onChange={formik.handleChange}
                         required
+                        aria-invalid={Boolean(fieldError("fullName"))}
+                        aria-describedby="contact-full-name-error"
+                      />
+                      <FieldError
+                        id="contact-full-name-error"
+                        message={fieldError("fullName")}
                       />
                     </label>
                     <label
@@ -191,6 +271,12 @@ const ContactPageContent = () => {
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         required
+                        aria-invalid={Boolean(fieldError("email"))}
+                        aria-describedby="contact-email-error"
+                      />
+                      <FieldError
+                        id="contact-email-error"
+                        message={fieldError("email")}
                       />
                     </label>
                   </div>
@@ -208,6 +294,12 @@ const ContactPageContent = () => {
                         placeholder="Phone number"
                         value={formik.values.phone}
                         onChange={formik.handleChange}
+                        aria-invalid={Boolean(fieldError("phone"))}
+                        aria-describedby="contact-phone-error"
+                      />
+                      <FieldError
+                        id="contact-phone-error"
+                        message={fieldError("phone")}
                       />
                     </label>
                     <label
@@ -222,6 +314,12 @@ const ContactPageContent = () => {
                         placeholder="Company (optional)"
                         value={formik.values.company}
                         onChange={formik.handleChange}
+                        aria-invalid={Boolean(fieldError("company"))}
+                        aria-describedby="contact-company-error"
+                      />
+                      <FieldError
+                        id="contact-company-error"
+                        message={fieldError("company")}
                       />
                     </label>
                   </div>
@@ -239,6 +337,12 @@ const ContactPageContent = () => {
                       value={formik.values.subject}
                       onChange={formik.handleChange}
                       required
+                      aria-invalid={Boolean(fieldError("subject"))}
+                      aria-describedby="contact-subject-error"
+                    />
+                    <FieldError
+                      id="contact-subject-error"
+                      message={fieldError("subject")}
                     />
                   </label>
 
@@ -256,20 +360,32 @@ const ContactPageContent = () => {
                       value={formik.values.message}
                       onChange={formik.handleChange}
                       required
+                      aria-invalid={Boolean(fieldError("message"))}
+                      aria-describedby="contact-message-error"
+                    />
+                    <FieldError
+                      id="contact-message-error"
+                      message={fieldError("message")}
                     />
                   </label>
 
                   {submitNotice && (
                     <p
-                      className="text-sm text-amber-200/90 border border-amber-700/40 bg-amber-950/30 p-3"
-                      role="status"
+                      className={`form-notice ${
+                        submitNotice.tone === "success"
+                          ? "form-notice--success"
+                          : ""
+                      }`}
+                      role={
+                        submitNotice.tone === "success" ? "status" : "alert"
+                      }
                     >
-                      {submitNotice}
+                      {submitNotice.text}
                     </p>
                   )}
 
                   <Button type="submit" disabled={formik.isSubmitting}>
-                    Send message
+                    {formik.isSubmitting ? "Sending…" : "Send message"}
                   </Button>
                 </form>
               </div>

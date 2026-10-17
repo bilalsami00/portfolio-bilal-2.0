@@ -7,14 +7,7 @@ export const primaryNavigation: NavigationItem[] = [
   { id: "nav-contact", label: "Contact", href: "/contact" },
 ];
 
-export const footerNavigation: NavigationItem[] = [
-  ...primaryNavigation,
-  {
-    id: "nav-mission-control",
-    label: "Mission Control",
-    href: "/mission-control",
-  },
-];
+export const footerNavigation: NavigationItem[] = [...primaryNavigation];
 
 export const routePaths = {
   home: "/",
@@ -23,4 +16,10 @@ export const routePaths = {
   contact: "/contact",
   missionControl: "/mission-control",
   missionControlDashboard: "/mission-control/dashboard",
+  missionControlMessages: "/mission-control/dashboard/messages",
+  missionControlVisitors: "/mission-control/dashboard/visitors",
 } as const;
+
+export const isMissionControlPath = (path: string): boolean =>
+  path === routePaths.missionControl ||
+  path.startsWith(`${routePaths.missionControl}/`);
