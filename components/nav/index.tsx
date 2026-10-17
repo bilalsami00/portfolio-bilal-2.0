@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { primaryNavigation, routePaths } from "../../data/navigation";
 import { siteIdentity } from "../../data/site";
-import useScrollPosition from "../../hooks/useScrollPosition";
+import useIsScrolled from "../../hooks/useIsScrolled";
 import Container from "../shared/Container";
 import ThemeToggle from "../shared/ThemeToggle";
 import MenuIcon from "../svgs/menuIcon";
@@ -14,8 +14,7 @@ import XIcon from "../svgs/xIcon";
  */
 const SiteNavigation = () => {
   const router = useRouter();
-  const scrollPosition = useScrollPosition();
-  const isScrolled = scrollPosition > 24;
+  const isScrolled = useIsScrolled(24);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -55,18 +54,15 @@ const SiteNavigation = () => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
-  let headerSurface = "bg-transparent border-b border-transparent";
+  let headerSurface = "";
   if (menuOpen) {
-    headerSurface = "bg-ink-900 border-b border-steel-700/40";
+    headerSurface = "site-header--menu";
   } else if (isScrolled) {
-    headerSurface =
-      "bg-ink-900/90 border-b border-steel-700/40 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.35)]";
+    headerSurface = "site-header--scrolled";
   }
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${headerSurface}`}
-    >
+    <header className={`site-header sticky top-0 z-50 ${headerSurface}`}>
       <Container className="flex items-center justify-between py-3 md:py-3.5">
         <Link
           href={routePaths.home}
@@ -111,13 +107,13 @@ const SiteNavigation = () => {
         <nav
           id="primary-navigation"
           className={`
-            ${menuOpen ? "flex" : "hidden"}
+            ${menuOpen ? "flex mobile-menu-panel" : "hidden"}
             md:flex absolute md:static inset-x-0 top-full
             flex-col md:flex-row md:items-center gap-1 md:gap-1
             min-h-[calc(100dvh-4.5rem)] md:min-h-0
             max-h-[calc(100dvh-4.5rem)] md:max-h-none overflow-y-auto md:overflow-visible
             bg-ink-900 md:bg-transparent border-b md:border-0 border-steel-700/50
-            px-4 py-5 md:p-0 shadow-[0_18px_36px_rgba(0,0,0,0.35)] md:shadow-none
+            px-4 xs:px-5 sm:px-6 py-5 md:p-0
           `}
           data-lenis-prevent
         >

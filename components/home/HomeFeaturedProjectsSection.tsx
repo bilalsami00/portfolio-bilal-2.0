@@ -15,7 +15,7 @@ const HomeFeaturedProjectsSection = () => {
 
   return (
     <section
-      className="py-16 sm:py-20"
+      className="py-16 sm:py-20 md:py-24"
       aria-labelledby="featured-projects-title"
     >
       <Container>
@@ -36,11 +36,12 @@ const HomeFeaturedProjectsSection = () => {
           </div>
         </RevealOnScroll>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <div className="mt-10 sm:mt-12 grid gap-6 lg:grid-cols-2">
           {featuredProjects.map((project, index) => (
             <RevealOnScroll
               key={project.id}
               delayClass={`reveal-delay-${(index % 3) + 1}`}
+              className={`h-full ${index === 0 ? "lg:col-span-2" : ""}`}
             >
               <ProjectCard
                 project={project}

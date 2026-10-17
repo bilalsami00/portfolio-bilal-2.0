@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { projectCategories, projects } from "../../data/projects";
 import type { PortfolioProject, ProjectCategory } from "../../data/types";
+import { getProjectImage } from "../../utilities/projectImages";
 import Container from "../shared/Container";
 import ProjectCard from "../shared/ProjectCard";
 import ProjectDetailsModal from "../shared/ProjectDetailsModal";
@@ -34,6 +35,10 @@ const ProjectsPageContent = () => {
     (project) => !featuredProject || project.id !== featuredProject.id
   );
 
+  const featuredMedia = featuredProject
+    ? getProjectImage(featuredProject.image, "tall")
+    : null;
+
   return (
     <>
       <section
@@ -41,12 +46,12 @@ const ProjectsPageContent = () => {
         aria-labelledby="projects-hero-title"
       >
         <Container>
-          <RevealOnScroll>
+          <div className="hero-enter">
             <p className="section-eyebrow">Projects</p>
             <div className="crimson-mark mt-4 mb-5" />
             <h1
               id="projects-hero-title"
-              className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-parchment-100 max-w-4xl"
+              className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-parchment-100 max-w-4xl leading-[1.08] tracking-tight text-balance"
             >
               Work selected for craft, clarity, and consequence
             </h1>
@@ -55,13 +60,13 @@ const ProjectsPageContent = () => {
               category, then open a project for the overview, problem and
               solution, features, challenges, and lessons learned.
             </p>
-          </RevealOnScroll>
+          </div>
         </Container>
       </section>
 
       <section className="pb-8" aria-label="Project category filters">
         <Container>
-          <RevealOnScroll>
+          <div className="hero-enter hero-enter-delay">
             <div className="flex flex-wrap gap-2">
               {projectCategories.map((category) => {
                 const isActive = activeFilter === category;
@@ -70,8 +75,9 @@ const ProjectsPageContent = () => {
                     key={category}
                     type="button"
                     onClick={() => setActiveFilter(category)}
+                    aria-pressed={isActive}
                     className={`
-                      px-3 py-2 text-xs font-accent uppercase tracking-[0.16em] border transition-all duration-300
+                      inline-flex items-center min-h-[2.5rem] px-3.5 py-2 text-xs font-accent uppercase tracking-[0.16em] border transition-colors duration-200
                       ${
                         isActive
                           ? "border-crimson-500 bg-crimson-900/40 text-parchment-100"
@@ -84,12 +90,12 @@ const ProjectsPageContent = () => {
                 );
               })}
             </div>
-            <p className="mt-4 text-sm text-steel-400">
+            <p className="mt-4 text-sm text-steel-400" aria-live="polite">
               {`Showing ${filteredProjects.length} project${
                 filteredProjects.length === 1 ? "" : "s"
               }${activeFilter !== "All" ? ` in ${activeFilter}` : ""}.`}
             </p>
-          </RevealOnScroll>
+          </div>
         </Container>
       </section>
 
@@ -111,20 +117,25 @@ const ProjectsPageContent = () => {
               <article className="ink-panel overflow-hidden grid lg:grid-cols-2">
                 <button
                   type="button"
-                  className="relative min-h-[240px] lg:min-h-[360px] text-left"
+                  className="relative overflow-hidden aspect-[16/10] lg:aspect-auto lg:min-h-[360px] text-left"
                   onClick={() => setSelectedProject(featuredProject)}
                   aria-label={`Open ${featuredProject.title}`}
                 >
                   <img
-                    src={featuredProject.image}
+                    src={featuredMedia?.src}
+                    srcSet={featuredMedia?.srcSet}
+                    sizes="(min-width: 1024px) 36rem, 100vw"
+                    width={featuredMedia?.width}
+                    height={featuredMedia?.height}
                     alt={featuredProject.imageAlt}
                     className="absolute inset-0 h-full w-full object-cover object-top"
+                    decoding="async"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-ink-950/30 to-ink-950/70" />
+                  <div className="absolute inset-0 media-scrim-side" />
                 </button>
 
                 <div className="p-6 sm:p-8 lg:p-10 flex flex-col">
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
                     <span className="tech-tag">{featuredProject.category}</span>
                     <span className="text-xs text-steel-400 font-accent tracking-widest uppercase">
                       {featuredProject.year}
@@ -132,7 +143,7 @@ const ProjectsPageContent = () => {
                   </div>
                   <h2
                     id="featured-project-title"
-                    className="font-display text-2xl sm:text-3xl text-parchment-100 font-bold"
+                    className="font-display text-2xl sm:text-3xl text-parchment-100 font-bold leading-tight text-balance"
                   >
                     {featuredProject.title}
                   </h2>
@@ -165,10 +176,10 @@ const ProjectsPageContent = () => {
                     ))}
                   </div>
 
-                  <div className="mt-8 flex flex-wrap gap-3">
+                  <div className="mt-8 flex flex-wrap gap-2 sm:gap-3">
                     <button
                       type="button"
-                      className="btn-secondary !px-4 !py-2 text-xs"
+                      className="btn-secondary btn-sm"
                       onClick={() => setSelectedProject(featuredProject)}
                     >
                       Full details
@@ -177,7 +188,7 @@ const ProjectsPageContent = () => {
                       <ButtonLink
                         href={featuredProject.liveUrl}
                         external
-                        className="!px-4 !py-2 text-xs"
+                        className="btn-sm"
                       >
                         Live link
                       </ButtonLink>
@@ -187,7 +198,7 @@ const ProjectsPageContent = () => {
                         href={featuredProject.repositoryUrl}
                         variant="secondary"
                         external
-                        className="!px-4 !py-2 text-xs"
+                        className="btn-sm"
                       >
                         Repository
                       </ButtonLink>
@@ -220,6 +231,7 @@ const ProjectsPageContent = () => {
                 <RevealOnScroll
                   key={project.id}
                   delayClass={`reveal-delay-${(index % 4) + 1}`}
+                  className="h-full"
                 >
                   <ProjectCard
                     project={project}

@@ -31,28 +31,28 @@ const AboutPageContent = () => (
     >
       <Container>
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
-          <RevealOnScroll className="lg:col-span-7">
+          <div className="hero-enter lg:col-span-7">
             <p className="section-eyebrow">About</p>
             <div className="crimson-mark mt-3.5 mb-5 sm:mt-4 sm:mb-6" />
             <h1
               id="about-hero-title"
-              className="font-display text-4xl xs:text-5xl sm:text-5xl md:text-6xl font-bold text-parchment-100 leading-[1.05] tracking-tight"
+              className="font-display text-4xl xs:text-5xl sm:text-5xl md:text-6xl font-bold text-parchment-100 leading-[1.05] tracking-tight text-balance"
             >
               {siteIdentity.fullName}
             </h1>
             <p className="mt-4 text-lg sm:text-xl text-crimson-300 font-accent tracking-wide">
               {siteIdentity.professionalTitle}
             </p>
-            <p className="mt-6 max-w-2xl text-parchment-400 text-base sm:text-lg leading-relaxed">
+            <p className="mt-6 max-w-2xl text-parchment-400 text-base sm:text-lg leading-relaxed text-pretty">
               {aboutPreview.summary}
             </p>
             <SocialLinksRow variant="all" className="mt-8 sm:mt-9" />
-          </RevealOnScroll>
+          </div>
 
-          <RevealOnScroll delayClass="reveal-delay-2" className="lg:col-span-5">
+          <div className="hero-enter hero-enter-delay lg:col-span-5">
             <div className="relative max-w-md mx-auto lg:max-w-none lg:mx-0">
               <div
-                className="absolute -inset-3 border border-crimson-700/30 translate-x-2 translate-y-2"
+                className="absolute -inset-2 border border-crimson-700/30 translate-x-1.5 translate-y-1.5 sm:-inset-3 sm:translate-x-2 sm:translate-y-2"
                 aria-hidden
               />
               <div className="relative overflow-hidden ink-panel">
@@ -65,7 +65,7 @@ const AboutPageContent = () => (
                 />
               </div>
             </div>
-          </RevealOnScroll>
+          </div>
         </div>
       </Container>
     </section>

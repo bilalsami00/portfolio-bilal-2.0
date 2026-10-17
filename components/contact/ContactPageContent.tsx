@@ -53,12 +53,12 @@ const ContactPageContent = () => {
         aria-labelledby="contact-hero-title"
       >
         <Container>
-          <RevealOnScroll>
+          <div className="hero-enter">
             <p className="section-eyebrow">Contact</p>
             <div className="crimson-mark mt-4 mb-5" />
             <h1
               id="contact-hero-title"
-              className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-parchment-100 max-w-3xl"
+              className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-parchment-100 max-w-3xl leading-[1.08] tracking-tight text-balance"
             >
               Let’s open a channel
             </h1>
@@ -66,7 +66,7 @@ const ContactPageContent = () => {
               Whether you are hiring, collaborating, or exploring a product idea
               — send a clear note and I will respond with substance.
             </p>
-          </RevealOnScroll>
+          </div>
         </Container>
       </section>
 

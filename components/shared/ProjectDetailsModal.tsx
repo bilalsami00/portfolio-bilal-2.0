@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { PortfolioProject } from "../../data/types";
+import { getProjectImage } from "../../utilities/projectImages";
 import TechTag from "./TechTag";
 import { ButtonLink } from "./Button";
 
@@ -76,32 +77,41 @@ const ProjectDetailsModal = ({
     >
       <button
         type="button"
-        className="absolute inset-0 bg-ink-950/80 backdrop-blur-sm"
+        className="absolute inset-0 overlay-scrim"
         aria-label="Close project details"
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-3xl max-h-[92vh] overflow-y-auto ink-panel border-crimson-700/30">
-        <div className="sticky top-0 z-20 flex justify-end p-3 sm:p-4 bg-gradient-to-b from-ink-900 via-ink-900/80 to-transparent">
+      <div
+        className="relative z-10 w-full max-w-3xl max-h-[92vh] overflow-y-auto overscroll-contain ink-panel border-crimson-700/30"
+        data-lenis-prevent
+      >
+        <div className="sticky top-0 z-20 flex justify-end p-3 sm:p-4 surface-fade-top">
           <button
             type="button"
             onClick={onClose}
-            className="btn-secondary !px-3 !py-1.5 text-xs"
+            className="btn-secondary btn-sm bg-ink-900/85"
           >
             Close
           </button>
         </div>
 
         <div className="bg-ink-950 -mt-4">
-          {project.gallery.map((image, index) => (
-            <img
-              key={image.src}
-              src={image.src}
-              alt={image.alt}
-              className="mx-auto h-auto w-full max-w-full object-contain object-top"
-              loading={index === 0 ? "eager" : "lazy"}
-            />
-          ))}
+          {project.gallery.map((image, index) => {
+            const media = getProjectImage(image.src, "full");
+            return (
+              <img
+                key={image.src}
+                src={media.src}
+                width={media.width}
+                height={media.height}
+                alt={image.alt}
+                className="mx-auto h-auto w-full max-w-full object-contain object-top"
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            );
+          })}
         </div>
 
         <div className="p-5 sm:p-8">

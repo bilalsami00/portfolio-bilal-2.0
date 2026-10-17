@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { PortfolioProject } from "../../data/types";
+import { getProjectImage } from "../../utilities/projectImages";
 import TechTag from "./TechTag";
 
 type ProjectCardProps = {
@@ -20,10 +21,15 @@ const ProjectCard = ({
     if (onSelect) onSelect(project);
   };
 
+  const media = getProjectImage(
+    project.image,
+    featuredLayout ? "tall" : "cover"
+  );
+
   return (
     <article
       className={`
-        group ink-panel ink-panel-hover overflow-hidden flex flex-col
+        group ink-panel ink-panel-hover overflow-hidden flex flex-col h-full
         ${featuredLayout ? "md:flex-row" : ""}
       `}
     >
@@ -31,22 +37,31 @@ const ProjectCard = ({
         type="button"
         onClick={handleActivate}
         className={`
-          relative overflow-hidden text-left
+          relative overflow-hidden text-left shrink-0
           ${
             featuredLayout
-              ? "md:w-[48%] min-h-[220px] md:min-h-full"
+              ? "aspect-[16/10] md:aspect-auto md:w-[48%] md:min-h-[320px]"
               : "aspect-[16/10]"
           }
         `}
         aria-label={`View details for ${project.title}`}
       >
         <img
-          src={project.image}
+          src={media.src}
+          srcSet={media.srcSet}
+          sizes={
+            featuredLayout
+              ? "(min-width: 1024px) 34rem, (min-width: 768px) 48vw, 100vw"
+              : "(min-width: 1024px) 34rem, (min-width: 768px) 50vw, 100vw"
+          }
+          width={media.width}
+          height={media.height}
           alt={project.imageAlt}
-          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           loading="lazy"
+          decoding="async"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent" />
+        <div className="absolute inset-0 media-scrim" />
         <span className="absolute left-4 top-4 tech-tag border-crimson-700/40 text-parchment-200">
           {project.category}
         </span>
@@ -63,10 +78,10 @@ const ProjectCard = ({
           </p>
         </div>
 
-        <h3 className="font-display text-xl sm:text-2xl text-parchment-100 font-bold">
+        <h3 className="font-display text-xl sm:text-2xl text-parchment-100 font-bold leading-snug text-balance">
           {project.title}
         </h3>
-        <p className="mt-3 text-sm sm:text-base text-parchment-400 leading-relaxed flex-1">
+        <p className="mt-3 text-sm sm:text-base text-parchment-400 leading-relaxed flex-1 text-pretty">
           {project.shortDescription}
         </p>
 
@@ -76,11 +91,11 @@ const ProjectCard = ({
           ))}
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-2 sm:gap-3">
           <button
             type="button"
             onClick={handleActivate}
-            className="btn-secondary !px-4 !py-2 text-xs"
+            className="btn-secondary btn-sm"
           >
             Details
           </button>
@@ -89,7 +104,7 @@ const ProjectCard = ({
               href={project.liveUrl}
               target="_blank"
               rel="noreferrer"
-              className="btn-primary !px-4 !py-2 text-xs"
+              className="btn-primary btn-sm"
             >
               Live
             </Link>
@@ -99,7 +114,7 @@ const ProjectCard = ({
               href={project.repositoryUrl}
               target="_blank"
               rel="noreferrer"
-              className="btn-secondary !px-4 !py-2 text-xs"
+              className="btn-secondary btn-sm"
             >
               Repository
             </Link>

@@ -2,7 +2,6 @@ import { siteAvailability, siteIdentity } from "../../data/site";
 import { routePaths } from "../../data/navigation";
 import { ButtonLink } from "../shared/Button";
 import Container from "../shared/Container";
-import RevealOnScroll from "../shared/RevealOnScroll";
 import SocialLinksRow from "../shared/SocialLinksRow";
 import LightModeOnly from "../shared/LightModeOnly";
 import { useTheme } from "../shared/ThemeProvider";
@@ -12,7 +11,7 @@ import HomeLightHeroVisual from "./HomeLightHeroVisual";
 const DarkHeroPortrait = () => (
   <div className="relative mx-auto w-full max-w-md lg:max-w-none">
     <div
-      className="absolute -inset-3 border border-crimson-700/30 translate-x-2 translate-y-2"
+      className="absolute -inset-2 border border-crimson-700/30 translate-x-1.5 translate-y-1.5 sm:-inset-3 sm:translate-x-2 sm:translate-y-2"
       aria-hidden
     />
     <div className="relative overflow-hidden ink-panel">
@@ -50,7 +49,7 @@ const HomeHeroSection = () => {
     >
       <LightModeOnly>
         <div
-          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden lg:block"
           aria-hidden
         >
           <Shapes />
@@ -69,7 +68,7 @@ const HomeHeroSection = () => {
       )}
 
       <Container className="relative z-[1] grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
-        <RevealOnScroll className="lg:col-span-7">
+        <div className="hero-enter lg:col-span-7">
           {siteAvailability.isAvailableForWork && (
             <p className="status-pill mb-6">{siteAvailability.statusLabel}</p>
           )}
@@ -79,7 +78,7 @@ const HomeHeroSection = () => {
 
           <h1
             id="home-hero-name"
-            className="font-display text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold text-parchment-100 leading-[1.05] tracking-tight"
+            className="font-display text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold text-parchment-100 leading-[1.05] tracking-tight text-balance"
           >
             {siteIdentity.fullName}
           </h1>
@@ -88,22 +87,13 @@ const HomeHeroSection = () => {
             {siteIdentity.professionalTitle}
           </p>
 
-          <p className="mt-6 max-w-xl text-base sm:text-lg text-parchment-400 leading-relaxed">
+          <p className="mt-6 max-w-xl text-base sm:text-lg text-parchment-400 leading-relaxed text-pretty">
             {siteIdentity.introduction}
           </p>
 
           <div className="mt-8 flex flex-col xs:flex-row flex-wrap gap-3">
-            <ButtonLink
-              href={routePaths.projects}
-              className="animate__animated animate__fadeInUp"
-            >
-              View projects
-            </ButtonLink>
-            <ButtonLink
-              href={routePaths.contact}
-              variant="secondary"
-              className="animate__animated animate__fadeInUp animate__delay-1s"
-            >
+            <ButtonLink href={routePaths.projects}>View projects</ButtonLink>
+            <ButtonLink href={routePaths.contact} variant="secondary">
               Hire me
             </ButtonLink>
           </div>
@@ -114,13 +104,13 @@ const HomeHeroSection = () => {
             </p>
             <SocialLinksRow variant="primary" className="light-social-float" />
           </div>
-        </RevealOnScroll>
+        </div>
 
-        <RevealOnScroll delayClass="reveal-delay-2" className="lg:col-span-5">
+        <div className="hero-enter hero-enter-delay lg:col-span-5">
           <LightModeOnly fallback={<DarkHeroPortrait />}>
             <HomeLightHeroVisual />
           </LightModeOnly>
-        </RevealOnScroll>
+        </div>
       </Container>
     </section>
   );

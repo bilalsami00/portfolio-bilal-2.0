@@ -18,11 +18,13 @@ const HomeAboutPreviewSection = () => (
               aria-hidden
             />
             <img
-              src="/assets/images/programmer.png"
+              src="/assets/images/programmer.webp"
               alt=""
               className="relative w-full object-contain opacity-90"
-              width={560}
-              height={560}
+              width={900}
+              height={1067}
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </RevealOnScroll>

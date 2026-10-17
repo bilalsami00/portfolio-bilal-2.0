@@ -163,7 +163,7 @@ const KeyboardShortcuts = () => {
     >
       <button
         type="button"
-        className="absolute inset-0 bg-ink-950/80 backdrop-blur-sm"
+        className="absolute inset-0 overlay-scrim"
         aria-label="Close keyboard shortcuts"
         onClick={closeHelp}
       />

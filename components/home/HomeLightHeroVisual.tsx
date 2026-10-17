@@ -15,9 +15,9 @@ const HomeLightHeroVisual = () => (
     </span>
 
     <img
-      src="/assets/images/programmer.png"
-      width={420}
-      height={500}
+      src="/assets/images/programmer.webp"
+      width={900}
+      height={1067}
       alt={`${siteIdentity.fullName} — illustration`}
       className="relative z-[1] w-[85%] max-w-[380px] h-auto object-contain"
     />

@@ -23,6 +23,20 @@ const Document = () => (
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: themeInitScript }}
       />
+      <link
+        rel="preload"
+        href="/assets/fonts/LeagueSpartan.woff2"
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="preload"
+        href="/assets/fonts/JosefinSans.woff2"
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+      />
     </Head>
     <body>
       <Main />
