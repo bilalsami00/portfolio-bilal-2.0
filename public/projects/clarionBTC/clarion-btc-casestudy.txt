@@ -1,0 +1,70 @@
+PROJECT METADATA
+Project Name: Clarion BTC
+Project Slug: clarion-btc
+Project Type / Category: Fintech web application — Bitcoin trading-signals marketing site, subscriber portal, and admin content tools
+Technology Stack: Next.js (App Router), React 19, TypeScript configuration with primarily JSX pages, Ant Design, React Hook Form, Yup, Chart.js / react-chartjs-2, Recharts (present in chart component), AOS, Animate.css, js-cookie, react-otp-input, react-timeago, AWS S3 media via backend presigned URLs, Binance public ticker API, remote REST backend
+Project Year: 2026
+Live URL: https://clarionbtc.com
+Repository URL: https://github.com/bilalsami00/btc.git
+
+
+OVERVIEW
+
+Clarion BTC is a Next.js web application for a human-curated Bitcoin trading-signals product. It serves as the public website and authenticated web client for a service that also ships as an Android app (package com.ClarionBtc). Intended users are active crypto traders who want expert-driven BTC trade setups (entry, targets, stop-loss, analysis notes) rather than AI-generated alerts, plus administrators who publish signals, market analysis, blogs, and newsletters. The frontend talks to a hosted REST API, gates premium screens behind login and subscription status, and stores session tokens in cookies and localStorage. Media (images and video) is uploaded through backend-issued S3 presigned URLs. Subscription purchases are directed to the mobile Google Play flow rather than completed on the website.
+
+
+PROBLEM & SOLUTION
+
+Problem:
+Traders looking for Bitcoin trade ideas often face noisy, automated, or incomplete alerts. Clarion BTC’s product proposition is human-expert signals with clear levels and analysis, delivered through a mobile app and a matching web experience. The web project must market the service, support account and legal/compliance flows (including Play Store–required support, privacy, and account-deletion pages), let subscribers review live signals and performance, and give admins tools to create and update signal and content inventories without a separate admin SPA.
+
+Solution:
+The implemented web app provides a shared sidebar navigation shell over marketing pages (home, about, FAQ, legal, pricing, blogs) and authenticated areas (BTC live signals, signal detail, performance, settings). Next.js middleware protects non-public routes using a cookie-based auth token. Premium signal and performance views wrap content in a SubscribeGate that checks the backend user profile and in-app-purchase subscription status, allowing admins through. Admins get Manage Signal (and linked Manage Blogs / Manage Newsletter) flows with Yup-validated forms, optional scheduling, and S3 uploads. Pricing explains monthly, quarterly, and annual plans and steers purchase to the Play Store. Public Support Hub pages handle support contact, privacy, and passwordless account-deletion requests for store compliance.
+
+
+FEATURES
+
+Implemented (supported by application code and Play Store listing docs):
+
+• Marketing home and about content — Explains human-curated BTC (and selected altcoin) signals, value props, and CTAs toward pricing/subscription.
+• Authentication — Register, login, OTP verification, forgot-password email + reset flows against backend auth endpoints; session token stored for API Authorization and middleware cookie checks.
+• Cookie/middleware route protection — Logged-out users are redirected away from protected routes; logged-in users are redirected away from auth-only pages; shared public routes remain open.
+• Subscription gating — SubscribeGate and shared subscription helpers call user and IAP subscription APIs; unsubscribed users see a lock screen with login/pricing CTAs; 401 clears session; subscription_required can redirect to pricing.
+• BTC Live Signals — Lists open and recently closed BTC / BTC market-analysis signals for subscribers; shows live BTCUSDT price/change from Binance’s public ticker; navigates to per-signal detail.
+• Signal detail — Fetches a single signal by ID and presents trade setup content behind the same subscription gate.
+• Performance dashboard — Loads performance metrics from a dedicated API and visualizes outcomes with Chart.js bar/pie charts for subscribers.
+• Pricing — Displays Monthly ($99), Quarterly ($269), and Annual ($999) plans with feature list; purchase buttons open a “buy on mobile app” modal and Google Play deep link rather than completing web checkout.
+• Public blog / market insights — Blog listing and detail UI fetch public blog APIs; newsletter email subscribe is available from the blogs experience. Subscription gating for blogs was removed so content is publicly readable.
+• Admin Manage Signal — Create/update/delete trading signals and market-analysis posts with fields such as signal type, pair, status, entry, targets, stop-loss, timeframe, confidence, notes, optional schedule time, and image/video media (video size validated up to 500MB). Uploads use presigned S3 URLs.
+• Admin Manage Blogs and Manage Newsletter — CRUD-style management pages linked from the admin signal workspace, including media upload via the same presigned pattern.
+• Settings — Profile name update, password change, logout, and authenticated account deletion against backend endpoints.
+• Support, privacy, and public account deletion — SupportHub provides jump-linked support, privacy, and deletion request form (POST account-deletion API) for logged-out Play Store compliance flows.
+• Legal / FAQ — Static informational pages with legal metadata dated July 21, 2026.
+• Responsive layout work — CSS modules and Ant Design grid usage; git history shows repeated fixes for mobile sidebar/support visibility, blog detail centering, charts, and form validation borders.
+
+Present in the repo but incomplete, disabled, or not primary product surface:
+
+• Alt Live Signals — Page and API filtering exist; navigation entry is commented out.
+• Affiliate program and leaderboard — Pages/API calls exist (including a duplicate “affiliate-program copy” route); sidebar entries are commented out / not exposed as primary nav.
+• Home trading analytics dashboard — TradingCharts component exists (Recharts + signals fetch) but is commented out on the home page.
+• Web Stripe checkout — Stripe price ID constants remain in code, but pricing deliberately disables web purchase and sends users to the Android app (documented in Play Store submission notes).
+
+
+CHALLENGES
+
+• Dual-channel product (web + mobile) — Web must mirror marketing and account needs while purchases and push notifications are centered on Google Play Billing and the mobile app. Pricing UX and subscription status therefore depend on backend IAP state rather than a completed web payment flow.
+• Auth and entitlement layering — Middleware cookie checks, client localStorage tokens, role-based admin UI flags, SubscribeGate, and API 401/403 subscription errors must stay consistent so premium content is not shown to unpaid users while admins retain access.
+• Rich admin content workflows — Signal and analysis creation involves multi-field validation, create vs update modes, scheduling, mixed image/video media, and reliable S3 uploads through presigned URLs—complexity reflected in the large manage-signal implementation and follow-up fixes for upload validation and edit-screen media display.
+• Responsive UI consistency — Commit history documents repeated mobile layout and validation-feedback issues (sidebar/support visibility, blog detail spacing, required-field borders, chart placement), indicating ongoing cross-breakpoint polish.
+• Public compliance surfaces — Support, privacy, and account-deletion routes must remain reachable without login while still integrating with backend deletion APIs, as required for Play Store listing.
+
+
+LESSONS LEARNED
+
+• Separating public marketing/compliance pages from subscription-gated product pages (via middleware shared routes plus SubscribeGate) keeps store requirements and premium IP boundaries clearer than a single all-or-nothing auth wall.
+• Centralizing subscription status and auth-error handling reduces duplicated entitlement logic across signals, detail, and performance screens.
+• Using backend-issued S3 presigned URLs for media keeps large video/image uploads off the app server while still allowing the admin UI to attach media to signals and posts.
+• Documenting Play Store URLs, data-safety answers, and the “purchase on mobile” decision in-repo (PLAY_STORE_LISTING.md) helps keep web behavior aligned with mobile monetization.
+• [NEEDS CONFIRMATION] Whether affiliate, leaderboard, alt-signal, and home-chart surfaces are intentionally deferred product roadmap items or abandoned experiments—code remains but primary navigation does not expose them.
+• [NEEDS CONFIRMATION] Exact production ownership split between this web repo and the Android app / backend repositories for release ownership and ongoing maintenance.
+• [NEEDS CONFIRMATION] Quantitative outcomes (subscriber counts, conversion rates, signal performance published to users) are not evidenced in this frontend repository alone.

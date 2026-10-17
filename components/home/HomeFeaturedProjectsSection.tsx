@@ -24,7 +24,7 @@ const HomeFeaturedProjectsSection = () => {
             <SectionHeading
               eyebrow="Featured work"
               title="Projects forged in code"
-              description="Selected work using existing portfolio imagery. Case narratives are clearly marked placeholders until real project write-ups replace them."
+              description="Selected web projects with case studies drawn from the project write-ups. Open a card for the full overview, problem and solution, features, challenges, and lessons."
             />
             <ButtonLink
               href={routePaths.projects}

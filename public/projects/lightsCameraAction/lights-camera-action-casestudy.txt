@@ -1,0 +1,91 @@
+PROJECT METADATA
+Project Name: Lights Camera Action
+Project Slug: lights-camera-action
+Project Type / Category: Marketing website / corporate portfolio for a video production agency
+Technology Stack: React 19, Vite 7, React Router DOM 7, Tailwind CSS 4 (@tailwindcss/vite), react-icons, CSS animations / Intersection Observer, YouTube iframe embeds, Google Fonts (Poppins)
+Project Year: 2025
+Live URL:
+Repository URL:
+
+Notes on naming: The npm package name in package.json is "vittor-vidio". The product brand presented in the UI and page title is "Lights Camera Action" (LAC). Copyright text credits "MagicGraphics" as the powering studio. [NEEDS CONFIRMATION] whether the public portfolio name should prefer "Lights Camera Action", "LAC", or "vittor-vidio".
+
+================================================================================
+OVERVIEW
+================================================================================
+
+Lights Camera Action is a multi-page marketing website for a professional video production agency. It presents services, sample work, team members, process steps, FAQs, and contact information so prospective clients—businesses, creators, and brands—can evaluate the studio and initiate outreach.
+
+The application is a client-side React SPA built with Vite. React Router maps five primary routes (Home, Services, Gallery, About, Contact). Shared chrome includes a responsive navbar, a global footer with route-aware newsletter copy, and a ScrollToTop helper that resets scroll on navigation and page restore. Content is largely static (local assets and hardcoded copy), with interactive media handled through YouTube embeds in accessible modal players. There is no application backend, database, or authentication layer in this repository.
+
+================================================================================
+PROBLEM & SOLUTION
+================================================================================
+
+Problem:
+Video production studios need a polished online presence that communicates capability, showcases work, and makes it easy for prospects to learn the offering and get in touch. A brochure-style site must feel cinematic and brand-consistent while remaining usable across devices. The original business motivation beyond this observable marketing need is not documented in the repository. [NEEDS CONFIRMATION]
+
+Solution:
+The site delivers a dark, branded multi-page experience with reusable section components composed into route-specific layouts. Home introduces the brand, capability highlights, service catalog, ordering process, booking-style contact form UI, and testimonials. Services reuses offer and value sections plus an FAQ accordion. Gallery pairs project messaging with a portfolio grid that opens YouTube videos in fullscreen portals with focus management. About covers team, values, and a configurable “who we are” video block. Contact consolidates location/email/phone cards and a detailed message form. Navigation CTAs and optional “Learn more” actions route users toward gallery or contact flows without requiring server-side pages.
+
+================================================================================
+FEATURES
+================================================================================
+
+Implemented (working in the frontend):
+
+- Multi-page routing: Home (/), Services (/services), Gallery (/gallery), About (/about), Contact (/contact) via React Router, with active NavLink styling and a mobile hamburger menu.
+- Branding and layout system: Dark theme (#16131a), pink/purple gradient CTAs (.btn-gradient), Poppins typography, and shared Banner component for inner-page headers.
+- Hero and capability messaging: Full-bleed hero with overlay copy; floating feature cards for Video Editing, Video Grab, and Video Direction.
+- Service catalog: Six service cards (Video Ads, Music Video, Video Vlog, Gaming Content, Movie & Short Films, Video Documenter) with optional “Learn more” navigation to the gallery (hidden on the Services page for layout consistency).
+- Who-we-are / about video player: Configurable heading, description, thumbnail, and YouTube URL; ID extraction supports watch, youtu.be, embed, and shorts formats; play opens a portaled modal with autoplay embed, ESC/backdrop close, body scroll lock, and Tab focus trap.
+- Gallery portfolio player: Project cards with hover/touch scale effects and “Play video” actions that open YouTube embeds in the same modal pattern (keyboard and focus considerations included).
+- Process steps (“How to Order”): Consultation → Creative Planning → Execution → Delivery, with optional CTA button controlled by a showButton prop.
+- Why Choose Us and FAQ: Icon-led value props; accordion FAQ with aria-expanded toggles (Services page).
+- Team section: Named roles with hover/focus overlays and keyboard activation for social icon overlays (social destinations are currently placeholder "#" links).
+- Testimonials carousel: Horizontally scrollable review cards with pointer drag-to-scroll behavior.
+- Contact surfaces: Get-in-touch cards (Carrollton, TX address; public support/info emails; phone); multi-field “Send us a message” and home “Schedule An Appointment” form UIs; footer newsletter email field with route-specific newsletter text overrides for /about and /contact.
+- Scroll and motion UX: Intersection Observer–driven entrance animations across sections; AnimatedNumber component (used on Services half-trusted stats) respects prefers-reduced-motion; ScrollToTop handles route changes, pageshow, and history.scrollRestoration.
+- Responsive UI: Tailwind breakpoint layouts for navbar, grids, hero, and modal sizing (full-screen on small viewports, framed modal on larger screens).
+
+Incomplete, UI-only, or placeholder (not backed by working submission/integration logic):
+
+- Contact, appointment, and newsletter forms render inputs and submit buttons but have no onSubmit handlers, validation logic, API calls, or success/error feedback—submissions do not persist or send anywhere from this codebase.
+- Team social links point to "#".
+- Some contact copy still uses placeholder lorem ipsum.
+- Full “Trusted by …” logo/stats section exists in source but is commented out on Home and About; a reduced HalfTrustedSection with animated counters is used on Services. Marketing metrics shown in UI (e.g., animated counters) should be treated as content claims requiring confirmation, not verified business results.
+- lucide-react appears in package.json but is not imported in application source (unused dependency as of inspection).
+- No automated tests were found in the repository.
+- README remains the default Vite template and does not document the product.
+
+================================================================================
+CHALLENGES
+================================================================================
+
+- Accessible media modals: Implementing YouTube playback via React portals required coordinating open/close animation timing, restoring focus to the triggering control, trapping Tab focus inside the dialog, handling Escape, and locking background scroll—patterns repeated in AboutSection and OurLatestProject.
+- Scroll restoration in an SPA: ScrollToTop goes beyond pathname-only resets by handling bfcache/pageshow and temporarily setting history.scrollRestoration to "manual" so refresh and back/forward do not leave users mid-page unexpectedly.
+- Reusable section composition: Shared blocks (WhatWeOffer, WhyChooseUs, HowToOrder, Review, Banner, Footer) accept props (copy, showLearnMore, showButton, newsletterText) so the same UI can adapt per route without duplicating full page trees—an intentional maintainability tradeoff visible in App.jsx footer overrides and page assemblies.
+- Motion performance and accessibility: Widespread Intersection Observer animations and requestAnimationFrame counters needed careful once-only observe/unobserve behavior; AnimatedNumber skips animation when prefers-reduced-motion is set.
+- Frontend-only contact workflow: Form UIs imply lead capture, but without a backend or third-party form service the contact path stops at the browser. Wiring submission, validation, and spam protection remains an open integration concern. [NEEDS CONFIRMATION] if a planned service (email API, CMS, form provider) was intended.
+- Large iterative component files: Several page modules retain extensive commented historical implementations alongside the active export, which increases file size and makes the “live” code path harder to scan—an implementation hygiene consideration visible in AboutSection, OurLatestProject, and similar files.
+
+================================================================================
+LESSONS LEARNED
+================================================================================
+
+- Component props for cross-page reuse (showLearnMore, showButton, newsletter overrides, configurable About video/thumbnail/copy) keep marketing pages consistent while allowing route-specific UX without forking entire sections.
+- Treating video playback as a modal dialog—with portals, focus return, and keyboard support—improves usability compared with inline autoplay-only embeds, especially when multiple portfolio items share one player pattern.
+- Respecting prefers-reduced-motion in counter animations shows how small accessibility checks improve reliability for motion-sensitive users without removing the visual effect for others.
+- A visually complete contact UI is not a complete lead pipeline; production readiness for inquiry forms requires explicit submit handling, validation, and a delivery channel. [NEEDS CONFIRMATION] preferred stack for that integration.
+- Keeping product documentation in sync with the real brand (beyond the default Vite README) would make onboarding and portfolio presentation clearer for future maintainers. [NEEDS CONFIRMATION] as a process lesson for the team.
+- Unused dependencies (e.g., lucide-react if truly unused) and large commented blocks illustrate the value of periodic cleanup for maintainability. [NEEDS CONFIRMATION] whether those leftovers are intentional WIP or safe to remove.
+
+================================================================================
+CONFIRMATION CHECKLIST (for developer / portfolio owner)
+================================================================================
+
+- Live deployment URL
+- Canonical public repository URL
+- Preferred public project name/slug (Lights Camera Action vs vittor-vidio)
+- Whether contact/newsletter forms were later connected outside this repo
+- Accuracy of contact details, team bios, testimonial names, and any numeric marketing claims
+- Any client, metrics, or business outcomes suitable for portfolio claims (none verified from source alone)

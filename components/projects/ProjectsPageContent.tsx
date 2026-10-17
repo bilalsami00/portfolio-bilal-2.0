@@ -7,7 +7,6 @@ import ProjectDetailsModal from "../shared/ProjectDetailsModal";
 import RevealOnScroll from "../shared/RevealOnScroll";
 import SectionHeading from "../shared/SectionHeading";
 import ContactCtaBanner from "../shared/ContactCtaBanner";
-import PlaceholderBadge from "../shared/PlaceholderBadge";
 import TechTag from "../shared/TechTag";
 import { ButtonLink } from "../shared/Button";
 
@@ -52,10 +51,9 @@ const ProjectsPageContent = () => {
               Work selected for craft, clarity, and consequence
             </h1>
             <p className="section-copy mt-5 max-w-3xl">
-              Explore applications across web, mobile, desktop, and interface
-              systems. Filter by category, open details for problem framing, and
-              note placeholder case studies marked for replacement with real
-              outcomes.
+              Web projects documented from their case studies. Filter by
+              category, then open a project for the overview, problem and
+              solution, features, challenges, and lessons learned.
             </p>
           </RevealOnScroll>
         </Container>
@@ -87,9 +85,9 @@ const ProjectsPageContent = () => {
               })}
             </div>
             <p className="mt-4 text-sm text-steel-400">
-              Showing {filteredProjects.length} project
-              {filteredProjects.length === 1 ? "" : "s"}
-              {activeFilter !== "All" ? ` in ${activeFilter}` : ""}.
+              {`Showing ${filteredProjects.length} project${
+                filteredProjects.length === 1 ? "" : "s"
+              }${activeFilter !== "All" ? ` in ${activeFilter}` : ""}.`}
             </p>
           </RevealOnScroll>
         </Container>
@@ -119,8 +117,8 @@ const ProjectsPageContent = () => {
                 >
                   <img
                     src={featuredProject.image}
-                    alt={featuredProject.title}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    alt={featuredProject.imageAlt}
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-ink-950/30 to-ink-950/70" />
                 </button>
@@ -128,9 +126,9 @@ const ProjectsPageContent = () => {
                 <div className="p-6 sm:p-8 lg:p-10 flex flex-col">
                   <div className="flex flex-wrap gap-2 mb-3">
                     <span className="tech-tag">{featuredProject.category}</span>
-                    {featuredProject.isPlaceholderContent && (
-                      <PlaceholderBadge label="Case study placeholder" />
-                    )}
+                    <span className="text-xs text-steel-400 font-accent tracking-widest uppercase">
+                      {featuredProject.year}
+                    </span>
                   </div>
                   <h2
                     id="featured-project-title"
@@ -138,42 +136,27 @@ const ProjectsPageContent = () => {
                   >
                     {featuredProject.title}
                   </h2>
-                  <p className="mt-4 text-parchment-400 leading-relaxed">
-                    {featuredProject.fullDescription}
-                  </p>
-
-                  <div className="mt-5">
-                    <h3 className="font-accent text-xs uppercase tracking-[0.2em] text-crimson-400">
-                      Problem solved
-                    </h3>
-                    <p className="mt-2 text-sm text-parchment-400">
-                      {featuredProject.problemSolved}
-                    </p>
+                  <div className="mt-4 space-y-3">
+                    {featuredProject.caseStudy.overview.map((paragraph) => (
+                      <p
+                        key={paragraph}
+                        className="text-parchment-400 leading-relaxed"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
                   </div>
 
                   <div className="mt-5">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-accent text-xs uppercase tracking-[0.2em] text-crimson-400">
-                        Outcomes
-                      </h3>
-                      {featuredProject.outcomesArePlaceholder && (
-                        <PlaceholderBadge label="Outcomes placeholder" />
-                      )}
-                    </div>
-                    <ul className="mt-2 space-y-2">
-                      {featuredProject.outcomes.map((outcome) => (
-                        <li
-                          key={outcome}
-                          className="text-sm text-parchment-400 flex gap-2"
-                        >
-                          <span
-                            className="mt-2 h-1 w-1 shrink-0 bg-crimson-500"
-                            aria-hidden
-                          />
-                          {outcome}
-                        </li>
-                      ))}
-                    </ul>
+                    <h3 className="font-accent text-xs uppercase tracking-[0.2em] text-crimson-400">
+                      Problem & solution
+                    </h3>
+                    <p className="mt-2 text-sm text-parchment-400">
+                      {featuredProject.caseStudy.problem}
+                    </p>
+                    <p className="mt-2 text-sm text-parchment-400">
+                      {featuredProject.caseStudy.solution}
+                    </p>
                   </div>
 
                   <div className="mt-5 flex flex-wrap gap-2">
@@ -227,7 +210,7 @@ const ProjectsPageContent = () => {
               Complete archive
             </h2>
             <p className="mt-2 text-parchment-500 text-sm sm:text-base">
-              Select any card for technologies, use case, and outcomes.
+              Select any card for the case study, technologies, and screenshots.
             </p>
           </RevealOnScroll>
 

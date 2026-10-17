@@ -1,0 +1,51 @@
+PROJECT METADATA
+Project Name: Social Media Dashboard
+Project Slug: social-media-dashboard
+Project Type / Category: Admin dashboard / content-moderation web application
+Technology Stack: Next.js 16 (App Router), React 19, Tailwind CSS 4, Axios, Recharts, Framer Motion, Radix UI–based components (shadcn/ui New York style), Lucide React, React CountUp
+Project Year: 2025
+Live URL:
+Repository URL: https://github.com/bilalsami00/social-media.git
+
+OVERVIEW
+Social Media Dashboard is a Next.js admin panel for managing a social media platform’s users and reported content. It is intended for platform administrators who need a single place to review moderation reports, enable or disable accounts, and view high-level platform metrics. The frontend authenticates against an external backend API, proxies browser requests through Next.js rewrites for same-origin access, and presents dashboard analytics, user management, and reported-post review workflows behind cookie-based route protection.
+
+PROBLEM & SOLUTION
+Problem:
+Social platforms generate reported posts and account-status decisions that admins must handle quickly. Without a dedicated moderation console, reviewing reports, inspecting post media, searching users, and applying enable/disable or remove/ignore actions is fragmented across backend tools or ad-hoc API calls. The original product motivation and client context are not documented in the repository [NEEDS CONFIRMATION].
+
+Solution:
+The application implements an admin UI that signs administrators in via JWT stored in cookies, guards dashboard routes with Next.js middleware, and integrates with backend endpoints for overview stats, user listing/toggling, and reported-post listing/actions. Shared client helpers normalize varied API response shapes into consistent UI models. Server-side fetching is used for the users list (with query-driven search, filters, and pagination), while dashboard and reported-posts flows use authenticated client-side Axios calls through an `/api` rewrite proxy.
+
+FEATURES
+- Admin sign-in: Email/password login against `/auth/admin/signin`, stores a Bearer token in an `auth_token` cookie, and redirects to the dashboard.
+- Password recovery UI: Forgot-password email verification, six-digit OTP entry with resend timer, and new-password reset against admin auth endpoints. Client-side checks require matching passwords and a minimum length of eight characters.
+- Route protection: Middleware redirects unauthenticated users away from `/dashboard/*` and logged-in users away from auth pages. Additional guards on `/otp` and `/new-password` expect `pw_reset` and `otp_verified` cookies (see Challenges).
+- Dashboard overview: Loads `/posts/dashboard/overview` and displays reported posts, total users, daily active users, and total posts, with animated stat values and Recharts visualizations for weekly posts and six-month signup trends.
+- Reported posts moderation: Lists reports with search and reason filtering, client-side pagination over flattened report rows, and inline ignore actions. Detail view shows post content, media, reporter metadata, and confirmation dialogs to remove a post or ignore a report.
+- User account management: Server-rendered user table with debounced search, active/disabled filtering, and pagination. Detail page loads user profile fields and toggles disabled status via `PATCH /auth/toggle-disabled/:id` with confirmation UI.
+- Responsive admin shell: Collapsible sidebar (desktop) and mobile menu covering Dashboard, Reported Posts, and User Accounts, plus logout that clears the auth cookie.
+- API client layer: Axios instance with `/api` base URL, Authorization header injection from cookies, and normalized error payloads (`message`, `status`, `data`).
+
+Incomplete / unused (not presented as finished product features):
+- Dedicated Analytics route is linked from some dashboard stat cards but is not implemented; the analytics menu item is commented out.
+- Hourly active-users chart UI is largely commented out; when backend hourly data is absent, the page can synthesize evenly distributed hourly points from the daily total.
+- `src/lib/dummy-data.js` contains early mock datasets and is not imported by live pages.
+- Password-reset step cookies expected by middleware do not appear to be set by the forgot-password/OTP pages in the current code, so that gated flow may not complete end-to-end without further wiring [NEEDS CONFIRMATION of intended behavior].
+- No automated test suite was found in the repository.
+
+CHALLENGES
+- Backend response normalization: Reported-post and dashboard helpers map multiple possible field names (`_id` vs `id`, `reported_at` vs `reportedAt`, nested `user_id`, etc.) so the UI can tolerate inconsistent API shapes.
+- Mixed data-fetching strategies: Client pages rely on the Next rewrite proxy (`/api` → external backend), while the users page fetches the backend directly on the server and forwards the auth cookie as a Bearer token—requiring careful handling of Next.js async `cookies()`/`headers()`/`searchParams` shapes.
+- Auth and session boundaries: Cookie-readable JWTs enable middleware protection and client Authorization headers, but must remain SSR-safe (token reads are guarded for non-browser contexts). Password-reset step cookies are declared in middleware without matching setters in the auth pages, creating a likely incomplete multi-step recovery gate [NEEDS CONFIRMATION].
+- Moderation list UX vs API shape: The UI flattens posts into individual report rows and paginates client-side after requesting a large limit, which works for moderate data volumes but may need a reports-first backend endpoint as volume grows (noted in code comments).
+- Detail lookups without dedicated endpoints: Reported-post and user detail views currently resolve entities by scanning list endpoints rather than single-resource APIs, which simplifies integration but limits scalability and reliability for large datasets.
+- Responsive admin layout: Sidebar collapse and mobile drawer states keep navigation usable across breakpoints while preserving the primary moderation workflows.
+
+LESSONS LEARNED
+- Same-origin API proxying via Next.js rewrites simplifies browser CORS concerns while keeping the real backend URL out of most client request paths.
+- Centralizing Axios interceptors and response normalizers reduces page-level duplication when integrating a backend that returns uneven payload shapes.
+- Cookie-based auth works well with Next middleware for route-level protection, but multi-step flows (password reset) need the same cookie contract implemented on both sides—middleware alone is insufficient.
+- Debounced URL query updates (search/filter) keep server-rendered list pages bookmarkable and shareable without excessive refetch chatter.
+- Distinguishing live API-backed screens from leftover mock data and commented chart routes keeps the product surface honest for maintainers and stakeholders.
+- [NEEDS CONFIRMATION] Broader product lessons (performance targets, accessibility goals, production hardening, and client outcomes) would require developer or stakeholder input beyond what the repository documents.

@@ -1,0 +1,60 @@
+PROJECT METADATA
+Project Name: Maze Digital (Website)
+Project Slug: maze-digital
+Project Type / Category: Marketing & lead-generation website (software development agency)
+Technology Stack: Next.js 16 (App Router), React 19, JavaScript (JSX), Tailwind CSS 4, next/font (SF Pro Display), Radix UI / shadcn-style primitives, GSAP + ScrollTrigger, Motion, Swiper, AOS, react-fast-marquee, react-phone-input-2, WordPress REST API (JWT + sanitize-html / html-entities), Vercel Analytics; external ClickUp-connected contact API and Tawk.to live chat
+Project Year: 2026
+Live URL: https://www.mazedigital.co
+Repository URL: https://github.com/bilalsami00/complete-maze-26
+
+
+OVERVIEW
+
+Maze Digital’s public website is a frontend-only Next.js application that presents the agency’s services, industries, case studies, careers, blog, and paid-traffic landing pages, then converts visitors into sales leads. Intended users are prospective clients researching custom app, web, SaaS, MVP, UI/UX, AI, and CMS work, plus candidates browsing open roles. Content for most marketing pages lives in co-located static data modules composed by App Router Server Components; interactive pieces (forms, drawers, carousels, the Ask Maze assistant) are client components, many loaded through a central next/dynamic registry. There is no application database or authentication in this repository. Lead capture posts to an external CRM-connected backend, blog content is fetched from a WordPress host, and analytics (GTM, GA4, Facebook Pixel, Microsoft Clarity, LinkedIn Insight, Vercel Analytics) load after first interaction to protect page-load performance.
+
+
+PROBLEM & SOLUTION
+
+Problem:
+A software agency needs a fast, SEO-capable marketing site that can explain many service lines, support paid campaigns with dedicated landing pages, publish ongoing insights, and move qualified visitors into a CRM pipeline—without running a full CMS or application backend inside the same codebase. The site must stay performant while shipping rich animation, multiple form entry points, and third-party tracking.
+
+Solution:
+The project implements a content-as-code Next.js site: each route owns page.jsx plus data.js (or equivalent) and composes reusable section components (heroes, process timelines, carousels, FAQs, tech stacks, case-study blocks). Conversion is centralized around contact forms and a portal-based ContactDrawer that validate client-side and POST JSON to clickup-backend.mazedigital.us, then redirect successful submissions to /contact/thank-you for conversion tracking. Blog posts and “Latest Insights” sections pull from WordPress with caching and fallback behavior; HTML is sanitized before render. Site-wide Ask Maze provides intent-matched answers and CTAs without a custom LLM backend, coordinated with Tawk.to so chat overlays do not collide. SEO is handled via a shared metadata module, XML sitemap route handlers, robots.txt, permanent redirects for legacy URLs, and image optimization (AVIF/WebP).
+
+
+FEATURES
+
+- Multi-page service catalog: Dedicated routes for web development (including Next.js), app development (iOS, Android, React Native, cross-platform), AI development and AI chatbot, B2B SaaS and SaaS product design, MVP development, and UI/UX (including mobile app UI/UX), each built from shared section components and page-local content data.
+- Industry and proof pages: Industry pages (healthcare, ecommerce, entertainment, construction, staffing), a case-studies index and slug detail pages (static params from detail data), testimonials/projects/insights surfaces, and legal pages (privacy, terms, refund policy).
+- Paid landing pages (/lp): Campaign-oriented pages for AI app, MVP app, social media app, and CMS/website packages, with their own heroes and conversion forms.
+- Lead capture & CRM handoff: Multiple form surfaces (home BentoForm, ContactDrawer, about/contact forms, service heroes, LP heroes) share the same contact payload shape (name, email, phone, project, industry, aboutUs), international phone input with geo country detection, AbortController timeouts, and thank-you redirect on success (WebDev hero can show inline success instead).
+- WordPress-powered blog: Dynamic /blog/[slug] posts fetched from blog-wp.mazedigital.us with related posts, Yoast-aware metadata, sanitized HTML rendering, and Latest Insights cards on home/service pages that prefer live posts and fall back to static data when the API fails (fallback cards are marked so dummy links are not treated as live).
+- Ask Maze site assistant: Client-side intent ranking over curated Q&A data (services, pricing, platforms), follow-up clarification flows, navigation/contact CTAs, analytics hooks, and a bridge that hides/shows Tawk.to when the assistant overlay is open.
+- Careers: Careers listing and [slug] detail views driven by a static jobs map for open roles.
+- SEO & crawl infrastructure: Centralized SEO metadata and canonicals, multi-sitemap XML handlers (pages, images, blog), robots route, legacy URL redirects, and Next config tuned so title/canonical stay in <head> for SEO crawlers.
+- Performance-minded front end: Server Components by default; heavy below-the-fold sections lazy-loaded; deferred third-party analytics; AppImage wrapper around next/image; optional bundle analyzer.
+- Motion & UI systems: GSAP ScrollTrigger sections, Motion micro-interactions, Swiper/marquee carousels, AOS idle init, VersatileButton action model (contact / navigate / external), shared NavBar/TopBar/Footer chrome.
+- Incomplete / simulated (not finished product features): Blog sidebar “Subscribe” is a client-side simulation with no API; /services and /industries index pages are absent despite SEO keys existing; some outbound social/scheduling links have been documented as placeholders; automated tests are not configured.
+
+
+CHALLENGES
+
+- Scale of marketing surface area: Dozens of routes share visual systems but need page-specific copy, imagery, and section ordering. The solution uses highly parameterized “versatile” section components and co-located data modules—effective for shipping pages quickly, but styling contracts are stringly-typed Tailwind props with no compile-time checks.
+- Conversion reliability without an in-repo backend: Forms talk directly from the browser to an external contact API with duplicated validate/fetch/timeout logic across several components. Timeouts and field validation are implemented, but anti-abuse controls (CAPTCHA, honeypot, shared server proxy) are not visible in this repository [backend rate limiting needs confirmation outside this repo].
+- Integrating WordPress safely into a marketing Next app: Posts require authenticated API access, caching, empty-result vs failure fallback policy, HTML entity decoding, and sanitize-html before dangerouslySetInnerHTML-style rendering—balancing freshness of content with build/runtime resilience.
+- Performance vs. marketing richness: Scroll-driven GSAP scenes, carousels, live chat, assistant UI, and multiple analytics vendors compete with Core Web Vitals; deferred analytics loading, dynamic imports, and image format optimization address this tension.
+- Overlay / chat UX coordination: Ask Maze and Tawk.to both claim screen real estate; a small bridge API syncs widget visibility with assistant open state and route changes.
+- SEO consistency across growth: Legacy short service URLs, terms-path variants, and streaming-metadata head injection required redirects and Next config adjustments so SEO tools correctly see titles and canonicals.
+- Quality without automated tests: No Jest/Vitest/Playwright suite exists; verification relies on manual QA (git history shows iterative design-alignment fixes on service pages). Whether that was treated as a formal process risk is [NEEDS CONFIRMATION].
+
+
+LESSONS LEARNED
+
+- Treating page content as versioned modules next to routes keeps a large agency site shippable in a pure frontend repo, but it pushes content ownership onto developers and favors reusable section APIs over a headless CMS for non-blog pages.
+- Centralizing lazy-loaded section imports in one registry (lazy-components.js) is a practical way to keep Server Component pages thin while controlling bundle splits for below-the-fold marketing blocks.
+- Duplicating contact submit/validation across five+ components increases drift risk; a shared hook or Next.js route proxy would improve maintainability and could move the CRM endpoint server-side [NEEDS CONFIRMATION whether that refactor is planned].
+- For CMS-backed HTML on a marketing site, sanitize-on-render plus explicit API-failure fallbacks (and marking fallback cards) prevents both XSS class issues and “dummy content that looks live” UX failures.
+- Deferring analytics until interaction (with a timed fallback) is a concrete tradeoff: tracking completeness vs. first-load cost on a conversion-focused site.
+- Intent-based assistants can add guided discovery without LLM infrastructure when the domain (services, pricing, destinations) is finite and curated—especially when paired with human chat for escalations.
+- Ignoring ESLint during production builds speeds iteration but removes a deploy safety net; pairing that choice with no automated tests raises the importance of manual design/SEO QA cycles [NEEDS CONFIRMATION on team process].
+- Personal or client-facing outcomes (conversion lift, SEO ranking gains, lead volume) are not measurable from the repository alone and remain [NEEDS CONFIRMATION].

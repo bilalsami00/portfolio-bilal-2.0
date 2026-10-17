@@ -1,0 +1,73 @@
+PROJECT METADATA
+Project Name: Royal Bullion Fund (RBF)
+Project Slug: rbf
+Project Type / Category: Web Application — Fintech / Investment Platform Frontend (Member Dashboard UI)
+Technology Stack: React 19, Vite 8, React Router DOM 7, Redux Toolkit, Tailwind CSS 4, Ant Design (DatePicker), dayjs, react-icons
+Project Year: 2026
+Live URL:
+Repository URL: https://github.com/bilalsami00/rbf.git
+
+OVERVIEW
+Royal Bullion Fund (RBF) is a React single-page application that implements the member-facing UI for a bullion- and token-oriented investment platform. The product brand is “Royal Bullion Fund,” with in-app balances expressed in RBF and RBG units and pack purchases optionally paid via USDT (TRC20) wallet connect or RBF balance.
+
+The application covers authentication and KYC screens, a collapsible dashboard shell (sidebar + navbar), and feature areas for service packs, marketplace shopping, orders, referrals, wallet operations, transactions, withdrawals, and support tickets. Routing is handled with React Router; marketplace cart state is managed with Redux Toolkit. At the time of this analysis, screens are driven primarily by static/demo datasets and client-side navigation rather than live backend APIs, making the repository a substantial frontend implementation and UX prototype ready for API integration.
+
+PROBLEM & SOLUTION
+Problem:
+Members of a fund-style product need a coherent digital workspace to register and verify identity, buy tiered service packs, track rewards and portfolio balances, shop a marketplace with RBG pricing, manage wallet transfers and conversions, request crypto withdrawals, and get support. Building that experience requires consistent branding, multi-step money flows, data-dense tables with filters, and a responsive layout that works from mobile drawer navigation through desktop sidebars. The original business motivation beyond this observable product surface is not documented in the repository and remains [NEEDS CONFIRMATION].
+
+Solution:
+The app delivers a full routed UI for those workflows. Shared layout components (DashboardLayout, Sidebar, Navbar) provide navigation across all member sections. Auth screens include client-side validation (email, password strength, confirmation) and multi-step forgot-password / OTP / reset flows. Service-pack purchase walks users through tier selection, amount confirmation with min/max limits and live weekly-reward estimates, payment method choice (RBF balance vs external wallet), and a full-screen activation success state. Marketplace browsing, Redux-backed cart, checkout scheduling fields, and order history complete the commerce path. Wallet, transactions, withdrawals, referrals, and support screens implement searchable/filterable tables, detail drawers, and multi-step modals for convert, P2P transfer, and USDT withdrawal requests—currently against local static data with explicit TODOs where real API calls are expected.
+
+FEATURES
+- Authentication UI: Sign-in, sign-up, account-created success, and forgot-password flows (email → OTP → reset password) with shared AuthLeftPanel branding and field-level validation. Auth submit handlers currently simulate delay and navigate client-side; real auth API calls are marked TODO (not production-backed in this repo).
+
+- KYC onboarding: Select ID type (National ID / Passport), document upload screens, and a KYC completion screen as a multi-route verification path.
+
+- Member dashboard: Portfolio-style stat cards (RBF / RBG), weekly earnings and next-reward messaging, quick actions, referral share card, and active service-pack cards. Empty vs. “has pack” states are toggled via a local USER_HAS_PACK flag for UI simulation.
+
+- RBF Service Packs: Five tiers (Royal Start through Royal Platinum) with investment ranges and reward-point rates. Buy flow includes InvestmentConfirmation (amount stepper, range validation, live weekly earnings math), PaymentMethodModal, ConnectWalletModal (persists a simple walletConnected flag in localStorage), and PackActivated success screen.
+
+- Marketplace: Category home, product listing with search/filters, product detail, Redux cart (add/update/remove, cart drawer, toast), and checkout with delivery/meeting fields and order-success modal. Catalog and pricing use local marketplaceData (RBG prices with USD approximations).
+
+- My Orders: Order list with status badges, search/filter, detail drawer, and delivery-related UI (including confirm-delivery modal). Data is static sample orders.
+
+- Refer & Earn: Referral stats, shareable referral link/QR-oriented sharing UI, bonus-level presentation, and a nested multi-level referral tree with empty-state support. Demo referral URL and referral rows are hardcoded samples.
+
+- Wallet: Displays RBF and RBG balances; Convert modal (bidirectional RBF ↔ RBG at a fixed demo rate with fee); P2P transfer modal (wallet ID, amount, fee summary, processing/success/error steps); recent transactions table with type-aware detail drawers.
+
+- Transactions: Cross-cutting transaction history with search, type/wallet/status filters, Ant Design DatePicker + dayjs for date filtering, mobile filter drawer, and rich per-type detail panels.
+
+- Withdrawals: Withdrawal history table, request modal for USDT (TRC20) address and amount, and status detail views (Approved / Pending / Rejected) using local withdrawals data.
+
+- Support: Ticket list with search/status filters, create-ticket modal, and ticket detail drawer showing admin response fields. Tickets are static sample data.
+
+- Responsive shell: Desktop collapsible sidebar; mobile off-canvas sidebar with backdrop; reusable DataTable, SearchBar, FilterDropdown, DetailDrawer, EmptyState, and NotificationDrawer patterns used across sections.
+
+- Incomplete / not backend-integrated (important): Login, OTP, password reset, and change-password flows contain TODO comments for API wiring. Balances, packs, marketplace products, orders, referrals, tickets, and withdrawals are local static datasets. No automated test suite was found in the repository.
+
+CHALLENGES
+- Multi-step financial UX without a live API: Purchase, convert, P2P, withdrawal, and checkout flows must still feel complete (validation, fees, processing/success states) while using mock data and simulated async delays. Several handlers explicitly leave API integration as follow-up work.
+
+- Complex marketplace state: Cart quantity, drawer open state, and toast feedback are centralized in Redux Toolkit so listing, detail, cart drawer, checkout, and navbar remain consistent across nested marketplace routes.
+
+- Dense data UIs across many domains: Transactions, wallet history, orders, withdrawals, and support each combine search, multi-filter controls, desktop tables, mobile cards/drawers, and type-specific detail layouts—requiring shared table/drawer primitives and careful filter state.
+
+- Responsive layout under brand constraints: Commit history and layout code show iterative work on mobile sidebar width, Refer & Earn card overlap at mid breakpoints, and consistent disabled-button styling so pages do not break against design targets.
+
+- Pack investment rules in the UI: Confirmation screen encodes per-tier min/max amounts, validates input live, and derives weekly reward estimates from the selected pack’s reward rate before payment method selection.
+
+- Auth/KYC as product gatekeeping (UI-level): Multi-route KYC and password rules exist in the frontend, but without backend enforcement they remain presentation and navigation flows pending real verification services [NEEDS CONFIRMATION for production security posture].
+
+LESSONS LEARNED
+- Separating presentation from persistence early is viable for fintech UI delivery: a full member experience can be built and design-validated with static datasets and explicit TODO API seams, then swapped for real services without discarding the interaction model.
+
+- Shared layout and data-display primitives (DashboardLayout, DataTable, DetailDrawer, EmptyState, SearchBar, FilterDropdown) reduce duplication across wallet, transactions, orders, withdrawals, and support—important when many screens share the same information-density pattern.
+
+- Domain-specific state belongs close to the feature that owns it: Redux is used for marketplace cart (cross-route shared state), while most other screens keep local React state—matching the actual coupling in the product.
+
+- Client-side validation and fee/summary previews (auth validators, pack limits, P2P fee, conversion rate) improve trust in money flows even before backend confirmation, but production correctness still depends on server-side rules [NEEDS CONFIRMATION].
+
+- Responsive investment and referral pages benefit from treating breakpoint layout as a first-class design constraint; commit history around sidebar width and Refer & Earn overlapping cards illustrates that visual polish on mid-size viewports can be as demanding as feature logic.
+
+- [NEEDS CONFIRMATION] Personal process lessons (team workflow, design handoff with “harsh design,” deployment targets, and live production metrics) are not fully documented in-repo and should be filled in by the developer for portfolio narrative.

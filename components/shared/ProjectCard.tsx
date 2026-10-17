@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { PortfolioProject } from "../../data/types";
-import PlaceholderBadge from "./PlaceholderBadge";
 import TechTag from "./TechTag";
 
 type ProjectCardProps = {
@@ -43,8 +42,8 @@ const ProjectCard = ({
       >
         <img
           src={project.image}
-          alt={project.title}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          alt={project.imageAlt}
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent" />
@@ -62,9 +61,6 @@ const ProjectCard = ({
           <p className="text-xs font-accent uppercase tracking-[0.2em] text-steel-400">
             {project.year}
           </p>
-          {project.isPlaceholderContent && (
-            <PlaceholderBadge label="Case study placeholder" />
-          )}
         </div>
 
         <h3 className="font-display text-xl sm:text-2xl text-parchment-100 font-bold">

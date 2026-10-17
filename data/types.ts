@@ -83,26 +83,44 @@ export type ProjectCategory =
   | "Open Source"
   | "Full Stack";
 
+export type ProjectImage = {
+  src: string;
+  alt: string;
+};
+
+/**
+ * Case study sections, in presentation order.
+ * Text comes from the project .txt file; optional metadata stays off this object.
+ */
+export type ProjectCaseStudy = {
+  overview: string[];
+  problem: string;
+  solution: string;
+  features: string[];
+  challenges: string[];
+  lessons: string[];
+};
+
 export type PortfolioProject = {
   id: string;
   slug: string;
   title: string;
+  /** Card summary derived from the case study overview. */
   shortDescription: string;
-  fullDescription: string;
-  problemSolved: string;
-  outcomes: string[];
-  /** Outcomes are placeholders until real metrics exist */
-  outcomesArePlaceholder: boolean;
+  /** Card preview. Also the first gallery image. */
   image: string;
-  gallery: string[];
+  imageAlt: string;
+  gallery: ProjectImage[];
   technologies: string[];
   category: ProjectCategory;
+  /** Omitted when the case study does not document a URL. */
   liveUrl?: string;
+  /** Omitted when the case study does not document a URL. */
   repositoryUrl?: string;
+  /** Site presentation flag. Case studies do not mark featured work. */
   featured: boolean;
   year: string;
-  /** Marks invented project narrative for easy replacement */
-  isPlaceholderContent: boolean;
+  caseStudy: ProjectCaseStudy;
 };
 
 export type SkillGroupId =

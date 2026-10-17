@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { PortfolioProject } from "../../data/types";
-import PlaceholderBadge from "./PlaceholderBadge";
 import TechTag from "./TechTag";
 import { ButtonLink } from "./Button";
 
@@ -10,13 +10,42 @@ type ProjectDetailsModalProps = {
   onClose: () => void;
 };
 
+const SectionHeading = ({ children }: { children: string }) => (
+  <h3 className="font-accent text-sm uppercase tracking-[0.2em] text-crimson-400">
+    {children}
+  </h3>
+);
+
+const BulletList = ({ items }: { items: string[] }) => (
+  <ul className="mt-3 space-y-3">
+    {items.map((item) => (
+      <li
+        key={item}
+        className="flex gap-3 text-parchment-400 text-sm sm:text-base leading-relaxed break-words"
+      >
+        <span
+          className="mt-2 h-1.5 w-1.5 shrink-0 bg-crimson-500"
+          aria-hidden
+        />
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+);
+
 /**
- * Project details overlay for filtering / featured interactions.
+ * Case study overlay. Section order matches the source write-ups.
  */
 const ProjectDetailsModal = ({
   project,
   onClose,
 }: ProjectDetailsModalProps) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (!project) return undefined;
 
@@ -34,11 +63,13 @@ const ProjectDetailsModal = ({
     };
   }, [project, onClose]);
 
-  if (!project) return null;
+  if (!project || !mounted) return null;
 
-  return (
+  const { caseStudy } = project;
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center p-0 sm:p-6"
+      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby="project-modal-title"
@@ -51,20 +82,26 @@ const ProjectDetailsModal = ({
       />
 
       <div className="relative z-10 w-full max-w-3xl max-h-[92vh] overflow-y-auto ink-panel border-crimson-700/30">
-        <div className="relative aspect-[16/9] overflow-hidden">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-transparent to-transparent" />
+        <div className="sticky top-0 z-20 flex justify-end p-3 sm:p-4 bg-gradient-to-b from-ink-900 via-ink-900/80 to-transparent">
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-4 top-4 btn-secondary !px-3 !py-1.5 text-xs"
+            className="btn-secondary !px-3 !py-1.5 text-xs"
           >
             Close
           </button>
+        </div>
+
+        <div className="bg-ink-950 -mt-4">
+          {project.gallery.map((image, index) => (
+            <img
+              key={image.src}
+              src={image.src}
+              alt={image.alt}
+              className="mx-auto h-auto w-full max-w-full object-contain object-top"
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+          ))}
         </div>
 
         <div className="p-5 sm:p-8">
@@ -73,7 +110,6 @@ const ProjectDetailsModal = ({
             <span className="text-xs text-steel-400 font-accent tracking-widest uppercase">
               {project.year}
             </span>
-            {project.isPlaceholderContent && <PlaceholderBadge />}
           </div>
 
           <h2
@@ -82,40 +118,46 @@ const ProjectDetailsModal = ({
           >
             {project.title}
           </h2>
-          <p className="mt-4 text-parchment-300 leading-relaxed">
-            {project.fullDescription}
-          </p>
 
           <div className="mt-6">
-            <h3 className="font-accent text-sm uppercase tracking-[0.2em] text-crimson-400">
-              Problem solved
-            </h3>
-            <p className="mt-2 text-parchment-400">{project.problemSolved}</p>
+            <SectionHeading>Overview</SectionHeading>
+            <div className="mt-3 space-y-3">
+              {caseStudy.overview.map((paragraph) => (
+                <p
+                  key={paragraph}
+                  className="text-parchment-300 leading-relaxed break-words"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
 
           <div className="mt-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="font-accent text-sm uppercase tracking-[0.2em] text-crimson-400">
-                Outcomes
-              </h3>
-              {project.outcomesArePlaceholder && (
-                <PlaceholderBadge label="Outcomes placeholder" />
-              )}
-            </div>
-            <ul className="mt-3 space-y-2">
-              {project.outcomes.map((outcome) => (
-                <li
-                  key={outcome}
-                  className="flex gap-3 text-parchment-400 text-sm sm:text-base"
-                >
-                  <span
-                    className="mt-2 h-1.5 w-1.5 shrink-0 bg-crimson-500"
-                    aria-hidden
-                  />
-                  {outcome}
-                </li>
-              ))}
-            </ul>
+            <SectionHeading>Problem & solution</SectionHeading>
+            <p className="mt-3 text-parchment-400 leading-relaxed break-words">
+              <span className="text-parchment-200">Problem. </span>
+              {caseStudy.problem}
+            </p>
+            <p className="mt-3 text-parchment-400 leading-relaxed break-words">
+              <span className="text-parchment-200">Solution. </span>
+              {caseStudy.solution}
+            </p>
+          </div>
+
+          <div className="mt-6">
+            <SectionHeading>Features</SectionHeading>
+            <BulletList items={caseStudy.features} />
+          </div>
+
+          <div className="mt-6">
+            <SectionHeading>Challenges</SectionHeading>
+            <BulletList items={caseStudy.challenges} />
+          </div>
+
+          <div className="mt-6">
+            <SectionHeading>Lessons learned</SectionHeading>
+            <BulletList items={caseStudy.lessons} />
           </div>
 
           <div className="mt-6 flex flex-wrap gap-2">
@@ -145,7 +187,8 @@ const ProjectDetailsModal = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

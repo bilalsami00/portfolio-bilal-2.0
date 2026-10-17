@@ -1,0 +1,113 @@
+PROJECT METADATA
+Project Name: Jimta Dashboard
+Project Slug: jimta-dashboard
+Project Type / Category: Multi-role web dashboard (admin, service center, and end-user portals)
+Technology Stack: Next.js 16 (App Router), React 19 (React Compiler), JavaScript, Tailwind CSS v4, shadcn/ui (Radix), sonner, Recharts, lucide-react / react-icons, react-international-phone, Embla Carousel (dependency present), Web Crypto AES-GCM for token cookie handling, external REST API via fetch
+Project Year: 2026
+Live URL: [NEEDS CONFIRMATION]
+Repository URL: https://github.com/bilalsami00/jimta-dashboards-bilal.git
+
+OVERVIEW
+Jimta Dashboard is a Next.js frontend that serves three role-based portals from a single codebase: an admin operations console, a service-center portal, and an end-user portal. It is the internal/management UI for the Jimta platform, covering users, wallets and Jimta Coin transfers, referrals, investment packages, product/blog content, service centers, and order/delivery workflows.
+
+Authenticated users are routed by role to `/dashboard` (admin), `/sc-dashboard` (service center), or `/user-dashboard` (user). The app talks to an external backend API (`NEXT_PUBLIC_API_URL`). Next.js itself only hosts small BFF routes for login/logout cookie handling. Shared layout chrome (sidebar, header), a centralized API client/endpoints registry, and domain service modules keep the three portals consistent while allowing role-specific navigation and screens.
+
+Related product surfaces referenced in the UI include a marketing/website link (`https://jimta-website-bilal.vercel.app/`) and referral links under the `jimta.live` domain. A dedicated public deployment URL for this dashboard repository was not documented in the repo.
+
+PROBLEM & SOLUTION
+Problem:
+Jimta needs separate operational experiences for platform administrators, service-center operators, and end users—user management, wallet and payout operations, referrals, packages, catalog/content, and delivery—without maintaining three unrelated frontends. Operators also need authenticated access, role-appropriate navigation, and consistent list/form patterns against a shared backend API.
+
+Solution:
+The project implements one App Router application with route groups for auth, admin, service center, and user. Middleware decrypts an encrypted access-token cookie, reads a role cookie, and redirects users to the correct home and away from other roles’ routes (admin vs service center lists are enforced; user-portal middleware coverage is incomplete—see Challenges). Data access follows a fixed layering: page → domain service → `apiClient` → `ENDPOINTS` → external API. Login goes through a Next.js BFF that proxies credentials, encrypts the access token into a cookie, and sets the role cookie. Many admin and user wallet/referral/package flows are API-integrated; some catalog, order-delivery, and dashboard-chart screens remain UI-first with local or dummy data.
+
+FEATURES
+Role-based portals and shell
+- Single codebase with `(admin-dashboard)`, `(service-center-dashboard)`, and `(user-dashboard)` route groups, each with its own layout shell.
+- Sidebar `NAV_CONFIG` switches menus by role (admin, service_center, user), including nested sections for wallet, products & blogs, packages, referrals, and orders.
+- Shared Header/Sidebar layout with logout and change-password entry points.
+
+Authentication and account recovery
+- Login via Next.js `/api/auth/login` BFF: proxies to backend `/auth/login`, AES-GCM-encrypts the access token into a cookie, sets a `role` cookie, and stores user display info in `localStorage`.
+- Logout via `/api/auth/logout` plus client cookie/`user_info` cleanup.
+- Forgot-password → OTP (`/verify-otp` gated by `jimta_otp_allowed` cookie) → reset-password flow.
+- Multi-step registration UI (including international phone input); registration posts to the external auth register endpoint.
+
+Admin — users and service centers (API-integrated)
+- Users list with pagination, create/edit, verification toggle, referral lookup, and admin-assisted password change.
+- Service centers list/create/edit/status management through a multi-step form (personal, location, business, verification steps).
+
+Admin — wallet and payouts (API-integrated)
+- Jimta Coin list/transfer with searchable user selection.
+- Bank/payout details CRUD for users.
+- Request-fund listing and status updates.
+- Withdraw-request listing and status updates.
+- Wallet transfer-log listing (with fallback UX when the API returns empty data).
+
+Admin — packages, referrals, blogs, categories (API-integrated)
+- Jimta Packages: packages list/update/status, package history, and earning logs.
+- Referral information, referral-code generation/status, and referral logs.
+- Blogs CRUD and status toggle.
+- Product categories list/create/update/delete against the product-category API.
+
+Admin — products (UI implemented; data largely local/dummy)
+- “Jimta Products” list/create/edit/view drawer and action menus exist; list data is driven by local/initial state rather than a dedicated products service module.
+- “Classic Products” list/create/edit/view drawer with color/size chips and multi-image gallery UI; currently seeded with local dummy data. Backend endpoint constants for classic products exist in `endpoints.js`, but the pages inspected do not yet call a classic-products service.
+
+Admin — orders and dashboard (partial / mock)
+- Order-to-deliver and confirm-delivery screens exist (including shared drawer patterns also used conceptually for service center); current implementations use dummy order data and TODO placeholders for API calls.
+- Admin dashboard presents stats cards and Recharts pie/bar charts with hardcoded sample values (not wired to `/admin/dashboard/stats` in the stats-cards component inspected).
+
+User portal (largely API-integrated)
+- Dashboard stats (wallet balance, Jimta Coin, referrals, referral link pattern using `jimta.live`).
+- Earning log, transfer log, Jimta Coin transfer, wallet-balance transfer (with user search), payout/bank details, and withdraw-request create/list.
+- Referral code, referral logs, and my-referrals screens via user referral services (some screens retain dummy fallback comments when responses are empty).
+- Profile screen uses profile service integration for user profile operations.
+
+Service center portal (mixed)
+- Profile get/update via service-center profile service.
+- Referral code, referral logs, and my-referrals wired to service referral services (with dummy fallback behavior noted in places).
+- Jimta Coin transfer, wallet-balance transfer, payout details, and transfer-log screens are present and follow the same portal patterns as the user side (commit history and service usage indicate progressive API wiring).
+- Earning log and order/confirm-delivery screens still rely on dummy/local data in the current code.
+- SC dashboard stats cards use hardcoded sample values.
+
+Cross-cutting UI and API architecture
+- Central `apiClient` with Bearer token from decrypted cookie, FormData awareness, and consistent 401/403/5xx error handling (401 redirects to login).
+- Shared `DataTable`, drawers, action dropdowns, badges, and toast feedback (sonner; legacy toast helper also present).
+- Responsive sidebar/shell behavior for desktop and mobile navigation patterns.
+- Architecture/onboarding guide (`ARCHITECTURE.md`) documents the intended patterns and known gaps.
+
+Incomplete / planned / placeholder (do not treat as finished backend features)
+- Middleware does not currently match user-portal routes; no `USER_ONLY` list—documented as a known gap.
+- Products (Jimta/Classic) and several order-delivery flows are UI-complete with local/dummy data.
+- Admin and SC dashboard chart/stat cards largely use static demo numbers.
+- Notifications UI exists in navigation; depth of API integration should be confirmed before claiming full notification management.
+- No automated test suite was found in the repository.
+- Token refresh endpoint is defined but unused; some legacy cookie/crypto helpers under `src/data/` duplicate `src/lib/` utilities.
+
+CHALLENGES
+Supporting three portals in one App Router app required careful separation of route groups, role-based sidebar config, and middleware ownership lists. The architecture doc emphasizes a “three-list sync” rule: middleware role lists, middleware `matcher`, and `NAV_CONFIG` must stay aligned when adding routes—missing any one leaves a page unprotected, unreachable, or invisible.
+
+Session handling uses an encrypted non-httpOnly token cookie plus a plain role cookie. That design enables middleware and client `apiClient` to read the session, but the project’s own architecture notes document real security tradeoffs: the AES key is a `NEXT_PUBLIC_` value (client-visible), the role cookie is client-writable, and middleware role checks are routing UX rather than authoritative authorization. Backend API enforcement remains the real security boundary.
+
+API integration was rolled out domain by domain (users, wallet, packages, referrals, service centers, then user/SC portals). That incremental approach left intentional interim states: dummy fallbacks when list APIs return empty, TODO stubs on order delivery confirmation, and catalog screens still on local state despite endpoint constants existing. Keeping UI shippable while backend contracts matured is a recurring implementation consideration visible in commits and comments.
+
+Shared components (for example order view drawers and common transfer/payout modals) reduce duplication across admin and service-center flows, but require careful prop contracts so pages own fetching/mutation state while presentational components stay reusable.
+
+User-portal routes not being in the middleware matcher remains an explicit incomplete auth-gate concern documented in `ARCHITECTURE.md` and still reflected in the current `middleware.js` matcher list.
+
+LESSONS LEARNED
+A thin, consistent API layer—endpoints registry, one fetch client, and domain services—makes multi-portal feature work predictable: pages fetch and normalize; forms receive submit handlers as props; errors surface as toast messages from thrown API errors.
+
+Documenting architecture early (`ARCHITECTURE.md`) captures both the intended patterns and the known gaps (user-route protection, cosmetic token encryption, unwired product/order screens). That honesty reduces onboarding cost and helps future work prioritize security and API completion over new UI shells.
+
+Role-based UX and shared shells work well when navigation config is centralized, but route protection must be treated as a first-class checklist item whenever a new path is added—especially across three roles.
+
+Separating “UI complete” from “API complete” is essential for this codebase: list/create/edit screens can look finished while still backed by dummy arrays. Portfolio and handoff materials should keep that distinction explicit.
+
+[NEEDS CONFIRMATION] Personal process lessons (team velocity, client feedback cycles, production incident learnings) cannot be inferred from the repository alone and should be filled in by the developer if used in a personal portfolio narrative.
+
+Related URLs noted in source (not verified as this dashboard’s Live URL):
+- Website link used in sidebar/redirect: https://jimta-website-bilal.vercel.app/
+- Referral link pattern used in user stats UI: https://jimta.live/user/referral/{userId}
+- Dashboard production/staging URL for this Next.js app: [NEEDS CONFIRMATION]

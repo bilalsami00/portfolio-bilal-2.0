@@ -1,0 +1,63 @@
+PROJECT METADATA
+Project Name: Jimta
+Project Slug: jimta
+Project Type / Category: Multi-store ecommerce & digital ecosystem web frontend
+Technology Stack: Next.js 16 (App Router), React 19, Tailwind CSS 4, React Compiler, Embla Carousel, Lucide React, React Icons, react-international-phone; external Jimta backend API for auth
+Project Year: 2026
+Live URL:
+Repository URL: https://github.com/bilalsami00/jimta-website-bilal.git
+
+OVERVIEW
+Jimta is a Next.js frontend for Jimta Group International’s member-facing digital ecosystem. The site presents shopping, loyalty/coin products, wallet and rewards messaging, service centers, subscriptions, referrals, and educational content under one brand. Intended users are platform members and shoppers who browse Jimta Shop and Classic Commerce, manage an account, and learn how coins, wallets, and service centers fit together.
+
+Architecturally, the app uses the Next.js App Router with route groups for authenticated marketing pages and auth flows. Most product catalogs and marketing sections are client-rendered from static/demo data. Login and multi-step registration call a remote backend (jimta-backend.mazedigital.us), with session tokens stored in httpOnly cookies via Next.js API route handlers. Classic Commerce cart and service-center selection persist in localStorage on the client; account order/shipping/payment UIs and several recovery flows remain frontend demos pending fuller backend integration.
+
+PROBLEM & SOLUTION
+Problem:
+Members need a single web presence that explains and navigates a broad ecosystem—stores, coins, wallet balances, rewards, service centers, and account settings—while supporting sign-up, sign-in, and a usable shopping path. The repository does not document a prior system being replaced; the observable need is a cohesive, responsive member site that can grow from marketing and demo commerce into live commerce and account APIs.
+
+Solution:
+The implemented application delivers a branded multi-section website with shared navigation and footer, two commerce surfaces (Jimta Shop and Classic Commerce), and a cookie-based auth path against the Jimta backend. Classic Commerce provides listing, product detail, cart, checkout UI, and service-center selection with client persistence. Account screens reuse the auth session for profile display and offer validated forms for shipping and payment method entry. Informational pages cover coins, wallet, rewards, referral, subscription/upgrade, FAQ, blogs, legal pages, and contact. Where APIs are not yet connected, the UI is explicitly demo- or TODO-driven so flows can be completed visually without inventing backend behavior.
+
+FEATURES
+Implemented (working in the frontend as coded):
+
+- Marketing home: hero, hot-selling/new products, services overview, and “Why Choose Jimta” content.
+- Global layout: responsive navbar (shop links, secondary ecosystem links, cart, wallet, language, profile) and site footer; Classic Commerce cart state shared via React context on home routes.
+- Jimta Shop: category filters, sorting/toolbar UI, product grid from static catalog data, and product detail pages.
+- Classic Commerce storefront: landing (hero, categories, featured/trending carousels, hot deals), featured and trending listing pages with pagination/toolbar, product detail (gallery, size/qty, add to cart), cart page, checkout page, navbar cart badge/dropdown, and service-center drawer with searchable demo centers.
+- Classic Commerce cart persistence: cart lines and selected service center stored in localStorage with hydration-safe client state.
+- Authentication: login against backend via /api/auth/login (httpOnly jimta_token + readable jimta_auth flag); logout via /api/auth/logout; session presence check via /api/auth/session; client user snapshot for navbar/account UI.
+- Multi-step registration: personal details, password step, address completion; step data held in sessionStorage; final step POSTs to backend register endpoint and redirects to login.
+- Account area: About/personal info (session + fallbacks), Orders table UI, Shipping Address form with validation, Payment Method form with validation; profile dropdown and account shell navigation.
+- Ecosystem/content pages: About, Jimta Coin, Coin Package, Wallet, Rewards, Referral System, Shopping Points, Bonus Points, Subscription, Upgrade, Service Center, Service Center Registration, Eco System, Become Member, Support, FAQ, Blogs (list + slug page), Contact, Terms, Privacy, Returns, Payment Methods info, and related sections.
+- Form UX patterns: shared validators/helpers, international phone input on relevant forms, client-side error messages, loading/submit states on auth and several forms.
+- Carousel UX: Embla-based product and hero carousels with autoplay/navigation where used.
+
+Incomplete / demo / planned (present in UI but not fully backed by live APIs):
+
+- Classic Commerce catalogs, service centers, checkout payment actions, and product reviews: demo/static data; checkout notes payment as UI-only; reviews saved locally for demo.
+- Account orders, shipping countries/cities, and payment method submit: demo data / frontend-only; commits note real backend integrations for later.
+- Forgot password, OTP verify, and reset password: UI flows with TODO placeholders for API calls.
+- Contact form: validates and simulates success with a delayed fake submit (no contact API).
+- Language selector: UI for EN/FR/ES/PT without an i18n translation layer.
+- Some home service cards link to “/” rather than dedicated destinations; several ecosystem destinations (e.g. real estate, hotels) appear as marketing concepts rather than implemented storefronts.
+- Blog detail content: TODO comments indicate API fetch not wired.
+- Automated test suite: not present in this repository (lint script only).
+
+CHALLENGES
+- Bridging secure server-side auth with a largely client-rendered UI: access tokens stay in httpOnly cookies while the client uses a readable auth flag, localStorage user snapshot, and /api/auth/session to drive navbar and account state without exposing the token to JavaScript.
+- Multi-step registration without losing form continuity: sessionStorage stores intermediate steps, navigation flags distinguish intentional step moves from refresh, and step guards redirect incomplete flows back to the start.
+- Classic Commerce cart hydration: reading localStorage only after mount avoids SSR/client mismatches while keeping cart and service-center selection available across listing, PDP, cart, checkout, and navbar dropdown.
+- Separating demo commerce/account UX from live auth: product, order, and payment surfaces are intentionally frontend demos so the shopping and account journeys can be designed and validated before cart, payment, and order APIs exist.
+- Responsive, design-system-aligned UI across many marketing and commerce routes (Figma-driven Classic Commerce and account flows noted in commit history), including drawers, dropdowns, and mobile navigation.
+- Form validation and error surfacing across auth, contact, shipping, and payment screens without a shared backend schema for every form yet.
+- [NEEDS CONFIRMATION] Whether production deployment, CSRF/token refresh strategy beyond cookie flags, or map/payment integrations were scoped as formal project risks.
+
+LESSONS LEARNED
+- Keeping tokens in httpOnly cookies via Next.js route handlers while caching a non-sensitive user snapshot for UI is a practical split for App Router sites that call an external auth API.
+- Explicitly labeling demo catalogs, demo orders, and UI-only payment clarifies delivery scope and avoids presenting unfinished integrations as production commerce.
+- A shared cart context plus localStorage persistence is enough to prove end-to-end Classic Commerce UX (browse → cart → checkout → service center) before introducing a remote cart service.
+- Centralizing registration step state and field validators reduces duplication across multi-page auth flows and makes backend field mapping (e.g. phoneNumber) easier to keep consistent.
+- Enabling the React Compiler in Next config and structuring reusable listing/carousel/account shells supports maintainability as the ecosystem page count grows.
+- [NEEDS CONFIRMATION] Personal takeaways on timeline, stakeholder priorities, or production metrics after API wiring—these are not recorded in the repository.

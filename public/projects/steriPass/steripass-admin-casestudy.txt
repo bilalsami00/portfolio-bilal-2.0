@@ -1,0 +1,57 @@
+PROJECT METADATA
+Project Name: SteriPass Admin Dashboard
+Project Slug: steripass-admin
+Project Type / Category: Multi-role web admin dashboard (healthcare / sterile tray operations)
+Technology Stack: Next.js (App Router), React, Tailwind CSS, Ant Design, Chart.js (react-chartjs-2), Yup, React Hook Form, js-cookie, dayjs, qrcode, jsQR; REST API client; GitHub Actions + PM2 deployment
+Project Year: 2026
+Live URL:
+Repository URL: https://github.com/sudoosama/maze-steripass-admin
+
+OVERVIEW
+SteriPass Admin Dashboard is a Next.js web application that serves as the administrative and operational front end for the SteriPass platform. It gives three account types—super admin, hospital, and vendor—role-specific access to dashboards, tray reporting, hospital and vendor management, staff tools, transactions, and revenue views. Users authenticate against a remote SteriPass REST API; the app stores session tokens in cookies and localStorage and enforces route access through Next.js middleware plus a client-side route guard. The UI is built with Tailwind CSS and Ant Design components, with Chart.js used for analytics visualizations. Staging and production deploy pipelines build the Next.js app and run it under PM2 on a VPS. In the current codebase the API base points at the staging host (api-stag.steri-pass.com), with production API (api.steri-pass.com) referenced for comparison and a visible “Testing Mode” badge when not on production.
+
+PROBLEM & SOLUTION
+Problem:
+Sterile tray workflows involve hospitals, vendors, and platform operators who need to track tray check-in/check-out status, manage staff and managers, review transactions and overdue revenue, and act on operational data from a browser. Without a shared, role-aware admin surface, those workflows would depend on disconnected tools or direct backend access. The original business motivation beyond this observable need is [NEEDS CONFIRMATION].
+
+Solution:
+The application provides a role-selected entry flow and JWT-backed sessions that map each user to an allowed set of routes and navigation. Super admins manage hospitals and managers, browse all vendors, view platform analytics, transactions, and overdue revenue. Hospitals manage staff (including QR-based flows), view hospital-scoped vendors and reporting, and can check out trays as managers. Vendors see their tray activity, reporting, and transactions. Shared concerns—API error handling (including 401 session teardown), date filters, pagination, responsive layouts, and tray detail/checkout—are implemented as reusable screens and helpers against documented REST endpoints.
+
+FEATURES
+- Role-based entry and authentication: Landing role selection (Hospital / Vendor), hospital onboard (password check or OTP), vendor/hospital login, separate super-admin login, and forgot-password flows (email OTP → code verification → set password) for both admin and non-admin paths.
+- Session and route protection: Cookie-based middleware allowlists per role (admin, hospital, vendor), Cache-Control no-store to reduce bfcache stale-auth issues, client RouteGuard on navigation/back-forward, and automatic logout redirect on API 401.
+- Super admin dashboard: Summary cards (vendors, revenue) and Chart.js charts for revenue over time, tray status, and specialty distribution, with time-range filters and a mobile filter drawer.
+- Hospital / vendor dashboards: Hospital-facing analytics charts from the admin dashboard API scoped by hospital; vendor dashboard with checked-in/out counts and a recent trays list linked into reporting.
+- Hospital management (super admin): Searchable, paginated hospital list; create/edit hospital (including expedite timing and optional case ID); activate/deactivate; detail view with trays, transactions, and managers; invite/resend/remove managers; view/download manager QR codes.
+- All Vendors (super admin): Platform-wide vendor listing and detail, including nested hospital context and tray drill-down.
+- Hospital-scoped Vendors: Vendors associated with a selected hospital (hospital users and admin “hospital workspace” after hospital selection in the header).
+- Reporting: Role-specific tray listings with search, status, and date-range filters; tray detail via a shared TrayDetail component showing tray metadata, images, and checkout; hospital managers and admins use different checkout endpoints.
+- Staff management (hospital): CRUD-style staff listing with search/status filters; add/edit/deactivate; generate QR, upload/decode QR (jsQR), and camera scan flows for staff onboarding.
+- Transactions: Vendor and admin transaction tables with hospital filtering for admins.
+- Overdue revenue (super admin): Overdue transaction listing with hospital and date filters, status display, and invoice download gated when no transactions exist.
+- Settings and profile: Header settings modal for super admin (app version and payment amount configuration); hospital manager self QR and profile edit; testing-mode indicator when not pointed at the production API.
+- Responsive admin shell: Collapsible sidebar, mobile hamburger navigation, responsive auth/role screens, and mobile-oriented date picker / modal scroll behavior refined in recent commits.
+- CI/CD: GitHub Actions workflows deploy staging (port 5001) and production (port 5000) builds to a VPS via SSH/SCP and PM2.
+
+Incomplete or limited relative to finished product claims:
+- Sidebar Settings route is not present; settings live in a header modal for super admin. Hospital settings gear in the header is commented out.
+- Some admin dashboard filter controls for tray-status charts appear as UI placeholders without fully wired options.
+- Hospital dashboard revenue summary UI is largely commented out.
+- Terms and Privacy profile links are commented out.
+- Frontend public Live URL is not documented in the repository.
+
+CHALLENGES
+- Multi-role authorization consistency: Middleware role allowlists, sidebar menus, dashboard branching, and API accountType must stay aligned across SUPER_ADMIN, HOSPITAL, and VENDOR. Evidence of iterative middleware and RouteGuard revisions (including bfcache / browser Back handling) shows this was an ongoing implementation concern.
+- Auth session storage split: Tokens live in both cookies (middleware) and localStorage (API Bearer header), with JWT claim decoding for account type. Keeping login, password-reset, and 401 cleanup coherent across those layers required careful flow helpers.
+- Tray lifecycle across roles: Checkout behavior differs for hospital managers versus admins; remaining counts and expiry-related listing states needed to stay consistent after checkout, back navigation, and refresh (addressed in commit history).
+- Operational UI at scale: Paginated tables, debounced search, date range pickers with API-specific date formats, and downloadable overdue invoices required careful empty-state and filter handling.
+- Responsive and mobile polish: Mobile date filters, modal overlays (e.g. Edit Hospital), sidebar/nav behavior, and QR/camera flows on smaller screens appear as repeated fix themes in recent commits.
+- Environment and deploy separation: Hard-coded API base switching between staging and production, Testing Mode badge, and dual GitHub Actions pipelines (staging/production branches) reflect the need to keep admin builds aligned with the correct backend without exposing secrets in source.
+
+LESSONS LEARNED
+- Centralizing cross-cutting UI (TrayDetail, shared table/skeleton patterns, range-picker helpers) reduces duplication across hospital, vendor, and reporting entry points.
+- Explicit role allowlists in middleware are effective only when paired with client-side guards and no-store headers; browser history/bfcache can otherwise re-surface authenticated or public pages incorrectly.
+- Distinguishing staging vs production at the API client layer (and surfacing Testing Mode in the UI) helps operators avoid acting on the wrong environment during active development.
+- Form validation with Yup + React Hook Form, combined with Ant Design messaging and abortable fetch timeouts, provides a consistent error/UX pattern across auth and entity dialogs.
+- [NEEDS CONFIRMATION] Broader product lessons (client outcomes, adoption metrics, or why SteriPass chose this admin architecture) are not documented in-repo and would need developer or stakeholder input.
+)
