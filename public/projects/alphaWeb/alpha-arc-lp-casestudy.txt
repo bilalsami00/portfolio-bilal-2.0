@@ -1,0 +1,55 @@
+PROJECT METADATA
+Project Name: Alpha Arc (Landing Page)
+Project Slug: alpha-arc
+Project Type / Category: Marketing website / mobile app landing page
+Technology Stack: Next.js (App Router), React, TypeScript/JSX, Tailwind CSS, Framer Motion, next/font (Open Sans), custom Placard Next fonts
+Project Year: 2026
+Live URL:
+Repository URL: https://github.com/bilalsami00/alpha-lp.git
+
+OVERVIEW
+Alpha Arc is a marketing landing site for the Alpha Arc mobile app, a daily performance product focused on habits, mindset training, reflection, and optional sales-team development. This repository implements the public web presence that explains the product, walks visitors through how the app works, answers common questions, and directs users to download the iOS app from the App Store. The intended audience is individuals seeking structured daily routines and personal growth, including (but not limited to) sales professionals who can unlock team training and leaderboard features inside the app.
+
+The site is a front-end-only Next.js application. It uses the App Router for a single-page home experience plus dedicated Privacy Policy and Terms & Conditions routes. Layout and styling rely on Tailwind CSS with a dark brand theme, custom Placard Next display typography, and Framer Motion for scroll-triggered and hero animations. There is no application backend, authentication, or API layer in this repository; legal copy and FAQ content describe the mobile product’s capabilities, while the web app itself presents static marketing and legal pages.
+
+PROBLEM & SOLUTION
+Problem:
+Prospective users need a clear, branded web destination that explains what Alpha Arc is, how its daily loop works (Drops, habits, ARC Score, sales features), and how to get the app—without requiring them to install anything first. The product also needs public Privacy Policy and Terms & Conditions pages that accurately describe account data, sales-team workflows, and usage rules. [NEEDS CONFIRMATION: original business motivation, client brief, and whether this landing page replaced a prior site.]
+
+Solution:
+The implemented site delivers a focused conversion-oriented landing page: a hero with value proposition and App Store CTA, a feature grid summarizing core app capabilities, a multi-step “How it works” narrative with product mockups, an About section, an accordion FAQ, and a footer with navigation and legal links. Separate Next.js routes host Privacy Policy and Terms & Conditions content aligned with the mobile product’s features (habits, ARC Score, Mind sessions, Daily Debrief, Daily W, sales teams, invite/team codes). Play Store download UI exists in the codebase but is currently commented out / temporarily hidden, so the live CTAs prioritize the published App Store listing.
+
+FEATURES
+- Hero section with brand headline, floating phone mockup animation (Framer Motion), and App Store download link to the live Alpha Arc iOS listing.
+- Responsive navigation with desktop link bar and full-screen mobile menu (body scroll lock while open), plus “Get the App” CTA linking to the App Store.
+- Features (“All-in-one”) grid documenting six product capabilities presented to visitors: habit building, Daily Debrief, Mind Training Sessions, streaks, ARC Score tracking, and Sales Training.
+- How it works narrative with four illustrated steps: Today’s Drop, daily habits, ARC Score, and sales-team leveling (Daily W streaks, lessons, leaderboards).
+- About section (embedded on the home page within the How it Works component) describing product purpose and positioning around routines, mindset, reflection, and sustainable progress.
+- FAQ accordion with animated expand/collapse and measured content heights for seven product questions (what Alpha Arc is, ARC Score, Today’s Drop, sales eligibility, joining a team, Daily Debrief, Mind sessions).
+- Privacy Policy page covering data collection/use, sales-team admin access, sharing, retention, security, user rights, children’s privacy, and contact details (last updated August 2026 in-page).
+- Terms & Conditions page covering service use, account activity, sales teams, invite/team codes, user content, suspension, IP, liability, and related legal terms (last updated August 2026 in-page).
+- Footer with App Store badge, dynamic copyright year, in-page section anchors, and links to Privacy Policy and Terms & Conditions.
+- Brand presentation: dark theme (#0E0E0E), gold/green accent styling, custom Placard Next fonts, Open Sans via next/font, and optimized images via next/image.
+
+Incomplete / not currently active on the live home composition:
+- Standalone AboutUs component exists but is commented out of the home page import/render path; About content is instead rendered inside HowItWorks.
+- Google Play Store buttons and related CTAs are present in components but commented out / marked temporarily hidden across hero, features, how-it-works, and footer.
+- lucide-react is listed in package dependencies but is not actively imported in the running UI (only a commented import remains).
+- next.config.ts contains a commented static-export option; the project runs as a standard Next.js app rather than a confirmed static export deployment.
+- No automated tests were found in the repository.
+
+CHALLENGES
+- Responsive marketing layout across hero, multi-column feature cards, and large product mockups while preserving brand typography and spacing on mobile and desktop. [Implementation consideration supported by component structure and responsive Tailwind classes.]
+- Mobile navigation UX: implementing a full-viewport overlay menu with open/close transitions and preventing background scroll while the menu is open.
+- Accordion FAQ height animation: measuring answer content heights so expand/collapse transitions work smoothly without hard-coded heights.
+- Scroll-driven storytelling: coordinating Framer Motion whileInView animations across multiple How it Works steps without overwhelming the page (viewport thresholds and once:true usage).
+- Content and CTA consistency as the product messaging and store availability evolved (About copy revisions, Play Store CTA temporarily disabled, legal pages updated), requiring careful alignment between marketing claims and the published App Store product. [NEEDS CONFIRMATION: whether store-availability timing or legal review were formal project constraints.]
+- Distinguishing landing-page scope from the mobile app: this repository markets features such as ARC Score, streaks, and sales teams but does not implement those product systems itself.
+
+LESSONS LEARNED
+- A conversion landing page can remain maintainable when major sections are isolated as components (Hero, Features, HowItWorks, FAQ, Footer) and composed on a single home route, with legal content kept on dedicated routes.
+- Anchored section IDs (#howItWorkSection, #aboutUs, #faqSection) plus scroll-smooth on the document improve in-page navigation for both desktop and mobile menus.
+- Temporarily disabling incomplete channels (Play Store) via commented CTAs avoids misleading visitors while preserving the UI for later re-enablement—though commented code also increases long-term cleanup cost.
+- Keeping legal and FAQ copy in sync with the actual mobile product surface (habits, ARC Score, Mind, Debrief, sales teams, invite codes) is important for trust; this site’s legal pages were updated in tandem with product messaging (commit history and “Last Updated: August 2026”).
+- Declaring a dependency does not equal using it: lucide-react appears in package.json but is not part of the active UI, which is a reminder to verify real usage before listing technologies in a portfolio or resume.
+- [NEEDS CONFIRMATION] Personal takeaways around design collaboration, performance budgets, accessibility audits, or deployment pipeline choices (hosting platform, CI, analytics) cannot be established from the repository alone.

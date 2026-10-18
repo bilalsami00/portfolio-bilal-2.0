@@ -1,55 +1,107 @@
 PROJECT METADATA
-Project Name: Alpha Arc (Landing Page)
+Project Name: ALPHA ARC Admin Dashboard
 Project Slug: alpha-arc
-Project Type / Category: Marketing website / mobile app landing page
-Technology Stack: Next.js (App Router), React, TypeScript/JSX, Tailwind CSS, Framer Motion, next/font (Open Sans), custom Placard Next fonts
-Project Year: 2026
+Project Type / Category: Admin dashboard / content operations web app (frontend-only)
+Technology Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, axios, react-hot-toast, react-icons, next/font (Open Sans); external REST backend; AWS S3 (presigned uploads)
+Project Year: 2025–2026
 Live URL:
-Repository URL: https://github.com/bilalsami00/alpha-lp.git
+Repository URL: https://github.com/bilalsami00/alpha3
 
 OVERVIEW
-Alpha Arc is a marketing landing site for the Alpha Arc mobile app, a daily performance product focused on habits, mindset training, reflection, and optional sales-team development. This repository implements the public web presence that explains the product, walks visitors through how the app works, answers common questions, and directs users to download the iOS app from the App Store. The intended audience is individuals seeking structured daily routines and personal growth, including (but not limited to) sales professionals who can unlock team training and leaderboard features inside the app.
 
-The site is a front-end-only Next.js application. It uses the App Router for a single-page home experience plus dedicated Privacy Policy and Terms & Conditions routes. Layout and styling rely on Tailwind CSS with a dark brand theme, custom Placard Next display typography, and Framer Motion for scroll-triggered and hero animations. There is no application backend, authentication, or API layer in this repository; legal copy and FAQ content describe the mobile product’s capabilities, while the web app itself presents static marketing and legal pages.
+ALPHA ARC Admin Dashboard is a Next.js web application that serves as the operations panel for the Alpha Arc product. It is frontend-only: business data and persistence live in an external REST API, and media files are stored in AWS S3. Administrators use the panel to manage app users and teams, schedule daily quotes, publish audio and video content, review support tickets, and set Android/iOS app version numbers. The browser UI talks to domain service modules over a shared axios client; in the browser those calls are same-origin and proxied to the backend by Next.js rewrites to avoid CORS. Authentication is JWT-based (admin login), with session presence checked by middleware and a client ProtectedRoute. Access is single-role: any successful admin login grants full dashboard access.
 
 PROBLEM & SOLUTION
+
 Problem:
-Prospective users need a clear, branded web destination that explains what Alpha Arc is, how its daily loop works (Drops, habits, ARC Score, sales features), and how to get the app—without requiring them to install anything first. The product also needs public Privacy Policy and Terms & Conditions pages that accurately describe account data, sales-team workflows, and usage rules. [NEEDS CONFIRMATION: original business motivation, client brief, and whether this landing page replaced a prior site.]
+A mobile-facing product needs centralized administrative control over users, team membership, scheduled daily content, and media libraries without building that tooling into the mobile app itself. Operators also need a reliable way to upload or link media, handle support tickets, and publish app version numbers used by clients. The original product motivation beyond this operational need is not documented in the repository and remains [NEEDS CONFIRMATION].
 
 Solution:
-The implemented site delivers a focused conversion-oriented landing page: a hero with value proposition and App Store CTA, a feature grid summarizing core app capabilities, a multi-step “How it works” narrative with product mockups, an About section, an accordion FAQ, and a footer with navigation and legal links. Separate Next.js routes host Privacy Policy and Terms & Conditions content aligned with the mobile product’s features (habits, ARC Score, Mind sessions, Daily Debrief, Daily W, sales teams, invite/team codes). Play Store download UI exists in the codebase but is currently commented out / temporarily hidden, so the live CTAs prioritize the published App Store listing.
+The implemented dashboard provides authenticated admin screens that call backend APIs through a Next.js rewrite proxy and upload files directly to S3 via backend-issued presigned URLs. Feature areas follow a consistent pattern: a container page owns fetch/mutation state; shared UI (GenericTable, search, pagination, drawers/modals) presents data; service modules encapsulate each API domain. Route protection combines cookie-aware middleware with client-side token checks. Sidebar navigation exposes the active admin workflows (users, teams, quotes, audios, videos, help & support, settings), while some earlier modules remain in code but are hidden from the menu.
 
 FEATURES
-- Hero section with brand headline, floating phone mockup animation (Framer Motion), and App Store download link to the live Alpha Arc iOS listing.
-- Responsive navigation with desktop link bar and full-screen mobile menu (body scroll lock while open), plus “Get the App” CTA linking to the App Store.
-- Features (“All-in-one”) grid documenting six product capabilities presented to visitors: habit building, Daily Debrief, Mind Training Sessions, streaks, ARC Score tracking, and Sales Training.
-- How it works narrative with four illustrated steps: Today’s Drop, daily habits, ARC Score, and sales-team leveling (Daily W streaks, lessons, leaderboards).
-- About section (embedded on the home page within the How it Works component) describing product purpose and positioning around routines, mindset, reflection, and sustainable progress.
-- FAQ accordion with animated expand/collapse and measured content heights for seven product questions (what Alpha Arc is, ARC Score, Today’s Drop, sales eligibility, joining a team, Daily Debrief, Mind sessions).
-- Privacy Policy page covering data collection/use, sales-team admin access, sharing, retention, security, user rights, children’s privacy, and contact details (last updated August 2026 in-page).
-- Terms & Conditions page covering service use, account activity, sales teams, invite/team codes, user content, suspension, IP, liability, and related legal terms (last updated August 2026 in-page).
-- Footer with App Store badge, dynamic copyright year, in-page section anchors, and links to Privacy Policy and Terms & Conditions.
-- Brand presentation: dark theme (#0E0E0E), gold/green accent styling, custom Placard Next fonts, Open Sans via next/font, and optimized images via next/image.
 
-Incomplete / not currently active on the live home composition:
-- Standalone AboutUs component exists but is commented out of the home page import/render path; About content is instead rendered inside HowItWorks.
-- Google Play Store buttons and related CTAs are present in components but commented out / marked temporarily hidden across hero, features, how-it-works, and footer.
-- lucide-react is listed in package dependencies but is not actively imported in the running UI (only a commented import remains).
-- next.config.ts contains a commented static-export option; the project runs as a standard Next.js app rather than a confirmed static export deployment.
-- No automated tests were found in the repository.
+Admin authentication and password reset
+- Login against `/api/auth/admin-login` (proxied), with client validation for email/password.
+- JWT stored in localStorage and mirrored in a client-readable `session_token_client` cookie so middleware can gate `/dashboard`.
+- Forget-password → OTP → new-password flow with sessionStorage-held reset state.
+- Logout clears tokens/cookies and navigates to login; axios responds to HTTP 401 by clearing session and redirecting to login.
+
+Users management
+- Paginated list with search/filters; user detail drawer.
+- Restrict/unrestrict, delete, edit habit/win streaks, send/resend team invites.
+- Team-request workflows (sales-tab / appeal style requests) with assign-team UI integrated against backend endpoints.
+- Hybrid search: normal browsing is server-paginated; active search can fetch a larger set and filter client-side.
+
+Team management
+- Create, update, delete teams; search and paginate team lists.
+- Team detail via dynamic `/dashboard/team-management/[slug]` using slug helpers and a module-level/session cache for resolution.
+- Assign members, edit/remove members, display/send team codes; existing-user invite flows integrated with the API.
+
+Quote of the Day
+- Schedule and manage quotes against calendar dates (reserved dates handled in the UI).
+- Create, update, delete via quotes API; search/pagination patterns shared with related daily-content code.
+- Buzzwords pages/services still exist in the codebase but are not currently exposed in the sidebar menu.
+
+Audio content libraries
+- Daily Drop, Guided Breathwork, and Guided Meditation CRUD.
+- Upload audio and thumbnails to S3 using presigned URLs, then persist metadata (title, author, description, duration, etc.) through the API.
+- In-app audio playback considerations are reflected in commit history and UI (timer/playback edge cases addressed during development).
+
+Video content libraries
+- Weekly Lessons and Sales Training management.
+- Current flow requires YouTube URLs (validated for common youtube.com / youtu.be / shorts / embed / live forms); direct video file upload for these screens is disabled in favor of URL-based videos.
+- Thumbnail upload remains supported; legacy non-YouTube URLs can be preserved unchanged on edit.
+- Video-of-the-day and related older media-library paths exist but are not primary sidebar entries.
+
+Help & Support
+- Lists user-submitted support tickets from the support API, with search, pagination, and a view modal.
+
+Settings
+- Load and update Android and iOS app version strings (semver-style validation such as `1.0.0`) via version API endpoints.
+
+Shared dashboard UX
+- Responsive sidebar navigation driven by `menuConfig.ts`.
+- Reusable GenericTable, drawers, confirm modals, empty states, loaders, and toast feedback (custom toast context on dashboard; react-hot-toast on auth screens).
+
+Present in code but not primary / incomplete relative to sidebar config
+- Sales Manual (Reps Checklist, Fundamental Scripts, Sales Bible), Leaderboard, Hall of Fame, and Hood Status pages remain in the repo and may be URL-reachable, but their menu entries are commented out.
+- Hall of Fame backend proxy rewrites are commented out, so those API calls cannot reach the backend in the current Next config.
+- `@tanstack/react-query` is installed and provided but not used by screens for `useQuery`/`useMutation` data fetching (auth hooks exist but are unused; screens use imperative fetch/axios instead).
 
 CHALLENGES
-- Responsive marketing layout across hero, multi-column feature cards, and large product mockups while preserving brand typography and spacing on mobile and desktop. [Implementation consideration supported by component structure and responsive Tailwind classes.]
-- Mobile navigation UX: implementing a full-viewport overlay menu with open/close transitions and preventing background scroll while the menu is open.
-- Accordion FAQ height animation: measuring answer content heights so expand/collapse transitions work smoothly without hard-coded heights.
-- Scroll-driven storytelling: coordinating Framer Motion whileInView animations across multiple How it Works steps without overwhelming the page (viewport thresholds and once:true usage).
-- Content and CTA consistency as the product messaging and store availability evolved (About copy revisions, Play Store CTA temporarily disabled, legal pages updated), requiring careful alignment between marketing claims and the published App Store product. [NEEDS CONFIRMATION: whether store-availability timing or legal review were formal project constraints.]
-- Distinguishing landing-page scope from the mobile app: this repository markets features such as ARC Score, streaks, and sales teams but does not implement those product systems itself.
+
+Same-origin API proxying
+- Every backend path used by the UI must be declared in `next.config.ts` rewrites; missing entries fail against the Next server rather than the API. This couples frontend service methods to proxy configuration.
+
+Auth across server and client layers
+- Session is a JWT held in localStorage plus a non-HttpOnly client cookie for middleware visibility. Guards check presence rather than validating token expiry at the edge. Password-reset route gating that once used short-lived cookies is largely client-side now. Documented security notes in the repo call out token storage and logging risks as deployment considerations.
+
+Media upload pipeline
+- Presign → direct browser PUT to S3 → metadata create/update must stay consistent across audio/thumbnail (and historically video) flows, including MIME/size validation and error surfacing in drawers.
+
+Team detail routing and cache
+- Slug-based team detail depends on cache/sessionStorage population; direct loads refetch the team list to resolve slugs, which required careful tab/member refresh behavior (addressed in commit history).
+
+Backend response variance
+- Services and pages defensively unwrap multiple response shapes (`data.data` vs `data.items`, alternate field names). That flexibility aids integration but weakens typing (`any` at API boundaries).
+
+Responsive admin UI
+- Commit history and shared layout/sidebar work show iterative fixes for overflow, drawer text, and mobile/desktop layout across dense tables and modals.
+
+Incomplete or shadowed modules
+- Keeping menu-hidden and rewrite-disabled features in-tree creates ambiguity about what is production-ready versus residual. Hall of Fame is a concrete example where UI exists but proxy routes are disabled.
 
 LESSONS LEARNED
-- A conversion landing page can remain maintainable when major sections are isolated as components (Hero, Features, HowItWorks, FAQ, Footer) and composed on a single home route, with legal content kept on dedicated routes.
-- Anchored section IDs (#howItWorkSection, #aboutUs, #faqSection) plus scroll-smooth on the document improve in-page navigation for both desktop and mobile menus.
-- Temporarily disabling incomplete channels (Play Store) via commented CTAs avoids misleading visitors while preserving the UI for later re-enablement—though commented code also increases long-term cleanup cost.
-- Keeping legal and FAQ copy in sync with the actual mobile product surface (habits, ARC Score, Mind, Debrief, sales teams, invite codes) is important for trust; this site’s legal pages were updated in tandem with product messaging (commit history and “Last Updated: August 2026”).
-- Declaring a dependency does not equal using it: lucide-react appears in package.json but is not part of the active UI, which is a reminder to verify real usage before listing technologies in a portfolio or resume.
-- [NEEDS CONFIRMATION] Personal takeaways around design collaboration, performance budgets, accessibility audits, or deployment pipeline choices (hosting platform, CI, analytics) cannot be established from the repository alone.
+
+A rewrite-based BFF-style proxy keeps the browser CORS-free, but it makes “add an API” a two-file change (service + rewrite) and rewards keeping those lists synchronized.
+
+Separating upload bytes (S3 presigned PUT) from metadata writes (REST) reduces backend payload size and keeps the admin UI responsive for large media, provided client validation and error handling stay explicit.
+
+Feature-first folders plus shared table/drawer primitives scale well across many similar CRUD screens, but unused dependencies (React Query) and parallel toast systems show that scaffolding should be wired end-to-end or removed to avoid false architectural signals.
+
+Presence-only session cookies are simple for an internal admin tool, yet they push real authorization and token lifetime enforcement onto the backend; frontend guards alone are not sufficient security. Review of the in-repo security documentation before production hardening remains [NEEDS CONFIRMATION] as a process lesson for the deploying team.
+
+Distinguishing active sidebar features from URL-reachable but menu-hidden or rewrite-disabled screens is important when describing scope to stakeholders—code presence is not the same as shipped admin capability.
+
+[NEEDS CONFIRMATION] Personal or process lessons (team size, timeline constraints, why YouTube URLs replaced direct video uploads, production frontend hostname, and measured operational outcomes) are not established from repository evidence alone.

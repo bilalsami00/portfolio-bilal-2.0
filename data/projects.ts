@@ -4,9 +4,10 @@ import type { PortfolioProject, ProjectCategory, ProjectImage } from "./types";
  * Project records mapped from public/projects case studies.
  * Screenshot files stay in those folders and are served from /projects/...
  *
- * Not rendered: public/projects/alphaWeb has a screenshot and no case study file.
- * public/projects/alphaDash holds the Alpha Arc landing-page write-up beside a
- * chrome-extension capture, which is the only image in that folder.
+ * Alpha Web (public/projects/alphaWeb) is the Alpha Arc landing page.
+ * Alpha Dashboard (public/projects/alphaDash) is the ALPHA ARC admin panel.
+ * Both case-study files use the slug alpha-arc; the dashboard is published as
+ * alpha-arc-dashboard so each project has its own route.
  *
  * featured is a site presentation flag. The case studies do not mark featured work.
  * The three featured entries are public-facing products with complete write-ups;
@@ -574,23 +575,22 @@ export const projects: PortfolioProject[] = [
     technologies: [
       "Next.js",
       "React",
-      "TypeScript/JSX",
+      "TypeScript",
       "Tailwind CSS",
       "Framer Motion",
       "next/font",
     ],
     image: image(
-      "alphaDash",
-      "screencapture-chrome-extension-fdpohaocaechififmbbbbbknoalclacl-capture-html-2026-10-17-21_07_33.png",
-      "Chrome extension capture page stored with the Alpha Arc project files"
+      "alphaWeb",
+      "screencapture-alpha-lp-six-vercel-app-2026-10-17-21_09_43.png",
+      "Alpha Arc landing page screenshot"
     ).src,
-    imageAlt:
-      "Chrome extension capture page stored with the Alpha Arc project files",
+    imageAlt: "Alpha Arc landing page screenshot",
     gallery: [
       image(
-        "alphaDash",
-        "screencapture-chrome-extension-fdpohaocaechififmbbbbbknoalclacl-capture-html-2026-10-17-21_07_33.png",
-        "Chrome extension capture page stored with the Alpha Arc project files"
+        "alphaWeb",
+        "screencapture-alpha-lp-six-vercel-app-2026-10-17-21_09_43.png",
+        "Alpha Arc landing page screenshot"
       ),
     ],
     caseStudy: {
@@ -630,6 +630,79 @@ export const projects: PortfolioProject[] = [
         "Keeping legal and FAQ copy in sync with the actual mobile product surface (habits, ARC Score, Mind, Debrief, sales teams, invite codes) is important for trust; this site’s legal pages were updated in tandem with product messaging (commit history and “Last Updated: August 2026”).",
         "Declaring a dependency does not equal using it: lucide-react appears in package.json but is not part of the active UI.",
         "Personal takeaways around design collaboration, performance budgets, accessibility audits, or deployment pipeline choices cannot be established from the repository alone.",
+      ],
+    },
+  },
+  {
+    id: "project-alpha-arc-dashboard",
+    slug: "alpha-arc-dashboard",
+    title: "ALPHA ARC Admin Dashboard",
+    shortDescription:
+      "A frontend-only Next.js operations panel for the Alpha Arc product, used to manage users, teams, daily content, media, support tickets, and app version numbers.",
+    year: "2025–2026",
+    category: "Web Application",
+    featured: false,
+    repositoryUrl: "https://github.com/bilalsami00/alpha3",
+    technologies: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Axios",
+      "react-hot-toast",
+      "react-icons",
+      "AWS S3",
+    ],
+    image: image(
+      "alphaDash",
+      "screencapture-chrome-extension-fdpohaocaechififmbbbbbknoalclacl-capture-html-2026-10-17-21_07_33.png",
+      "ALPHA ARC Admin Dashboard screenshot"
+    ).src,
+    imageAlt: "ALPHA ARC Admin Dashboard screenshot",
+    gallery: [
+      image(
+        "alphaDash",
+        "screencapture-chrome-extension-fdpohaocaechififmbbbbbknoalclacl-capture-html-2026-10-17-21_07_33.png",
+        "ALPHA ARC Admin Dashboard screenshot"
+      ),
+    ],
+    caseStudy: {
+      overview: [
+        "ALPHA ARC Admin Dashboard is a Next.js web application that serves as the operations panel for the Alpha Arc product. It is frontend-only: business data and persistence live in an external REST API, and media files are stored in AWS S3. Administrators use the panel to manage app users and teams, schedule daily quotes, publish audio and video content, review support tickets, and set Android and iOS app version numbers.",
+        "The browser UI talks to domain service modules over a shared Axios client. In the browser those calls are same-origin and proxied to the backend by Next.js rewrites to avoid CORS. Authentication is JWT-based admin login, with session presence checked by middleware and a client ProtectedRoute. Access is single-role: any successful admin login grants full dashboard access.",
+      ],
+      problem:
+        "A mobile-facing product needs centralized administrative control over users, team membership, scheduled daily content, and media libraries without building that tooling into the mobile app itself. Operators also need a reliable way to upload or link media, handle support tickets, and publish app version numbers used by clients. The original product motivation beyond this operational need is not documented in the repository and needs confirmation.",
+      solution:
+        "The dashboard provides authenticated admin screens that call backend APIs through a Next.js rewrite proxy and upload files directly to S3 via backend-issued presigned URLs. Feature areas follow a consistent pattern: a container page owns fetch and mutation state, shared UI (GenericTable, search, pagination, drawers, and modals) presents data, and service modules encapsulate each API domain. Route protection combines cookie-aware middleware with client-side token checks. Sidebar navigation exposes the active admin workflows (users, teams, quotes, audios, videos, help and support, settings), while some earlier modules remain in code but are hidden from the menu.",
+      features: [
+        "Admin authentication and password reset: login against /api/auth/admin-login (proxied), with client validation for email and password. The JWT is stored in localStorage and mirrored in a client-readable session_token_client cookie so middleware can gate /dashboard. Forget-password, OTP, and new-password steps keep reset state in sessionStorage. Logout clears tokens and cookies and navigates to login. Axios responds to HTTP 401 by clearing the session and redirecting to login.",
+        "Users management: paginated list with search and filters, plus a user detail drawer. Actions include restrict and unrestrict, delete, edit habit and win streaks, and send or resend team invites. Team-request workflows (sales-tab and appeal-style requests) include assign-team UI against backend endpoints. Normal browsing is server-paginated; an active search can fetch a larger set and filter client-side.",
+        "Team management: create, update, and delete teams, with search and pagination. Team detail uses /dashboard/team-management/[slug], slug helpers, and a module-level session cache for resolution. Operators can assign members, edit or remove members, display or send team codes, and invite existing users through the API.",
+        "Quote of the Day: schedule and manage quotes against calendar dates, including reserved dates in the UI. Create, update, and delete go through the quotes API, with search and pagination shared with related daily-content code. Buzzwords pages and services still exist in the codebase but are not exposed in the sidebar.",
+        "Audio content libraries: Daily Drop, Guided Breathwork, and Guided Meditation CRUD. Audio and thumbnails upload to S3 with presigned URLs, then metadata (title, author, description, duration, and related fields) is persisted through the API. In-app audio playback considerations, including timer and playback edge cases, are reflected in the UI.",
+        "Video content libraries: Weekly Lessons and Sales Training management. The current flow requires YouTube URLs, validated for common youtube.com, youtu.be, shorts, embed, and live forms. Direct video file upload on these screens is disabled in favor of URL-based videos. Thumbnail upload remains supported, and legacy non-YouTube URLs can be preserved unchanged on edit. Video-of-the-day and related older media-library paths exist but are not primary sidebar entries.",
+        "Help and Support lists user-submitted support tickets from the support API, with search, pagination, and a view modal.",
+        "Settings load and update Android and iOS app version strings, with semver-style validation such as 1.0.0, via version API endpoints.",
+        "Shared dashboard UX: responsive sidebar navigation driven by menuConfig.ts, plus reusable GenericTable, drawers, confirm modals, empty states, loaders, and toast feedback. The dashboard uses a custom toast context; auth screens use react-hot-toast.",
+        "Present in code but not primary: Sales Manual (Reps Checklist, Fundamental Scripts, Sales Bible), Leaderboard, Hall of Fame, and Hood Status pages remain in the repo and may be URL-reachable, but their menu entries are commented out. Hall of Fame backend proxy rewrites are commented out, so those API calls cannot reach the backend in the current Next config. @tanstack/react-query is installed and provided but is not used by screens for useQuery or useMutation; auth hooks exist but are unused, and screens use imperative fetch and Axios instead.",
+      ],
+      challenges: [
+        "Same-origin API proxying: every backend path used by the UI must be declared in next.config.ts rewrites. Missing entries fail against the Next server rather than the API, which couples frontend service methods to proxy configuration.",
+        "Auth across server and client layers: the session is a JWT in localStorage plus a non-HttpOnly client cookie for middleware visibility. Guards check presence rather than validating token expiry at the edge. Password-reset route gating that once used short-lived cookies is largely client-side now. Documented security notes in the repo call out token storage and logging risks as deployment considerations.",
+        "Media upload pipeline: presign, direct browser PUT to S3, then metadata create or update must stay consistent across audio and thumbnail flows, and historically video flows, including MIME and size validation and error surfacing in drawers.",
+        "Team detail routing and cache: slug-based team detail depends on cache and sessionStorage population. Direct loads refetch the team list to resolve slugs, which required careful tab and member refresh behavior.",
+        "Backend response variance: services and pages defensively unwrap multiple response shapes (data.data versus data.items, and alternate field names). That flexibility aids integration but weakens typing at API boundaries.",
+        "Responsive admin UI: shared layout and sidebar work covers overflow, drawer text, and mobile and desktop layout across dense tables and modals.",
+        "Incomplete or shadowed modules: keeping menu-hidden and rewrite-disabled features in the tree creates ambiguity about what is production-ready versus residual. Hall of Fame is a concrete example where the UI exists but proxy routes are disabled.",
+      ],
+      lessons: [
+        "A rewrite-based proxy keeps the browser CORS-free, but adding an API is a two-file change (service plus rewrite) and those lists need to stay synchronized.",
+        "Separating upload bytes (S3 presigned PUT) from metadata writes (REST) reduces backend payload size and keeps the admin UI responsive for large media, provided client validation and error handling stay explicit.",
+        "Feature-first folders plus shared table and drawer primitives scale well across similar CRUD screens. Unused dependencies (React Query) and parallel toast systems show that scaffolding should be wired end to end or removed.",
+        "Presence-only session cookies are simple for an internal admin tool, yet they push real authorization and token lifetime enforcement onto the backend. Frontend guards alone are not sufficient security. Whether the in-repo security documentation was reviewed before production hardening needs confirmation.",
+        "Distinguishing active sidebar features from URL-reachable but menu-hidden or rewrite-disabled screens matters when describing scope. Code presence is not the same as shipped admin capability.",
+        "Personal or process lessons—team size, timeline constraints, why YouTube URLs replaced direct video uploads, the production frontend hostname, and measured operational outcomes—are not established from repository evidence alone.",
       ],
     },
   },
