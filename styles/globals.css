@@ -713,6 +713,22 @@ html[data-theme="light"] .hover\:border-crimson-600\/50:hover {
   border-color: rgba(0, 191, 166, 0.55) !important;
 }
 
+/* Desktop nav keeps bg-ink-900 so the mobile sheet stays readable. The light
+   remap paints that class white with !important, which beats md:bg-transparent
+   and leaves a solid strip on the hero. Restore transparency only from md up.
+   The desktop toggle drops its resting border the same way; focus still uses
+   the global outline. */
+@media (min-width: 768px) {
+  html[data-theme="light"] #primary-navigation {
+    background-color: transparent !important;
+  }
+
+  html[data-theme="light"] #primary-navigation .nav-theme-toggle {
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+}
+
 html[data-theme="light"] .shadow-\[0_10px_40px_rgba\(0\,0\,0\,0\.35\)\] {
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
 }

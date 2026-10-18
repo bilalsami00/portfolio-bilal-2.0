@@ -36,10 +36,14 @@ const MoonIcon = () => (
   </svg>
 );
 
+type ThemeToggleProps = {
+  className?: string;
+};
+
 /**
  * Switches between classic light (teal) and dark-fantasy themes.
  */
-const ThemeToggle = () => {
+const ThemeToggle = ({ className = "" }: ThemeToggleProps) => {
   const { theme, toggleTheme, isReady } = useTheme();
   const isDark = theme === "dark";
 
@@ -54,13 +58,14 @@ const ThemeToggle = () => {
     <button
       type="button"
       onClick={toggleTheme}
-      className="
+      className={`
         inline-flex h-11 w-11 items-center justify-center
         border border-steel-700 text-parchment-200
         transition-colors duration-300
         hover:border-crimson-500/60 hover:text-parchment-100
         focus-visible:border-crimson-500/60
-      "
+        ${className}
+      `}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Light mode" : "Dark mode"}
     >

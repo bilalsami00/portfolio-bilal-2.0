@@ -144,7 +144,7 @@ const SiteNavigation = () => {
 
           <div className="mt-4 pt-4 md:mt-0 md:pt-0 md:ml-3 border-t md:border-0 border-steel-700/40 flex items-center gap-2">
             <span className="hidden md:inline-flex">
-              <ThemeToggle />
+              <ThemeToggle className="nav-theme-toggle" />
             </span>
             {siteIdentity.resumeUrl &&
               siteIdentity.resumeUrl !== "#" &&
