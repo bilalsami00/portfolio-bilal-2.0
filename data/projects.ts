@@ -11,7 +11,8 @@ import type { PortfolioProject, ProjectCategory, ProjectImage } from "./types";
  *
  * featured is a site presentation flag. The case studies do not mark featured work.
  * The three featured entries are public-facing products with complete write-ups;
- * Clarion BTC and Maze Digital are the ones with a documented live URL.
+ * Live links are the public or preferred Vercel deployments. Alpha Dashboard and
+ * SteriPass use their Vercel URLs rather than the production admin hosts.
  *
  * Replaced placeholder records (no matching source folder): Nexus Operations
  * Dashboard, Signal Field Companion, Forge Desktop Toolkit, Veil Product Site,
@@ -201,6 +202,7 @@ export const projects: PortfolioProject[] = [
     year: "2026",
     category: "Web Application",
     featured: true,
+    liveUrl: "https://jimta-website-bilal.vercel.app/",
     repositoryUrl: "https://github.com/bilalsami00/jimta-website-bilal.git",
     technologies: [
       "Next.js 16",
@@ -275,6 +277,7 @@ export const projects: PortfolioProject[] = [
     year: "2026",
     category: "Web Application",
     featured: false,
+    liveUrl: "https://jimta-dashboards-bilal.vercel.app/login",
     repositoryUrl: "https://github.com/bilalsami00/jimta-dashboards-bilal.git",
     technologies: [
       "Next.js 16",
@@ -348,6 +351,7 @@ export const projects: PortfolioProject[] = [
     year: "2026",
     category: "Web Application",
     featured: false,
+    liveUrl: "https://rbf-y5m3.vercel.app/login",
     repositoryUrl: "https://github.com/bilalsami00/rbf.git",
     technologies: [
       "React 19",
@@ -423,6 +427,7 @@ export const projects: PortfolioProject[] = [
     year: "2026",
     category: "Web Application",
     featured: false,
+    liveUrl: "https://steripassosama.vercel.app/",
     repositoryUrl: "https://github.com/sudoosama/maze-steripass-admin",
     technologies: [
       "Next.js",
@@ -501,6 +506,7 @@ export const projects: PortfolioProject[] = [
     year: "2025",
     category: "Web Application",
     featured: false,
+    liveUrl: "https://social-media-five-lilac.vercel.app/login",
     repositoryUrl: "https://github.com/bilalsami00/social-media.git",
     technologies: [
       "Next.js 16",
@@ -571,6 +577,7 @@ export const projects: PortfolioProject[] = [
     year: "2026",
     category: "Web Application",
     featured: false,
+    liveUrl: "https://alpha-lp-six.vercel.app/",
     repositoryUrl: "https://github.com/bilalsami00/alpha-lp.git",
     technologies: [
       "Next.js",
@@ -642,6 +649,7 @@ export const projects: PortfolioProject[] = [
     year: "2025–2026",
     category: "Web Application",
     featured: false,
+    liveUrl: "https://alpha3-omega.vercel.app/",
     repositoryUrl: "https://github.com/bilalsami00/alpha3",
     technologies: [
       "Next.js 16",
@@ -715,6 +723,7 @@ export const projects: PortfolioProject[] = [
     year: "2025",
     category: "Web Application",
     featured: false,
+    liveUrl: "https://vittor-1.vercel.app/",
     technologies: [
       "React 19",
       "Vite 7",
