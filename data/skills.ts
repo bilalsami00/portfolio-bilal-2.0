@@ -19,7 +19,7 @@ export const skillGroups: SkillGroup[] = [
       {
         id: "skill-responsive",
         name: "Responsive interfaces",
-        iconKey: "uiux",
+        iconKey: "responsive",
       },
     ],
   },
@@ -27,24 +27,23 @@ export const skillGroups: SkillGroup[] = [
     id: "other",
     title: "Dashboards and APIs",
     description:
-      "Web dashboards and API-connected interfaces in the current frontend work. Personal use of every library inside a repository is not confirmed.",
+      "Admin dashboards and interfaces that connect to external APIs.",
     skills: [
-      { id: "skill-dashboards", name: "Web dashboards", iconKey: "uiux" },
+      { id: "skill-dashboards", name: "Web dashboards", iconKey: "dashboards" },
       { id: "skill-rest", name: "REST API integration", iconKey: "rest" },
     ],
   },
   {
     id: "tools",
-    title: "Project repository libraries",
-    description:
-      "Present in the supplied case studies. Hands-on use is not verified for every item.",
+    title: "Tools & Libraries",
+    description: "Technologies used across the web projects in this portfolio.",
     skills: [
       { id: "skill-typescript", name: "TypeScript", iconKey: "typescript" },
       { id: "skill-antd", name: "Ant Design", iconKey: "antd" },
       { id: "skill-radix", name: "shadcn/ui / Radix UI", iconKey: "radix" },
       { id: "skill-axios", name: "Axios", iconKey: "axios" },
       { id: "skill-rhf", name: "React Hook Form", iconKey: "reacthookform" },
-      { id: "skill-yup", name: "Yup", iconKey: "tools" },
+      { id: "skill-yup", name: "Yup", iconKey: "yup" },
       { id: "skill-chartjs", name: "Chart.js", iconKey: "chartjs" },
       { id: "skill-recharts", name: "Recharts", iconKey: "recharts" },
       { id: "skill-gsap", name: "GSAP", iconKey: "gsap" },
@@ -60,9 +59,9 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     id: "backend",
-    title: "Earlier training",
+    title: "Additional Technologies",
     description:
-      "MERN coursework at SMIT and the OLX learning project. Not current professional specializations, and not employment.",
+      "MERN training at SMIT and the OLX learning project, built with React and Firebase.",
     skills: [
       { id: "skill-node", name: "Node.js", iconKey: "nodejs" },
       { id: "skill-express", name: "Express.js", iconKey: "express" },
@@ -73,18 +72,17 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     id: "databases",
-    title: "Earlier exposure",
-    description:
-      "Listed on historical CVs. Not claimed as current frontend specializations.",
+    title: "Foundations",
+    description: "Earlier study in application development and data handling.",
     skills: [
       { id: "skill-aspnet", name: "ASP.NET", iconKey: "dotnet" },
       { id: "skill-sql", name: "SQL / MySQL", iconKey: "mysql" },
       {
         id: "skill-oop",
         name: "Object-oriented design",
-        iconKey: "tools",
+        iconKey: "oop",
       },
-      { id: "skill-db-design", name: "Database design", iconKey: "tools" },
+      { id: "skill-db-design", name: "Database design", iconKey: "database" },
     ],
   },
 ];

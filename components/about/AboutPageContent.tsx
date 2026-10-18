@@ -121,32 +121,22 @@ const AboutPageContent = () => (
           <SectionHeading
             eyebrow="Career journey"
             title="How the path is framed"
-            description="Maze Digital is the current full-time role. Earlier entries keep only the dates and employers that are documented."
+            description="Frontend work at Maze Digital, with earlier marketing, customer service, and data roles."
           />
           <div className="mt-10 sm:mt-12 ink-panel p-6 sm:p-8 max-w-3xl space-y-4">
             <p className="text-parchment-300 leading-relaxed">
               I joined Maze Digital in January 2025 as a Frontend Developer and
               still work there full-time. The work is Next.js, React,
               JavaScript, and Tailwind CSS: responsive marketing pages, landing
-              pages, and web dashboards. The project case studies describe
-              products, not a personal list of every feature.
+              pages, and web dashboards. Each case study describes the product,
+              not a personal list of every feature.
             </p>
             <p className="text-parchment-300 leading-relaxed">
-              Before that, the CV records a 3-month e-commerce marketing
+              Earlier work includes a three-month e-commerce marketing
               internship in 2023, three months as a Spectrum call center agent,
-              and private contract data entry. The internship company, Spectrum
-              dates, and contractor timeline are not documented. Android and
-              Java projects are omitted. An earlier learning project, the OLX
-              replica, used React, Firebase Authentication, and Firestore
-              {/* <a
-                href="https://github.com/bilalsami00/olx-fd-fs-prob"
-                className="text-crimson-300 hover:text-parchment-100"
-                target="_blank"
-                rel="noreferrer"
-              >
-                github.com/bilalsami00/olx-fd-fs-prob
-              </a> */}
-              .
+              and contract data entry and analysis. I also built an OLX-style
+              learning project with React, Firebase Authentication, and
+              Firestore.
             </p>
           </div>
         </RevealOnScroll>
@@ -161,8 +151,8 @@ const AboutPageContent = () => (
         <RevealOnScroll>
           <SectionHeading
             eyebrow="Professional experience"
-            title="Documented roles"
-            description="Current employment first. Missing dates and company names are left blank rather than filled in."
+            title="Roles"
+            description="Current frontend role first, followed by earlier work."
           />
         </RevealOnScroll>
         <div className="mt-10 sm:mt-12 space-y-5">
@@ -173,17 +163,25 @@ const AboutPageContent = () => (
             >
               <article className="ink-panel p-6 sm:p-7">
                 <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                  <span className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
-                    {entry.startDate} — {entry.endDate}
-                  </span>
+                  {(entry.startDate || entry.endDate) && (
+                    <span className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
+                      {entry.endDate
+                        ? `${entry.startDate} — ${entry.endDate}`
+                        : entry.startDate}
+                    </span>
+                  )}
                   {entry.isPlaceholder && <PlaceholderBadge />}
                 </div>
                 <h3 className="font-display text-xl sm:text-2xl text-parchment-100 font-bold leading-snug">
                   {entry.role}
                 </h3>
-                <p className="mt-1.5 text-crimson-300 font-accent text-sm tracking-wide">
-                  {entry.company} · {entry.location}
-                </p>
+                {(entry.company || entry.location) && (
+                  <p className="mt-1.5 text-crimson-300 font-accent text-sm tracking-wide">
+                    {[entry.company, entry.location]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                )}
                 <p className="mt-3 text-parchment-400 leading-relaxed">
                   {entry.description}
                 </p>
@@ -378,16 +376,17 @@ const AboutPageContent = () => (
           <RevealOnScroll>
             <SectionHeading
               eyebrow="Personal interests"
-              title="Signals outside the sprint"
+              title="Outside the work"
             />
           </RevealOnScroll>
           <div className="mt-10 sm:mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {interestItems.map((item) => (
               <RevealOnScroll
                 key={item.id}
-                className="ink-panel ink-panel-hover p-5 sm:p-6 h-full"
+                className="ink-panel ink-panel-hover flex h-full flex-col p-6 sm:p-7"
               >
-                <h3 className="font-display text-lg text-parchment-100 font-bold leading-snug">
+                <SkillIcon iconKey={item.iconKey} className="h-8 w-8" />
+                <h3 className="mt-4 font-display text-lg text-parchment-100 font-bold leading-snug">
                   {item.title}
                 </h3>
                 <p className="mt-3 text-sm text-parchment-400 leading-relaxed">
@@ -421,9 +420,11 @@ const AboutPageContent = () => (
                       <span className="font-display text-parchment-100 font-semibold leading-snug">
                         {lang.language}
                       </span>
-                      <span className="text-sm text-parchment-500">
-                        {lang.proficiency}
-                      </span>
+                      {lang.proficiency ? (
+                        <span className="text-sm text-parchment-500">
+                          {lang.proficiency}
+                        </span>
+                      ) : null}
                     </li>
                   ))}
                 </ul>
@@ -433,10 +434,7 @@ const AboutPageContent = () => (
             {funFacts.length > 0 && (
               <div>
                 <RevealOnScroll>
-                  <SectionHeading
-                    eyebrow="Strengths"
-                    title="From an earlier CV"
-                  />
+                  <SectionHeading eyebrow="Strengths" title="Working style" />
                 </RevealOnScroll>
                 <ul className="mt-8 sm:mt-10 space-y-3">
                   {funFacts.map((fact) => (

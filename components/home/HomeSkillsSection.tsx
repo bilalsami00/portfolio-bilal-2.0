@@ -15,7 +15,7 @@ const HomeSkillsSection = () => (
         <SectionHeading
           eyebrow="Skills & technologies"
           title="The arsenal"
-          description="Current frontend focus first. Repository libraries, SMIT training, and older CV tools are labeled so they are not read as equal expertise."
+          description="Next.js, React, JavaScript, and Tailwind CSS first, then dashboards, APIs, and the other tools used in these projects."
           align="center"
         />
       </RevealOnScroll>

@@ -103,17 +103,27 @@ const ProjectCard = ({
             <Link
               href={project.liveUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn-primary btn-sm"
             >
-              Live
+              Live demo
+            </Link>
+          )}
+          {project.productionUrl && (
+            <Link
+              href={project.productionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary btn-sm"
+            >
+              Production
             </Link>
           )}
           {project.repositoryUrl && (
             <Link
               href={project.repositoryUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn-secondary btn-sm"
             >
               Repository

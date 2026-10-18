@@ -113,8 +113,13 @@ export type PortfolioProject = {
   gallery: ProjectImage[];
   technologies: string[];
   category: ProjectCategory;
-  /** Omitted when the case study does not document a URL. */
+  /**
+   * Preferred public demo. Owner-supplied staging/Vercel URLs stay here.
+   * Do not drop this during copy edits.
+   */
   liveUrl?: string;
+  /** Separate production host, when it differs from the preferred demo. */
+  productionUrl?: string;
   /** Omitted when the case study does not document a URL. */
   repositoryUrl?: string;
   /** Site presentation flag. Case studies do not mark featured work. */
@@ -184,6 +189,7 @@ export type InterestItem = {
   id: string;
   title: string;
   description: string;
+  iconKey?: string;
 };
 
 export type TestimonialEntry = {

@@ -11,7 +11,7 @@ export const contactFaqItems: FaqItem[] = [
     id: "faq-stack",
     question: "What is your primary stack?",
     answer:
-      "Next.js, React, JavaScript, and Tailwind CSS, plus responsive pages, dashboards, and API-connected interfaces. Other repository libraries are listed separately because personal use of every one is not confirmed.",
+      "Next.js, React, JavaScript, and Tailwind CSS, with responsive pages, dashboards, and API-connected interfaces. The tools and libraries section lists technologies used in the projects.",
   },
   {
     id: "faq-projects",

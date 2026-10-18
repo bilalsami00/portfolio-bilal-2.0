@@ -6,6 +6,7 @@
 export type SkillIconDefinition =
   | { source: "skillicons"; ids: string[] }
   | { source: "simpleicons"; slug: string; color: string }
+  | { source: "fontawesome"; name: string }
   | { source: "none" };
 
 /**
@@ -40,11 +41,16 @@ export const skillIconRegistry: Record<string, SkillIconDefinition> = {
   axios: { source: "simpleicons", slug: "axios", color: "5A29E4" },
   radix: { source: "simpleicons", slug: "radixui", color: "161618" },
   chartjs: { source: "simpleicons", slug: "chartdotjs", color: "FF6384" },
-  recharts: { source: "none" },
+  recharts: { source: "fontawesome", name: "chart-column" },
   gsap: { source: "simpleicons", slug: "greensock", color: "88CE02" },
   framer: { source: "simpleicons", slug: "framer", color: "0055FF" },
-  swiper: { source: "none" },
-  reacthookform: { source: "none" },
+  swiper: { source: "simpleicons", slug: "swiper", color: "6332F6" },
+  yup: { source: "skillicons", ids: ["yup"] },
+  reacthookform: {
+    source: "simpleicons",
+    slug: "reacthookform",
+    color: "EC5990",
+  },
   reactrouter: { source: "simpleicons", slug: "reactrouter", color: "CA4245" },
   aws: { source: "skillicons", ids: ["aws"] },
   electron: { source: "skillicons", ids: ["electron"] },
@@ -58,15 +64,16 @@ export const skillIconRegistry: Record<string, SkillIconDefinition> = {
   web: { source: "skillicons", ids: ["nextjs"] },
   mobile: { source: "skillicons", ids: ["react"] },
 
-  // —— No authentic brand mark (placeholders / non-brand concepts) ——
-  cms: { source: "none" },
-  cloud: { source: "none" },
-  performance: { source: "none" },
-  rest: { source: "none" },
-  seo: { source: "none" },
-  testing: { source: "none" },
-  tools: { source: "none" },
-  uiux: { source: "none" },
+  performance: { source: "fontawesome", name: "gauge-high" },
+  rest: { source: "fontawesome", name: "plug" },
+  seo: { source: "fontawesome", name: "magnifying-glass" },
+  responsive: { source: "fontawesome", name: "mobile-screen" },
+  dashboards: { source: "fontawesome", name: "table-columns" },
+  oop: { source: "fontawesome", name: "cubes" },
+  database: { source: "fontawesome", name: "database" },
+  reading: { source: "fontawesome", name: "book-open" },
+  photography: { source: "fontawesome", name: "camera" },
+  traveling: { source: "fontawesome", name: "plane" },
 };
 
 export const resolveSkillIcon = (iconKey?: string): SkillIconDefinition => {

@@ -130,12 +130,12 @@ export const languagesSpoken: {
   {
     id: "lang-english",
     language: "English",
-    proficiency: "Level not documented",
+    proficiency: "",
   },
   {
     id: "lang-urdu",
     language: "Urdu",
-    proficiency: "Level not documented",
+    proficiency: "",
   },
 ];
 
@@ -143,21 +143,21 @@ export const funFacts: { id: string; label: string; detail: string }[] = [
   {
     id: "strength-communication",
     label: "Communication",
-    detail: "Listed as a professional strength on an earlier CV.",
+    detail: "Keeping conversations clear while interface work is in progress.",
   },
   {
     id: "strength-teamwork",
     label: "Teamwork",
-    detail: "Listed as a professional strength on an earlier CV.",
+    detail: "Working with teammates on shared pages and product interfaces.",
   },
   {
     id: "strength-problem-solving",
     label: "Problem-solving",
-    detail: "Listed as a professional strength on an earlier CV.",
+    detail: "Turning interface problems into practical frontend changes.",
   },
   {
     id: "strength-time",
     label: "Time management",
-    detail: "Listed as a professional strength on an earlier CV.",
+    detail: "Keeping frontend tasks moving alongside the rest of the work.",
   },
 ];

@@ -76,6 +76,21 @@ const SkillIcon = ({
     );
   }
 
+  if (definition.source === "fontawesome") {
+    const icon = resolveFontAwesomeIcon("fas", definition.name);
+    if (!icon)
+      return <GenericFallbackIcon className={className} title={title} />;
+
+    return (
+      <FontAwesomeIcon
+        icon={icon}
+        className={`${className} text-crimson-400`}
+        aria-hidden={title ? undefined : true}
+        title={title}
+      />
+    );
+  }
+
   if (definition.source === "simpleicons") {
     return (
       <img

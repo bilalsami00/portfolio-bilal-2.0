@@ -1,23 +1,23 @@
 import type { InterestItem } from "./types";
 
-/**
- * Interests named on an earlier CV. No extra hobbies are added.
- */
-
 export const interestItems: InterestItem[] = [
   {
     id: "interest-reading",
     title: "Reading",
-    description: "Listed on an earlier CV.",
+    description: "Exploring new ideas, perspectives, and stories.",
+    iconKey: "reading",
   },
   {
     id: "interest-photography",
     title: "Photography",
-    description: "Listed on an earlier CV.",
+    description:
+      "An interest in composition, creativity, and visual storytelling.",
+    iconKey: "photography",
   },
   {
     id: "interest-traveling",
     title: "Traveling",
-    description: "Listed on an earlier CV.",
+    description: "Discovering new places, cultures, and experiences.",
+    iconKey: "traveling",
   },
 ];

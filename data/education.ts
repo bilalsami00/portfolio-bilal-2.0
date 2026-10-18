@@ -14,7 +14,7 @@ export const educationEntries: EducationEntry[] = [
     startDate: "2019",
     endDate: "2023",
     description:
-      "Bachelor of Science in Computer Science. Graduated in 2023. CGPA 2.52. The grading scale is not documented.",
+      "Bachelor of Science in Computer Science, graduated in 2023. CGPA 2.52.",
     isPlaceholder: false,
   },
   {
@@ -24,8 +24,7 @@ export const educationEntries: EducationEntry[] = [
     location: "Karachi, Pakistan",
     startDate: "2022",
     endDate: "2023",
-    description:
-      "Training in MongoDB, Express.js, React, and Node.js. This is a course, not employment. Certificate completion is not confirmed.",
+    description: "Course covering MongoDB, Express.js, React, and Node.js.",
     isPlaceholder: false,
   },
   {
@@ -45,8 +44,7 @@ export const educationEntries: EducationEntry[] = [
     location: "Karachi, Pakistan",
     startDate: "2005",
     endDate: "2015",
-    description:
-      "Matriculation, 84%. An older CV records school attendance from 2005 to 2015. That span is not a 10-year Matric program.",
+    description: "Matriculation, 84%.",
     isPlaceholder: false,
   },
 ];

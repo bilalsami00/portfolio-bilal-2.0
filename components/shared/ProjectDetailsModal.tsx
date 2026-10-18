@@ -183,7 +183,16 @@ const ProjectDetailsModal = ({
           <div className="mt-8 flex flex-wrap gap-3">
             {project.liveUrl && (
               <ButtonLink href={project.liveUrl} external>
-                View live
+                Live demo
+              </ButtonLink>
+            )}
+            {project.productionUrl && (
+              <ButtonLink
+                href={project.productionUrl}
+                variant="secondary"
+                external
+              >
+                Production
               </ButtonLink>
             )}
             {project.repositoryUrl && (

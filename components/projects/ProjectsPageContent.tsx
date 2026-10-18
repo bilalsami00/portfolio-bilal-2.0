@@ -190,7 +190,17 @@ const ProjectsPageContent = () => {
                         external
                         className="btn-sm"
                       >
-                        Live link
+                        Live demo
+                      </ButtonLink>
+                    )}
+                    {featuredProject.productionUrl && (
+                      <ButtonLink
+                        href={featuredProject.productionUrl}
+                        variant="secondary"
+                        external
+                        className="btn-sm"
+                      >
+                        Production
                       </ButtonLink>
                     )}
                     {featuredProject.repositoryUrl && (

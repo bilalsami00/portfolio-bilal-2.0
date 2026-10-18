@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { routePaths } from "../../data/navigation";
@@ -23,9 +23,38 @@ const isPageScrollLocked = (): boolean =>
  */
 const SmoothScroll = () => {
   const router = useRouter();
+  const lenisRef = useRef<Lenis | null>(null);
+  const restoreHistoryScroll = useRef(false);
 
   useEffect(() => {
-    if (!isSmoothScrollRoute(router.pathname)) return undefined;
+    const markHistoryNavigation = () => {
+      restoreHistoryScroll.current = true;
+    };
+    window.addEventListener("popstate", markHistoryNavigation);
+
+    const onComplete = () => {
+      window.setTimeout(() => {
+        const keepPosition =
+          restoreHistoryScroll.current || Boolean(window.location.hash);
+        restoreHistoryScroll.current = false;
+        if (keepPosition) return;
+        window.scrollTo(0, 0);
+        lenisRef.current?.scrollTo(0, { immediate: true });
+      }, 0);
+    };
+
+    router.events.on("routeChangeComplete", onComplete);
+    return () => {
+      window.removeEventListener("popstate", markHistoryNavigation);
+      router.events.off("routeChangeComplete", onComplete);
+    };
+  }, [router.events]);
+
+  useEffect(() => {
+    if (!isSmoothScrollRoute(router.pathname)) {
+      lenisRef.current = null;
+      return undefined;
+    }
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedMotion.matches) return undefined;
@@ -40,6 +69,7 @@ const SmoothScroll = () => {
       lerp: 0.1,
       wheelMultiplier: 1,
     });
+    lenisRef.current = lenis;
 
     let active = true;
     let onReducedMotionChange: (() => void) | undefined;

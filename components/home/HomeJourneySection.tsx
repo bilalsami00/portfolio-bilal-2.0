@@ -12,7 +12,7 @@ const HomeJourneySection = () => (
         <SectionHeading
           eyebrow="Professional journey"
           title="Experience timeline"
-          description="Maze Digital from January 2025 to the present, then earlier roles with only the dates and employers the CV records."
+          description="Frontend Developer at Maze Digital since January 2025, with earlier marketing, support, and data work."
         />
       </RevealOnScroll>
 
@@ -38,17 +38,25 @@ const HomeJourneySection = () => (
             >
               <div className="ink-panel p-5 sm:p-6 inline-block w-full text-left">
                 <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                  <p className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
-                    {entry.startDate} — {entry.endDate}
-                  </p>
+                  {(entry.startDate || entry.endDate) && (
+                    <p className="text-xs font-accent uppercase tracking-[0.18em] text-steel-400">
+                      {entry.endDate
+                        ? `${entry.startDate} — ${entry.endDate}`
+                        : entry.startDate}
+                    </p>
+                  )}
                   {entry.isPlaceholder && <PlaceholderBadge />}
                 </div>
                 <h3 className="font-display text-xl text-parchment-100 font-bold leading-snug">
                   {entry.role}
                 </h3>
-                <p className="mt-1.5 text-crimson-300 font-accent text-sm tracking-wide">
-                  {entry.company} · {entry.location}
-                </p>
+                {(entry.company || entry.location) && (
+                  <p className="mt-1.5 text-crimson-300 font-accent text-sm tracking-wide">
+                    {[entry.company, entry.location]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                )}
                 <p className="mt-3 text-sm text-parchment-400 leading-relaxed">
                   {entry.description}
                 </p>
