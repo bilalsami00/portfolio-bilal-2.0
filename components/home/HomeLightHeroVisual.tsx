@@ -3,15 +3,18 @@ import RoundShape from "../svgs/roundShape";
 import { siteIdentity } from "../../data/site";
 
 /**
- * Classic light-mode hero visual — teal blob + floaties + illustration.
- * Intended for light mode only.
+ * Shared hero visual: accent blob, floating tech badges, and illustration.
+ * The blob follows the active theme accent; the illustration is not tinted.
  */
 const HomeLightHeroVisual = () => (
   <div className="relative mx-auto w-full max-w-md lg:max-w-none min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex items-center justify-center">
     <FloatingImages />
 
     <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 w-[92%] max-w-[420px]">
-      <RoundShape className="h-auto w-full opacity-90" />
+      <RoundShape
+        color="var(--color-accent)"
+        className="h-auto w-full opacity-90"
+      />
     </span>
 
     <img

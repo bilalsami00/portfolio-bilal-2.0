@@ -3,117 +3,68 @@ import { routePaths } from "../../data/navigation";
 import { ButtonLink } from "../shared/Button";
 import Container from "../shared/Container";
 import SocialLinksRow from "../shared/SocialLinksRow";
-import LightModeOnly from "../shared/LightModeOnly";
-import { useTheme } from "../shared/ThemeProvider";
 import Shapes from "../shapes";
 import HomeLightHeroVisual from "./HomeLightHeroVisual";
 
-const DarkHeroPortrait = () => (
-  <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-    <div
-      className="absolute -inset-2 border border-crimson-700/30 translate-x-1.5 translate-y-1.5 sm:-inset-3 sm:translate-x-2 sm:translate-y-2"
-      aria-hidden
-    />
-    <div className="relative overflow-hidden ink-panel">
-      <img
-        src={siteIdentity.profileImage}
-        alt={`${siteIdentity.fullName} — portrait`}
-        className="aspect-[4/5] w-full object-cover grayscale-[20%] contrast-[1.05]"
-        width={640}
-        height={800}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/20" />
-      <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
-        <p className="font-accent text-xs uppercase tracking-[0.22em] text-crimson-300">
-          Currently
-        </p>
-        <p className="mt-2 text-sm text-parchment-200 leading-relaxed max-w-prose">
-          {siteAvailability.statusDetail}
-        </p>
-      </div>
-    </div>
-  </div>
-);
-
 /**
- * Home hero — dark cinematic portrait, or classic floaty light-mode visual.
+ * Home hero. One composition in both themes; dark mode only recolors surfaces.
  */
-const HomeHeroSection = () => {
-  const { isDark, isReady } = useTheme();
-  const showDarkVisual = !isReady || isDark;
-
-  return (
-    <section
-      className="relative overflow-hidden pt-10 pb-16 sm:pt-14 sm:pb-20 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28"
-      aria-labelledby="home-hero-name"
+const HomeHeroSection = () => (
+  <section
+    className="relative overflow-hidden pt-10 pb-16 sm:pt-14 sm:pb-20 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28"
+    aria-labelledby="home-hero-name"
+  >
+    <div
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden lg:block"
+      aria-hidden
     >
-      <LightModeOnly>
-        <div
-          className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden lg:block"
-          aria-hidden
+      <Shapes />
+    </div>
+
+    <Container className="relative z-[1] grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+      <div className="hero-enter lg:col-span-7">
+        {siteAvailability.isAvailableForWork && (
+          <p className="status-pill mb-6">{siteAvailability.statusLabel}</p>
+        )}
+
+        <p className="section-eyebrow">Software Developer Portfolio</p>
+        <div className="crimson-mark mt-3.5 mb-5 sm:mt-4 sm:mb-6" />
+
+        <h1
+          id="home-hero-name"
+          className="font-display text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold text-parchment-100 leading-[1.05] tracking-tight text-balance"
         >
-          <Shapes />
+          {siteIdentity.fullName}
+        </h1>
+
+        <p className="mt-4 font-accent text-lg sm:text-xl text-crimson-300 tracking-wide">
+          {siteIdentity.professionalTitle}
+        </p>
+
+        <p className="mt-6 max-w-xl text-base sm:text-lg text-parchment-400 leading-relaxed text-pretty">
+          {siteIdentity.introduction}
+        </p>
+
+        <div className="mt-8 flex flex-col xs:flex-row flex-wrap gap-3">
+          <ButtonLink href={routePaths.projects}>View projects</ButtonLink>
+          <ButtonLink href={routePaths.contact} variant="secondary">
+            Hire me
+          </ButtonLink>
         </div>
-      </LightModeOnly>
 
-      {showDarkVisual && (
-        <div
-          className="pointer-events-none absolute inset-0 opacity-35"
-          style={{
-            backgroundImage:
-              "linear-gradient(120deg, rgba(185,28,44,0.1) 0%, transparent 42%), radial-gradient(ellipse at 80% 20%, rgba(111,120,136,0.16), transparent 50%)",
-          }}
-          aria-hidden
-        />
-      )}
-
-      <Container className="relative z-[1] grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
-        <div className="hero-enter lg:col-span-7">
-          {siteAvailability.isAvailableForWork && (
-            <p className="status-pill mb-6">{siteAvailability.statusLabel}</p>
-          )}
-
-          <p className="section-eyebrow">Software Developer Portfolio</p>
-          <div className="crimson-mark mt-3.5 mb-5 sm:mt-4 sm:mb-6" />
-
-          <h1
-            id="home-hero-name"
-            className="font-display text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold text-parchment-100 leading-[1.05] tracking-tight text-balance"
-          >
-            {siteIdentity.fullName}
-          </h1>
-
-          <p className="mt-4 font-accent text-lg sm:text-xl text-crimson-300 tracking-wide">
-            {siteIdentity.professionalTitle}
+        <div className="mt-9 pt-1">
+          <p className="mb-3 text-xs font-accent uppercase tracking-[0.2em] text-steel-400">
+            Connect
           </p>
-
-          <p className="mt-6 max-w-xl text-base sm:text-lg text-parchment-400 leading-relaxed text-pretty">
-            {siteIdentity.introduction}
-          </p>
-
-          <div className="mt-8 flex flex-col xs:flex-row flex-wrap gap-3">
-            <ButtonLink href={routePaths.projects}>View projects</ButtonLink>
-            <ButtonLink href={routePaths.contact} variant="secondary">
-              Hire me
-            </ButtonLink>
-          </div>
-
-          <div className="mt-9 pt-1">
-            <p className="mb-3 text-xs font-accent uppercase tracking-[0.2em] text-steel-400">
-              Connect
-            </p>
-            <SocialLinksRow variant="primary" className="light-social-float" />
-          </div>
+          <SocialLinksRow variant="primary" className="light-social-float" />
         </div>
+      </div>
 
-        <div className="hero-enter hero-enter-delay lg:col-span-5">
-          <LightModeOnly fallback={<DarkHeroPortrait />}>
-            <HomeLightHeroVisual />
-          </LightModeOnly>
-        </div>
-      </Container>
-    </section>
-  );
-};
+      <div className="hero-enter hero-enter-delay lg:col-span-5">
+        <HomeLightHeroVisual />
+      </div>
+    </Container>
+  </section>
+);
 
 export default HomeHeroSection;

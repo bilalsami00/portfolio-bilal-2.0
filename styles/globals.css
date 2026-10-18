@@ -555,6 +555,34 @@ html[data-theme="light"] .site-atmosphere::after {
     animation-delay: 0.12s;
   }
 
+  /* Light values match the previous white float cards exactly. */
+  .hero-float-card {
+    background-color: #ffffff;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .hero-float-title {
+    color: #1e293b;
+  }
+
+  .hero-float-subtitle {
+    color: #64748b;
+  }
+
+  html[data-theme="dark"] .hero-float-card {
+    background-color: var(--color-surface-elevated);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.45),
+      0 0 0 1px var(--color-border-subtle);
+  }
+
+  html[data-theme="dark"] .hero-float-title {
+    color: var(--color-text);
+  }
+
+  html[data-theme="dark"] .hero-float-subtitle {
+    color: var(--color-text-muted);
+  }
+
   .site-header {
     border-bottom: 1px solid transparent;
     transition: background-color 0.3s ease, border-color 0.3s ease,
@@ -895,14 +923,14 @@ summary:focus-visible,
   }
 }
 
-/* Soft float on primary socials in classic light mode */
-html[data-theme="light"] .light-social-float > li:nth-child(1) a {
+/* Soft float on primary socials in the hero */
+.light-social-float > li:nth-child(1) a {
   animation: lightSocialFloat 3.2s ease-in-out infinite;
 }
-html[data-theme="light"] .light-social-float > li:nth-child(2) a {
+.light-social-float > li:nth-child(2) a {
   animation: lightSocialFloat 3.6s ease-in-out infinite 0.4s;
 }
-html[data-theme="light"] .light-social-float > li:nth-child(3) a {
+.light-social-float > li:nth-child(3) a {
   animation: lightSocialFloat 4s ease-in-out infinite 0.8s;
 }
 
@@ -917,7 +945,7 @@ html[data-theme="light"] .light-social-float > li:nth-child(3) a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html[data-theme="light"] .light-social-float a {
+  .light-social-float a {
     animation: none !important;
   }
 }

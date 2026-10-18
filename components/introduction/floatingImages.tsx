@@ -2,16 +2,15 @@ import Image from "../Image";
 import styles from "../../styles/header.module.css";
 
 const floatBox = `
-  absolute z-10
+  hero-float-card absolute z-10
   w-[56px] h-[56px] sm:w-[60px] sm:h-[60px] md:w-[70px] md:h-[70px] lg:w-[84px] lg:h-[84px]
   rounded-lg pointer-events-none
-  bg-white shadow-[0_5px_30px_rgba(0,0,0,0.12)]
   flex items-center justify-center p-2
 `;
 
 /**
- * Classic floating tech badges (light-mode hero charm).
- * Kept free of invented metrics.
+ * Floating tech badges for the shared hero.
+ * Icon artwork stays untinted; the card chrome follows the theme.
  */
 const FloatingImages = () => (
   <span className="pointer-events-none" aria-hidden>
@@ -69,9 +68,8 @@ const FloatingImages = () => (
     <div
       title="Craft over claims"
       className={`
-        absolute z-10 bottom-[16%] left-[2%] sm:left-6
-        flex items-center gap-2 rounded-2xl bg-white
-        shadow-[0_5px_30px_rgba(0,0,0,0.12)]
+        hero-float-card absolute z-10 bottom-[16%] left-[2%] sm:left-6
+        flex items-center gap-2 rounded-2xl
         py-2 px-3 pointer-events-none
         ${styles.floating_item || ""}
       `}
@@ -86,10 +84,10 @@ const FloatingImages = () => (
         className="pointer-events-none"
       />
       <div className="pr-2 text-left">
-        <p className="text-sm font-bold text-slate-800 leading-tight">
+        <p className="hero-float-title text-sm font-bold leading-tight">
           Clean builds
         </p>
-        <p className="text-xs text-slate-500">thoughtful delivery</p>
+        <p className="hero-float-subtitle text-xs">thoughtful delivery</p>
       </div>
     </div>
   </span>
