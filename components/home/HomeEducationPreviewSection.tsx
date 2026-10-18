@@ -20,7 +20,7 @@ const HomeEducationPreviewSection = () => {
             <SectionHeading
               eyebrow="Education"
               title="Foundations"
-              description="Academic background preview. Linked to the full About page for certifications and deeper context."
+              description="BS Computer Science (CGPA 2.52), SMIT MERN training, Intermediate, and Matriculation."
             />
           </RevealOnScroll>
 
@@ -45,7 +45,7 @@ const HomeEducationPreviewSection = () => {
                 </p>
                 <div className="mt-6">
                   <ButtonLink href={routePaths.about} variant="secondary">
-                    Full education & certifications
+                    Full education
                   </ButtonLink>
                 </div>
               </div>

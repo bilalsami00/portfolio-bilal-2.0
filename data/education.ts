@@ -1,38 +1,54 @@
 import type { CertificationEntry, EducationEntry } from "./types";
 
 /**
- * Education and certifications.
- * Original config referenced University of London with lorem text — treated as placeholder.
+ * Education from the Updated Full CV.
+ * No named professional certifications are documented.
  */
 
 export const educationEntries: EducationEntry[] = [
   {
-    id: "education-placeholder-primary",
-    degree: "[Degree / Program — replace]",
-    institution: "[Institution — replace]",
-    institutionUrl: undefined,
-    location: "[Location — replace]",
-    startDate: "20XX",
-    endDate: "20XX",
+    id: "education-uok-bscs",
+    degree: "BS Computer Science",
+    institution: "University of Karachi",
+    location: "Karachi, Pakistan",
+    startDate: "2019",
+    endDate: "2023",
     description:
-      "Placeholder: add field of study, notable coursework, thesis, or academic focus areas relevant to software engineering.",
-    isPlaceholder: true,
+      "Bachelor of Science in Computer Science. Graduated in 2023. CGPA 2.52. The grading scale is not documented.",
+    isPlaceholder: false,
+  },
+  {
+    id: "education-smit-mern",
+    degree: "MERN Stack Development (course)",
+    institution: "Saylani Mass IT Training (SMIT)",
+    location: "Karachi, Pakistan",
+    startDate: "2022",
+    endDate: "2023",
+    description:
+      "Training in MongoDB, Express.js, React, and Node.js. This is a course, not employment. Certificate completion is not confirmed.",
+    isPlaceholder: false,
+  },
+  {
+    id: "education-intermediate",
+    degree: "Intermediate",
+    institution: "Delhi Govt. College",
+    location: "Karachi, Pakistan",
+    startDate: "2016",
+    endDate: "2018",
+    description: "Intermediate, 74%.",
+    isPlaceholder: false,
+  },
+  {
+    id: "education-matric",
+    degree: "Matriculation",
+    institution: "St. Patrick's High School",
+    location: "Karachi, Pakistan",
+    startDate: "2005",
+    endDate: "2015",
+    description:
+      "Matriculation, 84%. An older CV records school attendance from 2005 to 2015. That span is not a 10-year Matric program.",
+    isPlaceholder: false,
   },
 ];
 
-export const certificationEntries: CertificationEntry[] = [
-  {
-    id: "cert-placeholder-1",
-    name: "[Certification Name — replace]",
-    issuer: "[Issuer — replace]",
-    year: "20XX",
-    isPlaceholder: true,
-  },
-  {
-    id: "cert-placeholder-2",
-    name: "[Certification Name — replace]",
-    issuer: "[Issuer — replace]",
-    year: "20XX",
-    isPlaceholder: true,
-  },
-];
+export const certificationEntries: CertificationEntry[] = [];

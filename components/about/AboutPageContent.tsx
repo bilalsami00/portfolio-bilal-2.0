@@ -82,9 +82,7 @@ const AboutPageContent = () => (
             description={siteIdentity.introduction}
           />
           <p className="mt-5 max-w-3xl text-parchment-400 leading-relaxed">
-            {siteIdentity.tagline} I value readable systems, deliberate
-            interfaces, and delivery that respects the people who will maintain
-            the work next.
+            {siteIdentity.tagline}
           </p>
         </RevealOnScroll>
       </Container>
@@ -123,14 +121,32 @@ const AboutPageContent = () => (
           <SectionHeading
             eyebrow="Career journey"
             title="How the path is framed"
-            description="A narrative overview of growth themes. Detailed roles live in the experience timeline below."
+            description="Maze Digital is the current full-time role. Earlier entries keep only the dates and employers that are documented."
           />
-          <div className="mt-10 sm:mt-12 ink-panel p-6 sm:p-8 max-w-3xl">
+          <div className="mt-10 sm:mt-12 ink-panel p-6 sm:p-8 max-w-3xl space-y-4">
             <p className="text-parchment-300 leading-relaxed">
-              The journey moves from fundamentals and feature delivery toward
-              ownership of architecture, cross-platform product thinking, and
-              quality practices. Replace the placeholder roles with verified
-              employment to make this section recruiter-ready.
+              I joined Maze Digital in January 2025 as a Frontend Developer and
+              still work there full-time. The work is Next.js, React,
+              JavaScript, and Tailwind CSS: responsive marketing pages, landing
+              pages, and web dashboards. The project case studies describe
+              products, not a personal list of every feature.
+            </p>
+            <p className="text-parchment-300 leading-relaxed">
+              Before that, the CV records a 3-month e-commerce marketing
+              internship in 2023, three months as a Spectrum call center agent,
+              and private contract data entry. The internship company, Spectrum
+              dates, and contractor timeline are not documented. Android and
+              Java projects are omitted. An earlier learning project, the OLX
+              replica, used React, Firebase Authentication, and Firestore
+              {/* <a
+                href="https://github.com/bilalsami00/olx-fd-fs-prob"
+                className="text-crimson-300 hover:text-parchment-100"
+                target="_blank"
+                rel="noreferrer"
+              >
+                github.com/bilalsami00/olx-fd-fs-prob
+              </a> */}
+              .
             </p>
           </div>
         </RevealOnScroll>
@@ -145,8 +161,8 @@ const AboutPageContent = () => (
         <RevealOnScroll>
           <SectionHeading
             eyebrow="Professional experience"
-            title="Roles & ownership"
-            description="Explicit placeholders until real company history is provided."
+            title="Documented roles"
+            description="Current employment first. Missing dates and company names are left blank rather than filled in."
           />
         </RevealOnScroll>
         <div className="mt-10 sm:mt-12 space-y-5">
@@ -188,7 +204,11 @@ const AboutPageContent = () => (
       aria-labelledby="education-title"
     >
       <Container>
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
+        <div
+          className={`grid gap-10 ${
+            certificationEntries.length > 0 ? "lg:grid-cols-2 lg:gap-12" : ""
+          }`}
+        >
           <div>
             <RevealOnScroll>
               <SectionHeading eyebrow="Education" title="Academic background" />
@@ -216,28 +236,33 @@ const AboutPageContent = () => (
             </div>
           </div>
 
-          <div>
-            <RevealOnScroll>
-              <SectionHeading eyebrow="Certifications" title="Credentials" />
-            </RevealOnScroll>
-            <div className="mt-8 sm:mt-10 space-y-4">
-              {certificationEntries.map((cert) => (
-                <RevealOnScroll key={cert.id} className="ink-panel p-6 h-full">
-                  {cert.isPlaceholder && (
-                    <div className="mb-3">
-                      <PlaceholderBadge />
-                    </div>
-                  )}
-                  <h3 className="font-display text-lg text-parchment-100 font-bold leading-snug">
-                    {cert.name}
-                  </h3>
-                  <p className="mt-1.5 text-sm text-parchment-400 leading-snug">
-                    {cert.issuer} · {cert.year}
-                  </p>
-                </RevealOnScroll>
-              ))}
+          {certificationEntries.length > 0 && (
+            <div>
+              <RevealOnScroll>
+                <SectionHeading eyebrow="Certifications" title="Credentials" />
+              </RevealOnScroll>
+              <div className="mt-8 sm:mt-10 space-y-4">
+                {certificationEntries.map((cert) => (
+                  <RevealOnScroll
+                    key={cert.id}
+                    className="ink-panel p-6 h-full"
+                  >
+                    {cert.isPlaceholder && (
+                      <div className="mb-3">
+                        <PlaceholderBadge />
+                      </div>
+                    )}
+                    <h3 className="font-display text-lg text-parchment-100 font-bold leading-snug">
+                      {cert.name}
+                    </h3>
+                    <p className="mt-1.5 text-sm text-parchment-400 leading-snug">
+                      {cert.issuer} · {cert.year}
+                    </p>
+                  </RevealOnScroll>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </Container>
     </section>
@@ -324,10 +349,7 @@ const AboutPageContent = () => (
     >
       <Container>
         <RevealOnScroll>
-          <SectionHeading
-            eyebrow="Current focus"
-            title="What I am sharpening now"
-          />
+          <SectionHeading eyebrow="Current focus" title="Current stack" />
         </RevealOnScroll>
         <div className="mt-10 sm:mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {currentFocusItems.map((item) => (
@@ -347,92 +369,95 @@ const AboutPageContent = () => (
       </Container>
     </section>
 
-    <section
-      className="py-16 sm:py-20 md:py-24"
-      aria-labelledby="about-interests-title"
-    >
-      <Container>
-        <RevealOnScroll>
-          <SectionHeading
-            eyebrow="Personal interests"
-            title="Signals outside the sprint"
-          />
-        </RevealOnScroll>
-        <div className="mt-10 sm:mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {interestItems.map((item) => (
-            <RevealOnScroll
-              key={item.id}
-              className="ink-panel ink-panel-hover p-5 sm:p-6 h-full"
-            >
-              <h3 className="font-display text-lg text-parchment-100 font-bold leading-snug">
-                {item.title}
-              </h3>
-              <p className="mt-3 text-sm text-parchment-400 leading-relaxed">
-                {item.description}
-              </p>
-            </RevealOnScroll>
-          ))}
-        </div>
-      </Container>
-    </section>
-
-    <section
-      className="py-16 sm:py-20 md:py-24 bg-ink-950/40"
-      aria-labelledby="languages-title"
-    >
-      <Container>
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
-          <div>
-            <RevealOnScroll>
-              <SectionHeading
-                eyebrow="Languages"
-                title="Communication"
-                description="Proficiency labels are placeholders — update with accurate levels."
-              />
-            </RevealOnScroll>
-            <ul className="mt-8 sm:mt-10 space-y-3">
-              {languagesSpoken.map((lang) => (
-                <li
-                  key={lang.id}
-                  className="ink-panel p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
-                >
-                  <span className="font-display text-parchment-100 font-semibold leading-snug">
-                    {lang.language}
-                  </span>
-                  <span className="text-sm text-parchment-500 flex items-center gap-2">
-                    {lang.proficiency}
-                    <PlaceholderBadge />
-                  </span>
-                </li>
-              ))}
-            </ul>
+    {interestItems.length > 0 && (
+      <section
+        className="py-16 sm:py-20 md:py-24"
+        aria-labelledby="about-interests-title"
+      >
+        <Container>
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="Personal interests"
+              title="Signals outside the sprint"
+            />
+          </RevealOnScroll>
+          <div className="mt-10 sm:mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {interestItems.map((item) => (
+              <RevealOnScroll
+                key={item.id}
+                className="ink-panel ink-panel-hover p-5 sm:p-6 h-full"
+              >
+                <h3 className="font-display text-lg text-parchment-100 font-bold leading-snug">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm text-parchment-400 leading-relaxed">
+                  {item.description}
+                </p>
+              </RevealOnScroll>
+            ))}
           </div>
+        </Container>
+      </section>
+    )}
 
-          <div>
-            <RevealOnScroll>
-              <SectionHeading eyebrow="Fun facts" title="Small truths" />
-            </RevealOnScroll>
-            <ul className="mt-8 sm:mt-10 space-y-3">
-              {funFacts.map((fact) => (
-                <li key={fact.id} className="ink-panel p-5 sm:p-6">
-                  <h3 className="font-accent text-xs uppercase tracking-[0.18em] text-crimson-400">
-                    {fact.label}
-                  </h3>
-                  <p className="mt-2.5 text-sm text-parchment-400 leading-relaxed">
-                    {fact.detail}
-                  </p>
-                </li>
-              ))}
-            </ul>
+    {(languagesSpoken.length > 0 || funFacts.length > 0) && (
+      <section
+        className="py-16 sm:py-20 md:py-24 bg-ink-950/40"
+        aria-labelledby="languages-title"
+      >
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
+            {languagesSpoken.length > 0 && (
+              <div>
+                <RevealOnScroll>
+                  <SectionHeading eyebrow="Languages" title="Communication" />
+                </RevealOnScroll>
+                <ul className="mt-8 sm:mt-10 space-y-3">
+                  {languagesSpoken.map((lang) => (
+                    <li
+                      key={lang.id}
+                      className="ink-panel p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+                    >
+                      <span className="font-display text-parchment-100 font-semibold leading-snug">
+                        {lang.language}
+                      </span>
+                      <span className="text-sm text-parchment-500">
+                        {lang.proficiency}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {funFacts.length > 0 && (
+              <div>
+                <RevealOnScroll>
+                  <SectionHeading
+                    eyebrow="Strengths"
+                    title="From an earlier CV"
+                  />
+                </RevealOnScroll>
+                <ul className="mt-8 sm:mt-10 space-y-3">
+                  {funFacts.map((fact) => (
+                    <li key={fact.id} className="ink-panel p-5 sm:p-6">
+                      <h3 className="font-accent text-xs uppercase tracking-[0.18em] text-crimson-400">
+                        {fact.label}
+                      </h3>
+                      <p className="mt-2.5 text-sm text-parchment-400 leading-relaxed">
+                        {fact.detail}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-        </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    )}
 
-    <ContactCtaBanner
-      eyebrow="Work together"
-      title="If this profile resonates, let’s talk."
-    />
+    <ContactCtaBanner eyebrow="Contact" title="Questions about this profile?" />
   </>
 );
 

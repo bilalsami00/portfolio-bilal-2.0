@@ -6,159 +6,158 @@ import type {
 } from "./types";
 
 /**
- * Core site identity for Muhammad Bilal Sami's portfolio.
- * Contact fields marked as placeholders must be replaced with real details.
+ * Core site identity for Muhammad Bilal Sami.
+ * Facts follow the 2026-10-18 verified profile. Unconfirmed claims stay off the site.
  */
 
 export const siteIdentity: SiteIdentity = {
   fullName: "Muhammad Bilal Sami",
   shortName: "Bilal Sami",
-  professionalTitle: "Software Engineer",
-  tagline: "Building resilient web and mobile products with disciplined craft.",
+  professionalTitle: "Frontend Developer",
+  tagline:
+    "Frontend Developer at Maze Digital, building interfaces with Next.js, React, JavaScript, and Tailwind CSS.",
   introduction:
-    "I design and develop scalable web and mobile applications with a focus on clean architecture, thoughtful interfaces, and solutions that hold up under real-world pressure.",
-  location: "[Location — replace]",
-  email: "[your.email@example.com — replace]",
-  phone: "[Phone — replace]",
-  profileImage: "/assets/images/hacker.jpg",
-  logoImage: "/assets/images/avatar.png",
-  resumeUrl: "#",
-  siteUrl: "https://github.com/bilalsami00/portfolio-bilal-2.0",
+    "Frontend Developer working full-time at Maze Digital since January 2025. I focus on Next.js, React, JavaScript, and Tailwind CSS, with responsive marketing websites, multi-role admin portals, and API-connected interfaces. I graduated with a BS in Computer Science from the University of Karachi in 2023.",
+  location: "Karachi, Pakistan",
+  email: "muhammadbilalsami2000@gmail.com",
+  phone: "+92 312 2559707",
+  profileImage: "/assets/images/programmer.webp",
+  logoImage: "/assets/images/programmer.webp",
+  resumeUrl: "/resume/Updated_Full_CV.pdf",
+  siteUrl: "https://bilalsami.vercel.app",
   siteName: "Bilal Sami",
 };
 
 export const siteAvailability: SiteAvailability = {
-  statusLabel: "Open to opportunities",
-  statusDetail:
-    "Available for full-time roles, contract engagements, and selective freelance collaborations.",
-  isAvailableForWork: true,
+  statusLabel: "Employed full-time",
+  statusDetail: "Frontend Developer at Maze Digital since January 2025.",
+  isAvailableForWork: false,
 };
 
 export const siteSeo: SiteSeo = {
-  defaultTitle: "Bilal Sami | Software Engineer Portfolio",
+  defaultTitle: "Bilal Sami | Frontend Developer",
   titleTemplate: "%s | Bilal Sami",
   defaultDescription:
-    "Portfolio of Muhammad Bilal Sami — software engineer specializing in web, mobile, and full-stack product development.",
+    "Portfolio of Muhammad Bilal Sami, a frontend developer at Maze Digital working with Next.js, React, JavaScript, and Tailwind CSS.",
   keywords: [
     "Bilal Sami",
     "Muhammad Bilal Sami",
-    "Software Engineer",
-    "React",
+    "Frontend Developer",
     "Next.js",
-    "React Native",
-    "Node.js",
-    "TypeScript",
+    "React",
+    "JavaScript",
+    "Tailwind CSS",
+    "Maze Digital",
     "Portfolio",
   ],
-  ogImage: "/assets/images/programmer.png",
+  ogImage: "/assets/images/programmer.webp",
 };
 
 export const currentFocusItems: CurrentFocusItem[] = [
   {
-    id: "focus-typescript",
-    label: "TypeScript systems",
+    id: "focus-next",
+    label: "Next.js",
     description:
-      "Strongly typed application layers across frontend and Node.js services.",
+      "Marketing sites and web dashboards built as Next.js frontends.",
   },
   {
-    id: "focus-react-ecosystem",
-    label: "React & Next.js",
+    id: "focus-react",
+    label: "React",
     description:
-      "Component architecture, routing strategy, and performance-conscious UI delivery.",
+      "Component-based interfaces for public pages and authenticated admin views.",
   },
   {
-    id: "focus-mobile",
-    label: "React Native",
+    id: "focus-javascript",
+    label: "JavaScript",
     description:
-      "Cross-platform mobile experiences sharing patterns with the web stack.",
+      "Day-to-day frontend implementation across the Maze Digital projects shown here.",
   },
   {
-    id: "focus-quality",
-    label: "Testing discipline",
-    description:
-      "Jest and Cypress-driven confidence for features that must ship reliably.",
+    id: "focus-tailwind",
+    label: "Tailwind CSS",
+    description: "Layout and styling for the web interfaces in this portfolio.",
   },
 ];
 
 export const aboutPreview = {
-  heading: "Engineer by trade. Craftsman by temperament.",
+  heading: "Frontend developer at Maze Digital.",
   summary:
-    "I care about systems that are readable, interfaces that feel intentional, and delivery that respects both users and the teams who maintain the code afterward.",
+    "Since January 2025 I have worked full-time as a Frontend Developer at Maze Digital in Karachi, building interfaces with Next.js, React, JavaScript, and Tailwind CSS.",
   ctaLabel: "Read the full profile",
   ctaHref: "/about",
 };
 
 export const engineeringIdentity = {
-  heading: "Engineering identity",
+  heading: "How I work",
   paragraphs: [
-    "I approach software as long-form craft: understand the constraint, design the structure, then refine until the solution is both usable and maintainable.",
-    "Curiosity drives the stack choices. Discipline drives the implementation. Detail decides whether the product feels finished.",
+    "I develop and maintain frontend interfaces for web applications. The case studies on this site describe product features, not a personal inventory of every screen I built.",
+    "Next.js, React, JavaScript, and Tailwind CSS are the current focus, along with responsive pages, dashboards, and API-connected screens. Other libraries appear in project repositories; personal use of every one is not confirmed. Earlier MERN and Firebase work was training or a learning project.",
   ],
 };
 
 export const developmentPhilosophy = [
   {
     id: "philosophy-clarity",
-    title: "Clarity over cleverness",
+    title: "Readable interfaces",
     description:
-      "Code should explain itself. Clever shortcuts that hide intent usually cost more later.",
+      "I prefer interface code that is straightforward to follow and consistent with the rest of the page.",
   },
   {
-    id: "philosophy-systems",
-    title: "Systems thinking",
+    id: "philosophy-scope",
+    title: "Honest scope",
     description:
-      "Features live inside flows, data models, and failure modes. I design with those edges in mind.",
+      "Project write-ups stay at product scope. Incomplete forms, mock data, and external APIs are described as they are.",
   },
   {
-    id: "philosophy-iteration",
-    title: "Deliberate iteration",
+    id: "philosophy-stack",
+    title: "A focused stack",
     description:
-      "Ship thoughtfully, measure honestly, and improve without rewriting the foundation every sprint.",
+      "Next.js, React, JavaScript, and Tailwind CSS are the tools I use in my current role.",
   },
   {
-    id: "philosophy-ownership",
-    title: "End-to-end ownership",
+    id: "philosophy-contribution",
+    title: "Frontend contribution",
     description:
-      "From interface polish to API contracts and deploy readiness — I prefer owning outcomes, not just tickets.",
+      "I contribute to user-facing pages and web dashboard interfaces. I do not claim sole ownership of these products.",
   },
 ];
 
-export const languagesSpoken = [
+export const languagesSpoken: {
+  id: string;
+  language: string;
+  proficiency: string;
+}[] = [
   {
     id: "lang-english",
     language: "English",
-    proficiency: "Professional working proficiency (placeholder — update)",
+    proficiency: "Level not documented",
   },
   {
     id: "lang-urdu",
     language: "Urdu",
-    proficiency: "Native / bilingual proficiency (placeholder — update)",
+    proficiency: "Level not documented",
   },
 ];
 
-export const funFacts = [
+export const funFacts: { id: string; label: string; detail: string }[] = [
   {
-    id: "fact-learning",
-    label: "Always learning",
-    detail:
-      "New frameworks are interesting; durable engineering principles are essential.",
+    id: "strength-communication",
+    label: "Communication",
+    detail: "Listed as a professional strength on an earlier CV.",
   },
   {
-    id: "fact-visual",
-    label: "Visual sensibility",
-    detail:
-      "Dark atmospheres, strong typography, and intentional negative space influence how I think about product UI.",
+    id: "strength-teamwork",
+    label: "Teamwork",
+    detail: "Listed as a professional strength on an earlier CV.",
   },
   {
-    id: "fact-media",
-    label: "Narrative media",
-    detail:
-      "Anime, manga, and cinematic storytelling sharpen an eye for pacing, tension, and visual hierarchy.",
+    id: "strength-problem-solving",
+    label: "Problem-solving",
+    detail: "Listed as a professional strength on an earlier CV.",
   },
   {
-    id: "fact-tools",
-    label: "Tooling curiosity",
-    detail:
-      "From Electron desktops to mobile runtimes — I enjoy understanding how software reaches the user.",
+    id: "strength-time",
+    label: "Time management",
+    detail: "Listed as a professional strength on an earlier CV.",
   },
 ];

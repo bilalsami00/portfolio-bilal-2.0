@@ -297,11 +297,10 @@ const SiteNavigation = () => {
               !siteIdentity.resumeUrl.includes("replace") && (
                 <a
                   href={siteIdentity.resumeUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                  download="Updated_Full_CV.pdf"
                   className="btn-secondary !px-4 !py-2 !min-h-[2.5rem] text-xs"
                 >
-                  Resume
+                  Download Resume
                 </a>
               )}
           </div>

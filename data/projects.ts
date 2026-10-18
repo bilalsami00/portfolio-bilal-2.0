@@ -10,9 +10,9 @@ import type { PortfolioProject, ProjectCategory, ProjectImage } from "./types";
  * alpha-arc-dashboard so each project has its own route.
  *
  * featured is a site presentation flag. The case studies do not mark featured work.
- * The three featured entries are public-facing products with complete write-ups;
- * Live links are the public or preferred Vercel deployments. Alpha Dashboard and
- * SteriPass use their Vercel URLs rather than the production admin hosts.
+ * Featured entries are the highest-priority Next.js frontend examples.
+ * Live links are published only when the profile source documents a public URL.
+ * Vercel screenshot hosts are not treated as confirmed deployments.
  *
  * Replaced placeholder records (no matching source folder): Nexus Operations
  * Dashboard, Signal Field Companion, Forge Desktop Toolkit, Veil Product Site,
@@ -121,7 +121,7 @@ export const projects: PortfolioProject[] = [
       "A Next.js web application for a human-curated Bitcoin trading-signals product, serving as the public website and authenticated web client alongside an Android app.",
     year: "2026",
     category: "Web Application",
-    featured: true,
+    featured: false,
     liveUrl: "https://clarionbtc.com",
     repositoryUrl: "https://github.com/bilalsami00/btc.git",
     technologies: [
@@ -201,8 +201,7 @@ export const projects: PortfolioProject[] = [
       "A Next.js frontend for Jimta Group International’s member-facing digital ecosystem, covering shopping, loyalty and coin products, wallet and rewards messaging, service centers, subscriptions, referrals, and educational content.",
     year: "2026",
     category: "Web Application",
-    featured: true,
-    liveUrl: "https://jimta-website-bilal.vercel.app/",
+    featured: false,
     repositoryUrl: "https://github.com/bilalsami00/jimta-website-bilal.git",
     technologies: [
       "Next.js 16",
@@ -276,8 +275,7 @@ export const projects: PortfolioProject[] = [
       "A Next.js frontend that serves three role-based portals—admin, service center, and end user—from a single codebase for the Jimta platform.",
     year: "2026",
     category: "Web Application",
-    featured: false,
-    liveUrl: "https://jimta-dashboards-bilal.vercel.app/login",
+    featured: true,
     repositoryUrl: "https://github.com/bilalsami00/jimta-dashboards-bilal.git",
     technologies: [
       "Next.js 16",
@@ -351,7 +349,6 @@ export const projects: PortfolioProject[] = [
     year: "2026",
     category: "Web Application",
     featured: false,
-    liveUrl: "https://rbf-y5m3.vercel.app/login",
     repositoryUrl: "https://github.com/bilalsami00/rbf.git",
     technologies: [
       "React 19",
@@ -426,8 +423,7 @@ export const projects: PortfolioProject[] = [
       "A Next.js administrative and operational front end for the SteriPass platform, with role-specific access for super admin, hospital, and vendor accounts.",
     year: "2026",
     category: "Web Application",
-    featured: false,
-    liveUrl: "https://steripassosama.vercel.app/",
+    featured: true,
     repositoryUrl: "https://github.com/sudoosama/maze-steripass-admin",
     technologies: [
       "Next.js",
@@ -506,7 +502,6 @@ export const projects: PortfolioProject[] = [
     year: "2025",
     category: "Web Application",
     featured: false,
-    liveUrl: "https://social-media-five-lilac.vercel.app/login",
     repositoryUrl: "https://github.com/bilalsami00/social-media.git",
     technologies: [
       "Next.js 16",
@@ -577,7 +572,6 @@ export const projects: PortfolioProject[] = [
     year: "2026",
     category: "Web Application",
     featured: false,
-    liveUrl: "https://alpha-lp-six.vercel.app/",
     repositoryUrl: "https://github.com/bilalsami00/alpha-lp.git",
     technologies: [
       "Next.js",
@@ -649,7 +643,6 @@ export const projects: PortfolioProject[] = [
     year: "2025–2026",
     category: "Web Application",
     featured: false,
-    liveUrl: "https://alpha3-omega.vercel.app/",
     repositoryUrl: "https://github.com/bilalsami00/alpha3",
     technologies: [
       "Next.js 16",
@@ -723,7 +716,6 @@ export const projects: PortfolioProject[] = [
     year: "2025",
     category: "Web Application",
     featured: false,
-    liveUrl: "https://vittor-1.vercel.app/",
     technologies: [
       "React 19",
       "Vite 7",
@@ -789,6 +781,24 @@ export const projects: PortfolioProject[] = [
     },
   },
 ];
+
+const projectPriority: Record<string, number> = {
+  "project-maze-digital": 1,
+  "project-steripass-admin": 2,
+  "project-jimta-dashboard": 3,
+  "project-alpha-arc-dashboard": 4,
+  "project-clarion-btc": 5,
+  "project-jimta": 6,
+  "project-social-media-dashboard": 7,
+  "project-alpha-arc": 8,
+  "project-rbf": 9,
+  "project-lights-camera-action": 10,
+};
+
+projects.sort(
+  (left, right) =>
+    (projectPriority[left.id] ?? 99) - (projectPriority[right.id] ?? 99)
+);
 
 export const featuredProjects = projects.filter((project) => project.featured);
 

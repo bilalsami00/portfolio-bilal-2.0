@@ -15,7 +15,7 @@ const HomeSkillsSection = () => (
         <SectionHeading
           eyebrow="Skills & technologies"
           title="The arsenal"
-          description="Grouped by discipline. Brand marks come from Skill Icons, with Simple Icons only when no Skill Icon exists."
+          description="Current frontend focus first. Repository libraries, SMIT training, and older CV tools are labeled so they are not read as equal expertise."
           align="center"
         />
       </RevealOnScroll>

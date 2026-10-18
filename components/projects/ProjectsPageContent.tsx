@@ -53,12 +53,12 @@ const ProjectsPageContent = () => {
               id="projects-hero-title"
               className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-parchment-100 max-w-4xl leading-[1.08] tracking-tight text-balance"
             >
-              Work selected for craft, clarity, and consequence
+              Frontend work from Maze Digital
             </h1>
             <p className="section-copy mt-5 max-w-3xl">
-              Web projects documented from their case studies. Filter by
-              category, then open a project for the overview, problem and
-              solution, features, challenges, and lessons learned.
+              Ten product case studies, ordered with Next.js, React, JavaScript,
+              and Tailwind CSS work first. Each write-up describes the product.
+              It is not a personal list of every feature I built.
             </p>
           </div>
         </Container>
@@ -251,9 +251,9 @@ const ProjectsPageContent = () => {
       </section>
 
       <ContactCtaBanner
-        eyebrow="Build with me"
-        title="Need a similar product surface?"
-        description="Share the problem space — architecture, interface, or delivery — and we can discuss scope."
+        eyebrow="Contact"
+        title="Questions about this work?"
+        description="These case studies describe product scope. Email or the contact form is the way to ask about them."
       />
 
       <ProjectDetailsModal

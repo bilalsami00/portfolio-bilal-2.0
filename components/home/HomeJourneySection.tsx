@@ -12,7 +12,7 @@ const HomeJourneySection = () => (
         <SectionHeading
           eyebrow="Professional journey"
           title="Experience timeline"
-          description="Structured for real employment history. Current entries are explicit placeholders — replace before sharing with recruiters."
+          description="Maze Digital from January 2025 to the present, then earlier roles with only the dates and employers the CV records."
         />
       </RevealOnScroll>
 

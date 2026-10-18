@@ -2,27 +2,27 @@ import type { FaqItem } from "./types";
 
 export const contactFaqItems: FaqItem[] = [
   {
-    id: "faq-availability",
-    question: "What kinds of work are you open to?",
+    id: "faq-role",
+    question: "What do you do now?",
     answer:
-      "Full-time software engineering roles, contract engagements, and selective freelance projects across web, frontend, backend, and React Native.",
-  },
-  {
-    id: "faq-response-time",
-    question: "How quickly do you usually respond?",
-    answer:
-      "Most inquiries receive a reply within 1–2 business days. Urgent hiring timelines can be noted in the subject line.",
+      "I am a full-time Frontend Developer at Maze Digital in Karachi, from January 2025 to the present. I work with Next.js, React, JavaScript, and Tailwind CSS.",
   },
   {
     id: "faq-stack",
     question: "What is your primary stack?",
     answer:
-      "TypeScript, React, Next.js, Node.js, MongoDB, and React Native, with testing via Jest and Cypress.",
+      "Next.js, React, JavaScript, and Tailwind CSS, plus responsive pages, dashboards, and API-connected interfaces. Other repository libraries are listed separately because personal use of every one is not confirmed.",
+  },
+  {
+    id: "faq-projects",
+    question: "Do the case studies list everything you built?",
+    answer:
+      "No. Each case study describes the product. It is not a personal inventory of features, and it is not a claim of sole ownership.",
   },
   {
     id: "faq-resume",
-    question: "Can I get a resume or deeper project details?",
+    question: "Where is your resume?",
     answer:
-      "Yes — use the contact form or email directly, and mention the role or project context so the reply can be specific.",
+      "Use Download Resume in the header. The file is the updated full CV. You can also email muhammadbilalsami2000@gmail.com.",
   },
 ];

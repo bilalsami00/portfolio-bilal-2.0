@@ -124,8 +124,8 @@ const ContactPageContent = () => {
               Let’s open a channel
             </h1>
             <p className="section-copy mt-5">
-              Whether you are hiring, collaborating, or exploring a product idea
-              — send a clear note and I will respond with substance.
+              Email, phone, and the form below reach me directly. I am employed
+              full-time at Maze Digital.
             </p>
           </div>
         </Container>
@@ -403,7 +403,7 @@ const ContactPageContent = () => {
             <SectionHeading
               eyebrow="FAQ"
               title="Common inquiries"
-              description="Quick answers for recruiters and collaborators."
+              description="Short answers from the confirmed profile."
             />
           </RevealOnScroll>
           <div className="mt-8 space-y-4 max-w-3xl">
@@ -428,7 +428,7 @@ const ContactPageContent = () => {
       <ContactCtaBanner
         eyebrow="Prefer another path?"
         title="Browse the work, then return when ready."
-        description="The projects archive and about profile are the fastest way to decide if we should talk."
+        description="The projects archive and about page hold the same confirmed profile."
       />
     </>
   );

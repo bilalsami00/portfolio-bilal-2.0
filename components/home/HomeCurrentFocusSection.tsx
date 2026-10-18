@@ -13,7 +13,7 @@ const HomeCurrentFocusSection = () => (
         <SectionHeading
           eyebrow="Current focus"
           title="What the forge is tempering now"
-          description="Active technical emphasis drawn from the stack already present in this portfolio."
+          description="The stack used in the current Frontend Developer role at Maze Digital."
         />
       </RevealOnScroll>
 

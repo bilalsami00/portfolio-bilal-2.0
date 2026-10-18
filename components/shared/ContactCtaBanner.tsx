@@ -16,7 +16,7 @@ type ContactCtaBannerProps = {
 const ContactCtaBanner = ({
   eyebrow = "Next chapter",
   title = "Have a role, product, or problem worth building?",
-  description = `Reach out to ${siteIdentity.shortName} — open to thoughtful collaborations, engineering roles, and product work that demands care.`,
+  description = `Reach out to ${siteIdentity.shortName} about frontend work, project questions, or the resume.`,
 }: ContactCtaBannerProps) => (
   <section
     className="py-16 sm:py-20 md:py-24"

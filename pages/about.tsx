@@ -7,7 +7,7 @@ import { siteIdentity } from "../data/site";
 const AboutPage: NextPage = () => (
   <PageShell
     title="About"
-    description={`Professional profile of ${siteIdentity.fullName} — engineering identity, experience, education, skills, and philosophy.`}
+    description={`Professional profile of ${siteIdentity.fullName}, Frontend Developer at Maze Digital.`}
     path={routePaths.about}
   >
     <AboutPageContent />

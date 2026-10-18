@@ -1,93 +1,57 @@
 import type { ServiceCategory } from "./types";
 
 /**
- * Capability categories supported by the owner's demonstrated stack
- * (web, frontend, backend, mobile, UI, performance, SEO).
+ * Frontend work actually reflected by the Maze Digital projects.
+ * These are contribution areas, not offered freelance services.
  */
 
 export const serviceCategories: ServiceCategory[] = [
   {
-    id: "service-web",
-    title: "Web Development",
-    description:
-      "End-to-end web products with thoughtful information architecture and maintainable codebases.",
-    highlights: [
-      "Multi-page application structure",
-      "Content-driven sections",
-      "Production-ready Next.js foundations",
-    ],
-    iconKey: "web",
-  },
-  {
     id: "service-frontend",
-    title: "Frontend Development",
+    title: "Frontend development",
     description:
-      "React interfaces with clear hierarchy, responsive layouts, and purposeful interaction design.",
+      "Interfaces built with Next.js, React, JavaScript, and Tailwind CSS.",
     highlights: [
-      "Component-driven UI",
-      "TypeScript-first development",
-      "Accessible interaction patterns",
+      "Next.js, React, and JavaScript",
+      "Tailwind CSS layout and styling",
+      "Responsive page layouts",
     ],
     iconKey: "frontend",
   },
   {
-    id: "service-backend",
-    title: "Backend Development",
+    id: "service-web",
+    title: "Marketing websites",
     description:
-      "Node.js services and API layers that support real product workflows.",
+      "Public, user-facing sites such as the Maze Digital website and other campaign or product pages.",
     highlights: [
-      "REST-oriented services",
-      "Data modeling with MongoDB",
-      "Auth-ready structures",
+      "Service and landing pages",
+      "Shared page sections",
+      "Lead and content layouts",
     ],
-    iconKey: "backend",
+    iconKey: "web",
   },
   {
-    id: "service-mobile",
-    title: "Mobile Development",
+    id: "service-dashboards",
+    title: "Web dashboards",
     description:
-      "React Native applications that extend product capabilities beyond the browser.",
+      "Admin and operations interfaces that sit on external APIs. Some screens in the case studies still use demo data.",
     highlights: [
-      "Cross-platform delivery",
-      "Shared mental models with web React",
-      "Mobile-first interaction flows",
-    ],
-    iconKey: "mobile",
-  },
-  {
-    id: "service-uiux",
-    title: "UI / UX",
-    description:
-      "Visual systems and user flows that balance atmosphere with professional clarity.",
-    highlights: [
-      "Dark, high-contrast presentation",
-      "Consistent spacing and type scales",
-      "Conversion-minded section design",
+      "Admin and portal layouts",
+      "Forms and data tables",
+      "API-backed views where the case study documents them",
     ],
     iconKey: "uiux",
   },
   {
-    id: "service-performance",
-    title: "Performance Optimization",
+    id: "service-api",
+    title: "API-connected interfaces",
     description:
-      "Practical performance work across assets, rendering paths, and interaction cost.",
+      "Frontend screens that call external APIs. Some case-study modules still use demo data or unfinished flows.",
     highlights: [
-      "Image and asset discipline",
-      "Lean animation choices",
-      "Responsive performance awareness",
+      "REST-backed admin views",
+      "Forms that post to external services",
+      "Product limits called out in each case study",
     ],
-    iconKey: "performance",
-  },
-  {
-    id: "service-seo",
-    title: "SEO",
-    description:
-      "Technical SEO foundations: metadata, semantic structure, and shareable page previews.",
-    highlights: [
-      "Per-page titles and descriptions",
-      "Open Graph metadata",
-      "Canonical-friendly route structure",
-    ],
-    iconKey: "seo",
+    iconKey: "rest",
   },
 ];

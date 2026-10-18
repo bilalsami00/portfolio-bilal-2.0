@@ -24,7 +24,7 @@ const HomeFeaturedProjectsSection = () => {
             <SectionHeading
               eyebrow="Featured work"
               title="Projects forged in code"
-              description="Selected web projects with case studies drawn from the project write-ups. Open a card for the full overview, problem and solution, features, challenges, and lessons."
+              description="Next.js frontend examples from Maze Digital. Open a card for the product case study. The write-up is not a personal feature list."
             />
             <ButtonLink
               href={routePaths.projects}

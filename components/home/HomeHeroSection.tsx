@@ -27,7 +27,7 @@ const HomeHeroSection = () => (
           <p className="status-pill mb-6">{siteAvailability.statusLabel}</p>
         )}
 
-        <p className="section-eyebrow">Software Developer Portfolio</p>
+        <p className="section-eyebrow">Frontend Developer Portfolio</p>
         <div className="crimson-mark mt-3.5 mb-5 sm:mt-4 sm:mb-6" />
 
         <h1
@@ -48,7 +48,7 @@ const HomeHeroSection = () => (
         <div className="mt-8 flex flex-col xs:flex-row flex-wrap gap-3">
           <ButtonLink href={routePaths.projects}>View projects</ButtonLink>
           <ButtonLink href={routePaths.contact} variant="secondary">
-            Hire me
+            Contact
           </ButtonLink>
         </div>
 

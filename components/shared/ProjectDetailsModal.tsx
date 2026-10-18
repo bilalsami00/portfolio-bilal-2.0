@@ -128,6 +128,10 @@ const ProjectDetailsModal = ({
           >
             {project.title}
           </h2>
+          <p className="mt-4 text-sm text-parchment-500 leading-relaxed">
+            This case study describes the product. It is Maze Digital project
+            work, not a personal list of every feature I built.
+          </p>
 
           <div className="mt-6">
             <SectionHeading>Overview</SectionHeading>
@@ -192,7 +196,7 @@ const ProjectDetailsModal = ({
               </ButtonLink>
             )}
             <Link href="/contact" className="btn-secondary" onClick={onClose}>
-              Discuss similar work
+              Contact
             </Link>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { aboutPreview, siteIdentity } from "../../data/site";
+import { aboutPreview } from "../../data/site";
 import { ButtonLink } from "../shared/Button";
 import Container from "../shared/Container";
 import RevealOnScroll from "../shared/RevealOnScroll";
@@ -36,10 +36,8 @@ const HomeAboutPreviewSection = () => (
             description={aboutPreview.summary}
           />
           <p className="mt-5 text-parchment-400 leading-relaxed max-w-2xl">
-            {siteIdentity.tagline} Based on publicly configured profile details
-            for {siteIdentity.fullName}, this portfolio emphasizes web, mobile,
-            and full-stack craftsmanship with a dark, disciplined visual
-            language.
+            The project write-ups describe product features. They are not a
+            personal list of everything I built.
           </p>
           <div className="mt-8">
             <ButtonLink href={aboutPreview.ctaHref} variant="secondary">

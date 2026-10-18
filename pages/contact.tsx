@@ -7,7 +7,7 @@ import { siteIdentity } from "../data/site";
 const ContactPage: NextPage = () => (
   <PageShell
     title="Contact"
-    description={`Contact ${siteIdentity.fullName} for software engineering roles, collaborations, and product work.`}
+    description={`Contact ${siteIdentity.fullName}, Frontend Developer at Maze Digital in Karachi.`}
     path={routePaths.contact}
   >
     <ContactPageContent />

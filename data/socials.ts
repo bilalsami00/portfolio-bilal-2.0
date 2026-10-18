@@ -1,8 +1,8 @@
 import type { SocialLink } from "./types";
 
 /**
- * Social profiles for Bilal Sami.
- * Only GitHub is confirmed from the project remote; other links are placeholders.
+ * Confirmed public profiles only.
+ * LinkedIn is the URL from the CV and has not been re-checked in this pass.
  */
 
 export const socialLinks: SocialLink[] = [
@@ -11,47 +11,14 @@ export const socialLinks: SocialLink[] = [
     label: "GitHub",
     platform: "github",
     href: "https://github.com/bilalsami00",
-    title: "View GitHub profile",
+    title: "GitHub profile",
   },
   {
     id: "social-linkedin",
     label: "LinkedIn",
     platform: "linkedin",
-    href: "#",
-    title: "LinkedIn profile (placeholder — replace)",
-    isPlaceholder: true,
-  },
-  {
-    id: "social-stackoverflow",
-    label: "Stack Overflow",
-    platform: "stackoverflow",
-    href: "#",
-    title: "Stack Overflow profile (placeholder — replace)",
-    isPlaceholder: true,
-  },
-  {
-    id: "social-youtube",
-    label: "YouTube",
-    platform: "youtube",
-    href: "#",
-    title: "YouTube channel (placeholder — replace)",
-    isPlaceholder: true,
-  },
-  {
-    id: "social-facebook",
-    label: "Facebook",
-    platform: "facebook",
-    href: "#",
-    title: "Facebook profile (placeholder — replace)",
-    isPlaceholder: true,
-  },
-  {
-    id: "social-twitter",
-    label: "Twitter / X",
-    platform: "twitter",
-    href: "#",
-    title: "Twitter profile (placeholder — replace)",
-    isPlaceholder: true,
+    href: "https://www.linkedin.com/in/bilal-sami-9b027b240/",
+    title: "LinkedIn profile",
   },
 ];
 

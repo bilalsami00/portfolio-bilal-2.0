@@ -14,7 +14,7 @@ const HomeCapabilitiesSection = () => (
         <SectionHeading
           eyebrow="Capabilities"
           title="What I do"
-          description="Service areas supported by the technologies and product surfaces already reflected in this repository."
+          description="Frontend contribution areas from the Maze Digital projects on this site."
           align="center"
         />
       </RevealOnScroll>

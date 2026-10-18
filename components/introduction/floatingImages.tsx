@@ -32,7 +32,7 @@ const FloatingImages = () => (
     </div>
 
     <div
-      title="Node.js"
+      title="Next.js"
       className={`${floatBox} top-[14%] right-[6%] sm:right-10 ${
         styles.floating_item || ""
       }`}
@@ -41,7 +41,7 @@ const FloatingImages = () => (
       <Image
         loading="lazy"
         alt=""
-        src="/assets/images/icons/nodejs.png"
+        src="https://skillicons.dev/icons?i=nextjs&theme=dark"
         width={72}
         height={72}
         className="pointer-events-none"
@@ -49,7 +49,7 @@ const FloatingImages = () => (
     </div>
 
     <div
-      title="MongoDB"
+      title="Tailwind CSS"
       className={`${floatBox} bottom-[18%] right-[8%] sm:right-12 ${
         styles.floating_item || ""
       }`}
@@ -58,7 +58,7 @@ const FloatingImages = () => (
       <Image
         loading="lazy"
         alt=""
-        src="/assets/images/icons/mongoDB.png"
+        src="https://skillicons.dev/icons?i=tailwind&theme=dark"
         width={72}
         height={72}
         className="pointer-events-none"
@@ -66,7 +66,7 @@ const FloatingImages = () => (
     </div>
 
     <div
-      title="Craft over claims"
+      title="Maze Digital"
       className={`
         hero-float-card absolute z-10 bottom-[16%] left-[2%] sm:left-6
         flex items-center gap-2 rounded-2xl
@@ -85,9 +85,9 @@ const FloatingImages = () => (
       />
       <div className="pr-2 text-left">
         <p className="hero-float-title text-sm font-bold leading-tight">
-          Clean builds
+          Maze Digital
         </p>
-        <p className="hero-float-subtitle text-xs">thoughtful delivery</p>
+        <p className="hero-float-subtitle text-xs">Frontend</p>
       </div>
     </div>
   </span>
