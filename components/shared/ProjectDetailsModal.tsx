@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { PortfolioProject } from "../../data/types";
@@ -43,10 +43,38 @@ const ProjectDetailsModal = ({
   onClose,
 }: ProjectDetailsModalProps) => {
   const [mounted, setMounted] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const lightboxOpenRef = useRef(false);
+  lightboxOpenRef.current = lightboxOpen;
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (project) return undefined;
+    setLightboxOpen(false);
+    return undefined;
+  }, [project]);
+
+  const handleLightboxChange = useCallback((open: boolean) => {
+    const dialog = dialogRef.current;
+    if (dialog) {
+      if (open) {
+        dialog.setAttribute("inert", "");
+        dialog.setAttribute("aria-hidden", "true");
+      } else {
+        dialog.removeAttribute("inert");
+        dialog.removeAttribute("aria-hidden");
+      }
+    }
+    setLightboxOpen(open);
+  }, []);
+
+  useEffect(() => {
+    handleLightboxChange(lightboxOpen);
+  }, [lightboxOpen, project, handleLightboxChange]);
 
   useEffect(() => {
     if (!project) return undefined;
@@ -55,7 +83,9 @@ const ProjectDetailsModal = ({
     document.body.style.overflow = "hidden";
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (lightboxOpenRef.current) return;
+      onClose();
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -71,9 +101,11 @@ const ProjectDetailsModal = ({
 
   return createPortal(
     <div
+      ref={dialogRef}
       className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6"
       role="dialog"
-      aria-modal="true"
+      aria-modal={lightboxOpen ? undefined : true}
+      aria-hidden={lightboxOpen || undefined}
       aria-labelledby="project-modal-title"
     >
       <button
@@ -91,7 +123,11 @@ const ProjectDetailsModal = ({
           <button
             type="button"
             onClick={onClose}
-            className="btn-secondary btn-sm bg-ink-900/85"
+            className={`btn-secondary btn-sm bg-ink-900/85 ${
+              lightboxOpen ? "invisible pointer-events-none" : ""
+            }`}
+            tabIndex={lightboxOpen ? -1 : undefined}
+            aria-hidden={lightboxOpen || undefined}
           >
             Close
           </button>
@@ -101,6 +137,7 @@ const ProjectDetailsModal = ({
           <ProjectGallery
             key={project.id}
             images={buildProjectGallery(project)}
+            onLightboxChange={handleLightboxChange}
           />
         </div>
 
