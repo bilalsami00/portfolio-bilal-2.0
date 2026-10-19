@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { PortfolioProject } from "../../data/types";
-import { getProjectImage } from "../../utilities/projectImages";
+import { buildProjectGallery } from "../../utilities/projectGallery";
+import ProjectGallery from "../projects/ProjectGallery";
 import TechTag from "./TechTag";
 import { ButtonLink } from "./Button";
 
@@ -96,22 +97,11 @@ const ProjectDetailsModal = ({
           </button>
         </div>
 
-        <div className="bg-ink-950 -mt-4">
-          {project.gallery.map((image, index) => {
-            const media = getProjectImage(image.src, "full");
-            return (
-              <img
-                key={image.src}
-                src={media.src}
-                width={media.width}
-                height={media.height}
-                alt={image.alt}
-                className="mx-auto h-auto w-full max-w-full object-contain object-top"
-                loading={index === 0 ? "eager" : "lazy"}
-                decoding="async"
-              />
-            );
-          })}
+        <div className="-mt-4">
+          <ProjectGallery
+            key={project.id}
+            images={buildProjectGallery(project)}
+          />
         </div>
 
         <div className="p-5 sm:p-8">
