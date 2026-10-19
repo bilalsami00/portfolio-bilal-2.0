@@ -64,6 +64,7 @@ const Lightbox = ({
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const pointerStart = useRef<{
     x: number;
@@ -95,7 +96,10 @@ const Lightbox = ({
     const stageW = stage.clientWidth;
     const stageH = stage.clientHeight;
     if (stageW <= 0 || stageH <= 0) return;
-    const ratio = Math.min(stageW / width, stageH / height);
+    const dpr = window.devicePixelRatio || 1;
+    // Cap the fitted size at one source pixel per device pixel. The stage is
+    // often wider than these screenshots, and stretching them softens text.
+    const ratio = Math.min(stageW / width, stageH / height, 1 / dpr);
     const next = {
       fitW: Math.max(1, Math.floor(width * ratio)),
       fitH: Math.max(1, Math.floor(height * ratio)),
@@ -135,15 +139,18 @@ const Lightbox = ({
     };
   };
 
-  const imageKey = image
-    ? `${image.preview}:${image.width ?? 0}x${image.height ?? 0}`
-    : "";
+  const imageKey = image?.src ?? "";
 
   useLayoutEffect(() => {
-    naturalRef.current = {
-      width: image?.width ?? 0,
-      height: image?.height ?? 0,
-    };
+    const element = imageRef.current;
+    const ready =
+      !!element &&
+      element.complete &&
+      element.naturalWidth > 0 &&
+      element.naturalHeight > 0;
+    naturalRef.current = ready
+      ? { width: element.naturalWidth, height: element.naturalHeight }
+      : { width: 0, height: 0 };
     pendingCenter.current = null;
     setScale(1);
     const stage = stageRef.current;
@@ -151,7 +158,8 @@ const Lightbox = ({
       stage.scrollTop = 0;
       stage.scrollLeft = 0;
     }
-    measure();
+    if (!ready) setFrame(null);
+    else measure();
     // Fit is derived from this screenshot's intrinsic size, not object identity.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageKey]);
@@ -159,13 +167,18 @@ const Lightbox = ({
   useLayoutEffect(() => {
     const stage = stageRef.current;
     if (!stage || typeof ResizeObserver === "undefined") return undefined;
-    const observer = new ResizeObserver(() => {
+    const refit = () => {
       if (scaleRef.current > 1.001) captureCenter();
       else pendingCenter.current = null;
       measure();
-    });
+    };
+    const observer = new ResizeObserver(refit);
     observer.observe(stage);
-    return () => observer.disconnect();
+    window.addEventListener("resize", refit);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", refit);
+    };
   }, [imageKey]);
 
   useLayoutEffect(() => {
@@ -330,6 +343,7 @@ const Lightbox = ({
   const showNext = () => onIndex(stepGalleryIndex(index, 1, images.length));
 
   const rememberNaturalSize = (element: HTMLImageElement) => {
+    if (element !== imageRef.current) return;
     if (!element.naturalWidth || !element.naturalHeight) return;
     if (
       element.naturalWidth === naturalRef.current.width &&
@@ -501,8 +515,9 @@ const Lightbox = ({
             }
           >
             <img
-              key={image.preview}
-              src={image.preview}
+              ref={imageRef}
+              key={image.src}
+              src={image.src}
               alt={image.alt}
               width={renderedW > 0 ? Math.round(renderedW) : undefined}
               height={renderedH > 0 ? Math.round(renderedH) : undefined}
