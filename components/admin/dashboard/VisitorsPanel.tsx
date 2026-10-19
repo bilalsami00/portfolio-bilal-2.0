@@ -1,5 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useListControls from "../../../hooks/useListControls";
+import useRecordSelection from "../../../hooks/useRecordSelection";
+import {
+  BulkDeleteError,
+  formatBulkDeleteFailure,
+  formatBulkDeleteSuccess,
+} from "../../../utilities/bulkDelete";
 import {
   formatDateTime,
   formatDuration,
@@ -16,11 +22,14 @@ import {
 } from "./DashboardDataProvider";
 import {
   AdminDialog,
+  BulkSelectionBar,
   ConfirmDialog,
   DetailRow,
   ListToolbar,
   Pagination,
   PanelMessage,
+  RecordCheckbox,
+  SelectAllCheckbox,
   SkeletonRows,
 } from "./DashboardUi";
 
@@ -216,18 +225,30 @@ const VisitorDetail = ({
 );
 
 const VisitorsPanel = () => {
-  const { sessions, sessionsState, deleteSession } = useDashboardData();
+  const { sessions, sessionsState, deleteSession, deleteSessions } =
+    useDashboardData();
   const now = useNow(30000);
   const list = useListControls<VisitorSessionRecord, VisitorSort>(sessions, {
     matches,
     sorters,
     defaultSort: "newest",
   });
+  const resultIds = useMemo(
+    () => list.results.map((session) => session.id),
+    [list.results]
+  );
+  const pageIds = list.pageItems.map((session) => session.id);
+  const selection = useRecordSelection(resultIds);
+  const pageFlags = selection.flags(pageIds);
   const [viewing, setViewing] = useState<VisitorSessionRecord | null>(null);
   const [pendingDelete, setPendingDelete] =
     useState<VisitorSessionRecord | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [pendingBulk, setPendingBulk] = useState<string[] | null>(null);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [bulkError, setBulkError] = useState<string | null>(null);
+  const [bulkNotice, setBulkNotice] = useState<string | null>(null);
 
   // Keep the open detail view in sync with realtime updates.
   const liveViewing = viewing
@@ -241,13 +262,68 @@ const VisitorsPanel = () => {
   }, []);
 
   const confirmDelete = () => {
-    if (!pendingDelete) return;
+    if (!pendingDelete || deleting) return;
     setDeleting(true);
     setDeleteError(null);
     deleteSession(pendingDelete.id)
       .then(() => setPendingDelete(null))
       .catch(() => setDeleteError("Could not delete this session. Try again."))
       .finally(() => setDeleting(false));
+  };
+
+  const cancelBulkDelete = useCallback(() => {
+    if (bulkDeleting) return;
+    setPendingBulk(null);
+    setBulkError(null);
+  }, [bulkDeleting]);
+
+  const requestBulkDelete = () => {
+    if (bulkDeleting || selection.selectedCount === 0) return;
+    setBulkError(null);
+    setBulkNotice(null);
+    setPendingBulk([...selection.selectedIds]);
+  };
+
+  const confirmBulkDelete = () => {
+    if (!pendingBulk || bulkDeleting) return;
+    const allowed = new Set(resultIds);
+    const ids = pendingBulk.filter((id) => allowed.has(id));
+    if (!ids.length) {
+      setBulkNotice(null);
+      setPendingBulk(null);
+      setBulkError("Those visitors are no longer available.");
+      return;
+    }
+    setBulkDeleting(true);
+    setBulkError(null);
+    deleteSessions(ids)
+      .then((deleted) => {
+        selection.clear();
+        setPendingBulk(null);
+        setBulkNotice(
+          formatBulkDeleteSuccess(
+            deleted,
+            "visitor session",
+            "visitor sessions"
+          )
+        );
+      })
+      .catch((error: unknown) => {
+        if (error instanceof BulkDeleteError) {
+          selection.replace(error.failedIds);
+          setPendingBulk(error.failedIds);
+          setBulkError(
+            formatBulkDeleteFailure(
+              error,
+              "visitor session",
+              "visitor sessions"
+            )
+          );
+          return;
+        }
+        setBulkError("Could not delete the selected visitors. Try again.");
+      })
+      .finally(() => setBulkDeleting(false));
   };
 
   const actions = (session: VisitorSessionRecord) => (
@@ -301,6 +377,17 @@ const VisitorsPanel = () => {
           <table className="w-full text-left text-sm">
             <thead className="text-[0.7rem] font-accent uppercase tracking-[0.16em] text-steel-400">
               <tr className="border-b border-steel-700/40">
+                <th scope="col" className="w-12 px-4 py-3 font-semibold">
+                  <SelectAllCheckbox
+                    id="visitors-select-all"
+                    checked={pageFlags.allSelected}
+                    indeterminate={pageFlags.indeterminate}
+                    onChange={() => selection.toggleVisible(pageIds)}
+                    label="Select all visible visitors"
+                    hideLabel
+                    disabled={bulkDeleting}
+                  />
+                </th>
                 <th scope="col" className="px-4 py-3 font-semibold">
                   IP
                 </th>
@@ -333,6 +420,17 @@ const VisitorsPanel = () => {
                   key={session.id}
                   className="border-b border-steel-700/40 last:border-0 align-top"
                 >
+                  <td className="px-4 py-3">
+                    <RecordCheckbox
+                      id={`visitor-select-${session.id}`}
+                      checked={selection.selected.has(session.id)}
+                      onChange={(checked) =>
+                        selection.toggle(session.id, checked)
+                      }
+                      label={`Select visitor ${session.ipAddress}`}
+                      disabled={bulkDeleting}
+                    />
+                  </td>
                   <td className="px-4 py-3">
                     <IpCell ip={session.ipAddress} />
                   </td>
@@ -374,11 +472,33 @@ const VisitorsPanel = () => {
           </table>
         </div>
 
+        <div className="lg:hidden">
+          <SelectAllCheckbox
+            id="visitors-select-all-mobile"
+            checked={pageFlags.allSelected}
+            indeterminate={pageFlags.indeterminate}
+            onChange={() => selection.toggleVisible(pageIds)}
+            label="Select all"
+            disabled={bulkDeleting}
+          />
+        </div>
+
         <ul className="lg:hidden grid gap-3 md:grid-cols-2">
           {list.pageItems.map((session) => (
             <li key={session.id} className="ink-panel p-4 space-y-3">
               <div className="flex items-start justify-between gap-3">
-                <IpCell ip={session.ipAddress} />
+                <div className="flex min-w-0 items-start gap-3">
+                  <RecordCheckbox
+                    id={`visitor-select-mobile-${session.id}`}
+                    checked={selection.selected.has(session.id)}
+                    onChange={(checked) =>
+                      selection.toggle(session.id, checked)
+                    }
+                    label={`Select visitor ${session.ipAddress}`}
+                    disabled={bulkDeleting}
+                  />
+                  <IpCell ip={session.ipAddress} />
+                </div>
                 <span className="shrink-0 text-xs">
                   <ActivityBadge
                     lastActivity={session.lastActivity}
@@ -427,6 +547,24 @@ const VisitorsPanel = () => {
         onPageSizeChange={list.setPageSize}
       />
 
+      {bulkNotice && (
+        <p className="form-notice form-notice--success" role="status">
+          {bulkNotice}
+        </p>
+      )}
+      {bulkError && !pendingBulk && (
+        <p className="form-notice" role="alert">
+          {bulkError}
+        </p>
+      )}
+
+      <BulkSelectionBar
+        count={sessionsState === "ready" ? selection.selectedCount : 0}
+        noun="visitor"
+        onDelete={requestBulkDelete}
+        disabled={bulkDeleting}
+      />
+
       {body}
 
       <AdminDialog
@@ -460,6 +598,25 @@ const VisitorsPanel = () => {
         error={deleteError}
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
+      />
+
+      <ConfirmDialog
+        open={Boolean(pendingBulk)}
+        title="Delete selected visitors?"
+        description={
+          pendingBulk
+            ? `This permanently deletes ${pendingBulk.length} ${
+                pendingBulk.length === 1
+                  ? "visitor session"
+                  : "visitor sessions"
+              } from visitor sessions. Contact messages are not affected. This cannot be undone.`
+            : ""
+        }
+        confirmLabel="Delete visitors"
+        busy={bulkDeleting}
+        error={bulkError}
+        onConfirm={confirmBulkDelete}
+        onCancel={cancelBulkDelete}
       />
     </div>
   );

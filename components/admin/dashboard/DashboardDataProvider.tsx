@@ -17,7 +17,9 @@ import {
   orderBy,
   query,
   Timestamp,
+  writeBatch,
 } from "firebase/firestore";
+import { deleteInBatches } from "../../../utilities/bulkDelete";
 import {
   firestoreCollections,
   getClientDb,
@@ -46,6 +48,8 @@ type DashboardDataValue = {
   sessionsState: LoadState;
   deleteMessage: (id: string) => Promise<void>;
   deleteSession: (id: string) => Promise<void>;
+  deleteMessages: (ids: readonly string[]) => Promise<number>;
+  deleteSessions: (ids: readonly string[]) => Promise<number>;
 };
 
 const DashboardDataContext = createContext<DashboardDataValue | undefined>(
@@ -161,6 +165,33 @@ export const DashboardDataProvider = ({
     await deleteDoc(doc(db, firestoreCollections.visitorSessions, id));
   }, []);
 
+  const deleteMany = useCallback(
+    async (collectionName: string, ids: readonly string[]) => {
+      const db = getClientDb();
+      if (!db) throw new Error("Firestore unavailable");
+      return deleteInBatches(async (chunk) => {
+        const batch = writeBatch(db);
+        chunk.forEach((id) => {
+          batch.delete(doc(db, collectionName, id));
+        });
+        await batch.commit();
+      }, ids);
+    },
+    []
+  );
+
+  const deleteMessages = useCallback(
+    async (ids: readonly string[]) =>
+      deleteMany(firestoreCollections.contactMessages, ids),
+    [deleteMany]
+  );
+
+  const deleteSessions = useCallback(
+    async (ids: readonly string[]) =>
+      deleteMany(firestoreCollections.visitorSessions, ids),
+    [deleteMany]
+  );
+
   const value = useMemo(
     () => ({
       messages,
@@ -169,6 +200,8 @@ export const DashboardDataProvider = ({
       sessionsState,
       deleteMessage,
       deleteSession,
+      deleteMessages,
+      deleteSessions,
     }),
     [
       messages,
@@ -177,6 +210,8 @@ export const DashboardDataProvider = ({
       sessionsState,
       deleteMessage,
       deleteSession,
+      deleteMessages,
+      deleteSessions,
     ]
   );
 

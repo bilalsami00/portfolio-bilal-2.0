@@ -1,5 +1,11 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useListControls from "../../../hooks/useListControls";
+import useRecordSelection from "../../../hooks/useRecordSelection";
+import {
+  BulkDeleteError,
+  formatBulkDeleteFailure,
+  formatBulkDeleteSuccess,
+} from "../../../utilities/bulkDelete";
 import {
   downloadCsv,
   formatDateTime,
@@ -11,11 +17,14 @@ import {
 } from "./DashboardDataProvider";
 import {
   AdminDialog,
+  BulkSelectionBar,
   ConfirmDialog,
   DetailRow,
   ListToolbar,
   Pagination,
   PanelMessage,
+  RecordCheckbox,
+  SelectAllCheckbox,
   SkeletonRows,
 } from "./DashboardUi";
 
@@ -65,17 +74,29 @@ const exportMessages = (messages: ContactMessageRecord[]) => {
 };
 
 const MessagesPanel = () => {
-  const { messages, messagesState, deleteMessage } = useDashboardData();
+  const { messages, messagesState, deleteMessage, deleteMessages } =
+    useDashboardData();
   const list = useListControls<ContactMessageRecord, MessageSort>(messages, {
     matches,
     sorters,
     defaultSort: "newest",
   });
+  const resultIds = useMemo(
+    () => list.results.map((message) => message.id),
+    [list.results]
+  );
+  const pageIds = list.pageItems.map((message) => message.id);
+  const selection = useRecordSelection(resultIds);
+  const pageFlags = selection.flags(pageIds);
   const [viewing, setViewing] = useState<ContactMessageRecord | null>(null);
   const [pendingDelete, setPendingDelete] =
     useState<ContactMessageRecord | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [pendingBulk, setPendingBulk] = useState<string[] | null>(null);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [bulkError, setBulkError] = useState<string | null>(null);
+  const [bulkNotice, setBulkNotice] = useState<string | null>(null);
 
   const closeView = useCallback(() => setViewing(null), []);
   const cancelDelete = useCallback(() => {
@@ -84,13 +105,56 @@ const MessagesPanel = () => {
   }, []);
 
   const confirmDelete = () => {
-    if (!pendingDelete) return;
+    if (!pendingDelete || deleting) return;
     setDeleting(true);
     setDeleteError(null);
     deleteMessage(pendingDelete.id)
       .then(() => setPendingDelete(null))
       .catch(() => setDeleteError("Could not delete this message. Try again."))
       .finally(() => setDeleting(false));
+  };
+
+  const cancelBulkDelete = useCallback(() => {
+    if (bulkDeleting) return;
+    setPendingBulk(null);
+    setBulkError(null);
+  }, [bulkDeleting]);
+
+  const requestBulkDelete = () => {
+    if (bulkDeleting || selection.selectedCount === 0) return;
+    setBulkError(null);
+    setBulkNotice(null);
+    setPendingBulk([...selection.selectedIds]);
+  };
+
+  const confirmBulkDelete = () => {
+    if (!pendingBulk || bulkDeleting) return;
+    const allowed = new Set(resultIds);
+    const ids = pendingBulk.filter((id) => allowed.has(id));
+    if (!ids.length) {
+      setBulkNotice(null);
+      setPendingBulk(null);
+      setBulkError("Those messages are no longer available.");
+      return;
+    }
+    setBulkDeleting(true);
+    setBulkError(null);
+    deleteMessages(ids)
+      .then((deleted) => {
+        selection.clear();
+        setPendingBulk(null);
+        setBulkNotice(formatBulkDeleteSuccess(deleted, "message", "messages"));
+      })
+      .catch((error: unknown) => {
+        if (error instanceof BulkDeleteError) {
+          selection.replace(error.failedIds);
+          setPendingBulk(error.failedIds);
+          setBulkError(formatBulkDeleteFailure(error, "message", "messages"));
+          return;
+        }
+        setBulkError("Could not delete the selected messages. Try again.");
+      })
+      .finally(() => setBulkDeleting(false));
   };
 
   let body;
@@ -125,6 +189,17 @@ const MessagesPanel = () => {
           <table className="w-full text-left text-sm">
             <thead className="text-[0.7rem] font-accent uppercase tracking-[0.16em] text-steel-400">
               <tr className="border-b border-steel-700/40">
+                <th scope="col" className="w-12 px-4 py-3 font-semibold">
+                  <SelectAllCheckbox
+                    id="messages-select-all"
+                    checked={pageFlags.allSelected}
+                    indeterminate={pageFlags.indeterminate}
+                    onChange={() => selection.toggleVisible(pageIds)}
+                    label="Select all visible messages"
+                    hideLabel
+                    disabled={bulkDeleting}
+                  />
+                </th>
                 <th scope="col" className="px-4 py-3 font-semibold">
                   Name
                 </th>
@@ -148,6 +223,17 @@ const MessagesPanel = () => {
                   key={message.id}
                   className="border-b border-steel-700/40 last:border-0 align-top"
                 >
+                  <td className="px-4 py-3">
+                    <RecordCheckbox
+                      id={`message-select-${message.id}`}
+                      checked={selection.selected.has(message.id)}
+                      onChange={(checked) =>
+                        selection.toggle(message.id, checked)
+                      }
+                      label={`Select message from ${message.fullName}`}
+                      disabled={bulkDeleting}
+                    />
+                  </td>
                   <td className="px-4 py-3 text-parchment-100">
                     {message.fullName}
                     {message.company && (
@@ -189,17 +275,39 @@ const MessagesPanel = () => {
           </table>
         </div>
 
+        <div className="md:hidden">
+          <SelectAllCheckbox
+            id="messages-select-all-mobile"
+            checked={pageFlags.allSelected}
+            indeterminate={pageFlags.indeterminate}
+            onChange={() => selection.toggleVisible(pageIds)}
+            label="Select all"
+            disabled={bulkDeleting}
+          />
+        </div>
+
         <ul className="md:hidden space-y-3">
           {list.pageItems.map((message) => (
             <li key={message.id} className="ink-panel p-4">
               <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-parchment-100 font-semibold truncate">
-                    {message.fullName}
-                  </p>
-                  <p className="text-xs text-steel-400 break-all">
-                    {message.email}
-                  </p>
+                <div className="flex min-w-0 items-start gap-3">
+                  <RecordCheckbox
+                    id={`message-select-mobile-${message.id}`}
+                    checked={selection.selected.has(message.id)}
+                    onChange={(checked) =>
+                      selection.toggle(message.id, checked)
+                    }
+                    label={`Select message from ${message.fullName}`}
+                    disabled={bulkDeleting}
+                  />
+                  <div className="min-w-0">
+                    <p className="text-parchment-100 font-semibold truncate">
+                      {message.fullName}
+                    </p>
+                    <p className="text-xs text-steel-400 break-all">
+                      {message.email}
+                    </p>
+                  </div>
                 </div>
                 <p className="shrink-0 text-xs text-steel-400">
                   {formatDateTime(message.createdAt)}
@@ -260,6 +368,24 @@ const MessagesPanel = () => {
             Export CSV
           </Button>
         }
+      />
+
+      {bulkNotice && (
+        <p className="form-notice form-notice--success" role="status">
+          {bulkNotice}
+        </p>
+      )}
+      {bulkError && !pendingBulk && (
+        <p className="form-notice" role="alert">
+          {bulkError}
+        </p>
+      )}
+
+      <BulkSelectionBar
+        count={messagesState === "ready" ? selection.selectedCount : 0}
+        noun="message"
+        onDelete={requestBulkDelete}
+        disabled={bulkDeleting}
       />
 
       {body}
@@ -327,6 +453,23 @@ const MessagesPanel = () => {
         error={deleteError}
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
+      />
+
+      <ConfirmDialog
+        open={Boolean(pendingBulk)}
+        title="Delete selected messages?"
+        description={
+          pendingBulk
+            ? `This permanently deletes ${pendingBulk.length} ${
+                pendingBulk.length === 1 ? "message" : "messages"
+              } from contact messages. Visitor sessions are not affected. This cannot be undone.`
+            : ""
+        }
+        confirmLabel="Delete messages"
+        busy={bulkDeleting}
+        error={bulkError}
+        onConfirm={confirmBulkDelete}
+        onCancel={cancelBulkDelete}
       />
     </div>
   );

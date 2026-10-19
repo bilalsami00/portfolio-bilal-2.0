@@ -291,6 +291,98 @@ export const PanelMessage = ({
   </div>
 );
 
+type CheckboxProps = {
+  id: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  label: string;
+  disabled?: boolean;
+};
+
+export const RecordCheckbox = ({
+  id,
+  checked,
+  onChange,
+  label,
+  disabled = false,
+}: CheckboxProps) => (
+  <input
+    id={id}
+    type="checkbox"
+    className="h-4 w-4 accent-crimson-500"
+    checked={checked}
+    disabled={disabled}
+    aria-label={label}
+    onChange={(event) => onChange(event.target.checked)}
+  />
+);
+
+export const SelectAllCheckbox = ({
+  id,
+  checked,
+  indeterminate,
+  onChange,
+  label,
+  hideLabel = false,
+  disabled = false,
+}: CheckboxProps & { indeterminate: boolean; hideLabel?: boolean }) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.indeterminate = indeterminate;
+    }
+  }, [indeterminate, checked]);
+
+  return (
+    <label
+      htmlFor={id}
+      className="inline-flex items-center gap-2 text-sm text-parchment-300 cursor-pointer select-none"
+    >
+      <input
+        ref={inputRef}
+        id={id}
+        type="checkbox"
+        className="h-4 w-4 accent-crimson-500"
+        checked={checked}
+        disabled={disabled}
+        aria-label={label}
+        onChange={(event) => onChange(event.target.checked)}
+      />
+      <span className={hideLabel ? "sr-only" : undefined}>{label}</span>
+    </label>
+  );
+};
+
+export const BulkSelectionBar = ({
+  count,
+  noun,
+  onDelete,
+  disabled = false,
+}: {
+  count: number;
+  noun: string;
+  onDelete: () => void;
+  disabled?: boolean;
+}) => {
+  if (count < 1) return null;
+  const label = `${count} ${count === 1 ? noun : `${noun}s`} selected`;
+  return (
+    <div className="flex flex-col gap-3 border border-steel-700/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-sm text-parchment-200" aria-live="polite">
+        {label}
+      </p>
+      <Button
+        className="btn-sm w-full sm:w-auto"
+        onClick={onDelete}
+        disabled={disabled}
+      >
+        Delete Selected
+      </Button>
+    </div>
+  );
+};
+
 export const DetailRow = ({
   label,
   children,
