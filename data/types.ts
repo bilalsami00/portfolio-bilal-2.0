@@ -10,6 +10,8 @@ export type SocialPlatform =
   | "youtube"
   | "twitter"
   | "stackoverflow"
+  | "whatsapp"
+  | "phone"
   | "email"
   | "other";
 

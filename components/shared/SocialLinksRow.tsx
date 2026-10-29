@@ -11,6 +11,8 @@ const platformIconMap: Record<string, "fab" | "fas"> = {
   youtube: "fab",
   twitter: "fab",
   stackoverflow: "fab",
+  whatsapp: "fab",
+  phone: "fas",
   email: "fas",
   other: "fas",
 };
@@ -22,6 +24,8 @@ const platformIconName: Record<string, string> = {
   youtube: "youtube",
   twitter: "twitter",
   stackoverflow: "stack-overflow",
+  whatsapp: "whatsapp",
+  phone: "phone",
   email: "envelope",
   other: "link",
 };
@@ -47,13 +51,14 @@ const SocialLinksRow = ({
           platformIconMap[link.platform] || "fab",
           platformIconName[link.platform] as never
         );
+        const opensInNewTab = /^https?:/i.test(link.href);
 
         return (
           <li key={link.id}>
             <Link
               href={link.href}
-              target="_blank"
-              rel="noreferrer"
+              target={opensInNewTab ? "_blank" : undefined}
+              rel={opensInNewTab ? "noreferrer" : undefined}
               title={link.title}
               aria-label={link.title}
               className="

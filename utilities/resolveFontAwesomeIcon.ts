@@ -11,6 +11,7 @@ import {
   faReact,
   faStackOverflow,
   faTwitter,
+  faWhatsapp,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -30,6 +31,7 @@ import {
   faHeart,
   faMagnifyingGlass,
   faMobileScreen,
+  faPhone,
   faPlane,
   faPlug,
   faSitemap,
@@ -47,6 +49,7 @@ const brandIcons: Partial<Record<string, IconDefinition>> = {
   react: faReact,
   "stack-overflow": faStackOverflow,
   twitter: faTwitter,
+  whatsapp: faWhatsapp,
   youtube: faYoutube,
 };
 
@@ -68,6 +71,7 @@ const solidIcons: Partial<Record<string, IconDefinition>> = {
   heart: faHeart,
   "magnifying-glass": faMagnifyingGlass,
   "mobile-screen": faMobileScreen,
+  phone: faPhone,
   plane: faPlane,
   plug: faPlug,
   sitemap: faSitemap,

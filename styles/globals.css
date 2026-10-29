@@ -933,6 +933,15 @@ summary:focus-visible,
 .light-social-float > li:nth-child(3) a {
   animation: lightSocialFloat 4s ease-in-out infinite 0.8s;
 }
+.light-social-float > li:nth-child(4) a {
+  animation: lightSocialFloat 3.4s ease-in-out infinite 1.2s;
+}
+.light-social-float > li:nth-child(5) a {
+  animation: lightSocialFloat 3.8s ease-in-out infinite 1.6s;
+}
+.light-social-float > li:nth-child(6) a {
+  animation: lightSocialFloat 4.2s ease-in-out infinite 2s;
+}
 
 @keyframes lightSocialFloat {
   0%,
