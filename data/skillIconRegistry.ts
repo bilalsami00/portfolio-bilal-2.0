@@ -1,76 +1,104 @@
 /**
  * Technology icon sources for skill / capability lists.
- * Priority: Skill Icons (skillicons.dev) → Simple Icons → none (never invent brands).
+ * Brand marks are local Simple Icons (or classic Simple Icons) SVGs under
+ * /public/icons/tech. Generic capabilities use the bundled Font Awesome set.
  */
 
 export type SkillIconDefinition =
-  | { source: "skillicons"; ids: string[] }
-  | { source: "simpleicons"; slug: string; color: string }
-  | { source: "fontawesome"; name: string }
+  | {
+      source: "local";
+      /** Path under `public/`, e.g. `/icons/tech/react.svg` */
+      src: string;
+      /** Optional light-on-dark variant for near-black brand marks */
+      srcDark?: string;
+    }
+  | { source: "fontawesome"; name: string; prefix?: "fas" | "fab" }
   | { source: "none" };
 
 /**
- * Maps portfolio `iconKey` values to official icon identifiers.
- * Skill Icons IDs: https://skillicons.dev/ (Icons List).
- * Simple Icons slugs/colors: https://simpleicons.org/.
+ * Maps portfolio `iconKey` values to local assets or Font Awesome glyphs.
+ * Brand SVG color values match Simple Icons / official brand guidelines.
  */
 export const skillIconRegistry: Record<string, SkillIconDefinition> = {
-  // —— Skill Icons ——
-  react: { source: "skillicons", ids: ["react"] },
-  javascript: { source: "skillicons", ids: ["js"] },
-  next: { source: "skillicons", ids: ["nextjs"] },
-  nextjs: { source: "skillicons", ids: ["nextjs"] },
-  typescript: { source: "skillicons", ids: ["ts"] },
-  html: { source: "skillicons", ids: ["html"] },
-  css: { source: "skillicons", ids: ["css"] },
-  "html-css": { source: "skillicons", ids: ["html", "css"] },
-  tailwind: { source: "skillicons", ids: ["tailwind"] },
-  nodejs: { source: "skillicons", ids: ["nodejs"] },
-  mongodb: { source: "skillicons", ids: ["mongodb"] },
-  jest: { source: "skillicons", ids: ["jest"] },
-  cypress: { source: "skillicons", ids: ["cypress"] },
-  git: { source: "skillicons", ids: ["git"] },
-  express: { source: "skillicons", ids: ["express"] },
-  firebase: { source: "skillicons", ids: ["firebase"] },
-  mysql: { source: "skillicons", ids: ["mysql"] },
-  dotnet: { source: "skillicons", ids: ["dotnet"] },
-  vite: { source: "skillicons", ids: ["vite"] },
-  redux: { source: "skillicons", ids: ["redux"] },
-  wordpress: { source: "skillicons", ids: ["wordpress"] },
-  antd: { source: "simpleicons", slug: "antdesign", color: "0170FE" },
-  axios: { source: "simpleicons", slug: "axios", color: "5A29E4" },
-  radix: { source: "simpleicons", slug: "radixui", color: "161618" },
-  chartjs: { source: "simpleicons", slug: "chartdotjs", color: "FF6384" },
-  recharts: { source: "fontawesome", name: "chart-column" },
-  gsap: { source: "simpleicons", slug: "greensock", color: "88CE02" },
-  framer: { source: "simpleicons", slug: "framer", color: "0055FF" },
-  swiper: { source: "simpleicons", slug: "swiper", color: "6332F6" },
-  yup: { source: "skillicons", ids: ["yup"] },
-  reacthookform: {
-    source: "simpleicons",
-    slug: "reacthookform",
-    color: "EC5990",
+  // —— Brand logos (local Simple Icons SVGs) ——
+  react: { source: "local", src: "/icons/tech/react.svg" },
+  javascript: { source: "local", src: "/icons/tech/javascript.svg" },
+  next: {
+    source: "local",
+    src: "/icons/tech/nextjs.svg",
+    srcDark: "/icons/tech/nextjs-light.svg",
   },
-  reactrouter: { source: "simpleicons", slug: "reactrouter", color: "CA4245" },
-  aws: { source: "skillicons", ids: ["aws"] },
-  electron: { source: "skillicons", ids: ["electron"] },
-  vercel: { source: "skillicons", ids: ["vercel"] },
-  // No dedicated RN id on Skill Icons; RN uses the React brand mark.
-  // Simple Icons also retired `reactnative` (identical to React).
-  "react-native": { source: "skillicons", ids: ["react"] },
-  // Capability rows that name a concrete stack technology:
-  frontend: { source: "skillicons", ids: ["react"] },
-  backend: { source: "skillicons", ids: ["nodejs"] },
-  web: { source: "skillicons", ids: ["nextjs"] },
-  mobile: { source: "skillicons", ids: ["react"] },
+  nextjs: {
+    source: "local",
+    src: "/icons/tech/nextjs.svg",
+    srcDark: "/icons/tech/nextjs-light.svg",
+  },
+  typescript: { source: "local", src: "/icons/tech/typescript.svg" },
+  html: { source: "local", src: "/icons/tech/html5.svg" },
+  html5: { source: "local", src: "/icons/tech/html5.svg" },
+  css: { source: "local", src: "/icons/tech/css3.svg" },
+  css3: { source: "local", src: "/icons/tech/css3.svg" },
+  tailwind: { source: "local", src: "/icons/tech/tailwindcss.svg" },
+  nodejs: { source: "local", src: "/icons/tech/nodedotjs.svg" },
+  mongodb: { source: "local", src: "/icons/tech/mongodb.svg" },
+  git: { source: "local", src: "/icons/tech/git.svg" },
+  github: {
+    source: "local",
+    src: "/icons/tech/github.svg",
+    srcDark: "/icons/tech/github-light.svg",
+  },
+  express: {
+    source: "local",
+    src: "/icons/tech/express.svg",
+    srcDark: "/icons/tech/express-light.svg",
+  },
+  firebase: { source: "local", src: "/icons/tech/firebase.svg" },
+  mysql: { source: "local", src: "/icons/tech/mysql.svg" },
+  dotnet: { source: "local", src: "/icons/tech/dotnet.svg" },
+  vite: { source: "local", src: "/icons/tech/vite.svg" },
+  redux: { source: "local", src: "/icons/tech/redux.svg" },
+  wordpress: { source: "local", src: "/icons/tech/wordpress.svg" },
+  antd: { source: "local", src: "/icons/tech/antdesign.svg" },
+  axios: { source: "local", src: "/icons/tech/axios.svg" },
+  radix: {
+    source: "local",
+    src: "/icons/tech/radixui.svg",
+    srcDark: "/icons/tech/radixui-light.svg",
+  },
+  shadcn: {
+    source: "local",
+    src: "/icons/tech/shadcnui.svg",
+    srcDark: "/icons/tech/shadcnui-light.svg",
+  },
+  chartjs: { source: "local", src: "/icons/tech/chartdotjs.svg" },
+  gsap: { source: "local", src: "/icons/tech/greensock.svg" },
+  framer: { source: "local", src: "/icons/tech/framer.svg" },
+  swiper: { source: "local", src: "/icons/tech/swiper.svg" },
+  reacthookform: { source: "local", src: "/icons/tech/reacthookform.svg" },
+  reactrouter: { source: "local", src: "/icons/tech/reactrouter.svg" },
+  aws: { source: "local", src: "/icons/tech/amazonaws.svg" },
+  openapi: { source: "local", src: "/icons/tech/openapiinitiative.svg" },
 
-  performance: { source: "fontawesome", name: "gauge-high" },
-  rest: { source: "fontawesome", name: "plug" },
-  seo: { source: "fontawesome", name: "magnifying-glass" },
-  responsive: { source: "fontawesome", name: "mobile-screen" },
+  // —— No official Simple Icons brand mark; local Font Awesome ——
+  yup: { source: "fontawesome", name: "clipboard-check" },
+  recharts: { source: "fontawesome", name: "chart-column" },
+  // Capability / abstract skills
+  rest: { source: "local", src: "/icons/tech/openapiinitiative.svg" },
+  responsive: { source: "local", src: "/icons/tech/responsive.svg" },
   dashboards: { source: "fontawesome", name: "table-columns" },
-  oop: { source: "fontawesome", name: "cubes" },
+  oop: { source: "fontawesome", name: "diagram-project" },
   database: { source: "fontawesome", name: "database" },
+  performance: { source: "fontawesome", name: "gauge-high" },
+  seo: { source: "fontawesome", name: "magnifying-glass" },
+  // Service / interest rows that reuse stack brands or generics:
+  frontend: { source: "local", src: "/icons/tech/react.svg" },
+  backend: { source: "local", src: "/icons/tech/nodedotjs.svg" },
+  web: {
+    source: "local",
+    src: "/icons/tech/nextjs.svg",
+    srcDark: "/icons/tech/nextjs-light.svg",
+  },
+  mobile: { source: "local", src: "/icons/tech/react.svg" },
   reading: { source: "fontawesome", name: "book-open" },
   photography: { source: "fontawesome", name: "camera" },
   traveling: { source: "fontawesome", name: "plane" },

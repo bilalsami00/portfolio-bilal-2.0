@@ -38,7 +38,7 @@ const HomeSkillsSection = () => (
                 </div>
               </div>
 
-              <ul className="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-5">
+              <ul className="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-6">
                 {group.skills.map((skill) => {
                   const isPlaceholder = skill.name.includes("[");
 
@@ -47,10 +47,12 @@ const HomeSkillsSection = () => (
                       key={skill.id}
                       className="group flex items-center gap-3 min-h-[2.75rem]"
                     >
-                      <SkillIcon
-                        iconKey={skill.iconKey}
-                        className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 transition-opacity duration-300 group-hover:opacity-85"
-                      />
+                      <span className="inline-flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center">
+                        <SkillIcon
+                          iconKey={skill.iconKey}
+                          className="h-full w-full transition-opacity duration-300 group-hover:opacity-85"
+                        />
+                      </span>
                       <div className="flex flex-col gap-1 min-w-0">
                         <span className="text-sm text-parchment-200 font-medium leading-snug break-words transition-colors duration-300 group-hover:text-parchment-100">
                           {skill.name}

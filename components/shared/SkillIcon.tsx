@@ -10,12 +10,6 @@ type SkillIconProps = {
   title?: string;
 };
 
-const skillIconsUrl = (ids: string[], theme: "dark" | "light") =>
-  `https://skillicons.dev/icons?i=${ids.join(",")}&theme=${theme}`;
-
-const simpleIconsUrl = (slug: string, color: string) =>
-  `https://cdn.simpleicons.org/${slug}/${color}`;
-
 /** Previous portfolio fallback for non-brand / placeholder skills. */
 const GenericFallbackIcon = ({
   className,
@@ -38,8 +32,8 @@ const GenericFallbackIcon = ({
 };
 
 /**
- * Official technology icons via Skill Icons, with Simple Icons fallback.
- * Generic skills reuse the existing Font Awesome code glyph (never left blank).
+ * Technology icons for The Arsenal and related skill lists.
+ * Brand marks are locally hosted SVGs; abstract skills use bundled Font Awesome.
  */
 const SkillIcon = ({
   iconKey,
@@ -48,36 +42,33 @@ const SkillIcon = ({
 }: SkillIconProps) => {
   const { isDark, isReady } = useTheme();
   const definition = resolveSkillIcon(iconKey);
-  const skillTheme = !isReady || isDark ? "dark" : "light";
+  const preferDarkAsset = !isReady || isDark;
 
-  if (definition.source === "skillicons") {
-    const { ids } = definition;
-    const isPair = ids.length > 1;
+  if (definition.source === "local") {
+    const src =
+      preferDarkAsset && definition.srcDark
+        ? definition.srcDark
+        : definition.src;
 
     return (
-      <span
-        className={`inline-flex items-center shrink-0 ${isPair ? "gap-1" : ""}`}
+      <img
+        src={src}
+        alt={title ? `${title} icon` : ""}
+        width={32}
+        height={32}
+        decoding="async"
         aria-hidden={title ? undefined : true}
         title={title}
-      >
-        {ids.map((id) => (
-          <img
-            key={id}
-            src={skillIconsUrl([id], skillTheme)}
-            alt={title ? `${title} icon` : ""}
-            width={48}
-            height={48}
-            loading="lazy"
-            decoding="async"
-            className={`${className} object-contain`}
-          />
-        ))}
-      </span>
+        className={`${className} max-h-full max-w-full object-contain`}
+      />
     );
   }
 
   if (definition.source === "fontawesome") {
-    const icon = resolveFontAwesomeIcon("fas", definition.name);
+    const icon = resolveFontAwesomeIcon(
+      definition.prefix ?? "fas",
+      definition.name
+    );
     if (!icon)
       return <GenericFallbackIcon className={className} title={title} />;
 
@@ -87,22 +78,6 @@ const SkillIcon = ({
         className={`${className} text-crimson-400`}
         aria-hidden={title ? undefined : true}
         title={title}
-      />
-    );
-  }
-
-  if (definition.source === "simpleicons") {
-    return (
-      <img
-        src={simpleIconsUrl(definition.slug, definition.color)}
-        alt={title ? `${title} icon` : ""}
-        width={48}
-        height={48}
-        loading="lazy"
-        decoding="async"
-        aria-hidden={title ? undefined : true}
-        title={title}
-        className={`${className} object-contain`}
       />
     );
   }

@@ -15,7 +15,11 @@ export const skillGroups: SkillGroup[] = [
       { id: "skill-next", name: "Next.js", iconKey: "next" },
       { id: "skill-react", name: "React", iconKey: "react" },
       { id: "skill-javascript", name: "JavaScript", iconKey: "javascript" },
+      { id: "skill-typescript", name: "TypeScript", iconKey: "typescript" },
+      { id: "skill-html", name: "HTML5", iconKey: "html5" },
+      { id: "skill-css", name: "CSS3", iconKey: "css3" },
       { id: "skill-tailwind", name: "Tailwind CSS", iconKey: "tailwind" },
+      { id: "skill-framer", name: "Framer Motion", iconKey: "framer" },
       {
         id: "skill-responsive",
         name: "Responsive interfaces",
@@ -38,7 +42,6 @@ export const skillGroups: SkillGroup[] = [
     title: "Tools & Libraries",
     description: "Technologies used across the web projects in this portfolio.",
     skills: [
-      { id: "skill-typescript", name: "TypeScript", iconKey: "typescript" },
       { id: "skill-antd", name: "Ant Design", iconKey: "antd" },
       { id: "skill-radix", name: "shadcn/ui / Radix UI", iconKey: "radix" },
       { id: "skill-axios", name: "Axios", iconKey: "axios" },
@@ -47,7 +50,6 @@ export const skillGroups: SkillGroup[] = [
       { id: "skill-chartjs", name: "Chart.js", iconKey: "chartjs" },
       { id: "skill-recharts", name: "Recharts", iconKey: "recharts" },
       { id: "skill-gsap", name: "GSAP", iconKey: "gsap" },
-      { id: "skill-motion", name: "Motion / Framer Motion", iconKey: "framer" },
       { id: "skill-swiper", name: "Swiper", iconKey: "swiper" },
       { id: "skill-redux", name: "Redux Toolkit", iconKey: "redux" },
       { id: "skill-router", name: "React Router", iconKey: "reactrouter" },

@@ -36,7 +36,8 @@ const BulletList = ({ items }: { items: string[] }) => (
 );
 
 /**
- * Case study overlay. Section order matches the source write-ups.
+ * Case study overlay. Write-up sections follow the source order.
+ * Screenshots sit after that write-up, ahead of the outbound actions.
  */
 const ProjectDetailsModal = ({
   project,
@@ -133,15 +134,7 @@ const ProjectDetailsModal = ({
           </button>
         </div>
 
-        <div className="-mt-4">
-          <ProjectGallery
-            key={project.id}
-            images={buildProjectGallery(project)}
-            onLightboxChange={handleLightboxChange}
-          />
-        </div>
-
-        <div className="p-5 sm:p-8">
+        <div className="px-5 pb-5 sm:px-8 sm:pb-8">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="tech-tag">{project.category}</span>
             <span className="text-xs text-steel-400 font-accent tracking-widest uppercase">
@@ -205,6 +198,14 @@ const ProjectDetailsModal = ({
             {project.technologies.map((tech) => (
               <TechTag key={`${project.id}-modal-${tech}`} label={tech} />
             ))}
+          </div>
+
+          <div className="mt-8 -mx-5 sm:-mx-8">
+            <ProjectGallery
+              key={project.id}
+              images={buildProjectGallery(project)}
+              onLightboxChange={handleLightboxChange}
+            />
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">

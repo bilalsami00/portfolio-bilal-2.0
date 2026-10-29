@@ -957,6 +957,20 @@ summary:focus-visible,
   color: #f3efe6;
 }
 
+/* Stable scrollport: the vertical gutter is reserved so zooming cannot
+   shrink the content box, drop a horizontal bar, and resize the image. */
+.lightbox-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: safe center;
+  justify-content: safe center;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scroll-behavior: auto;
+}
+
 .lightbox-control {
   display: inline-flex;
   align-items: center;

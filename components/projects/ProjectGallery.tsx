@@ -18,8 +18,6 @@ type ProjectGalleryProps = {
 type Frame = {
   fitW: number;
   fitH: number;
-  stageW: number;
-  stageH: number;
 };
 
 type ImagePoint = {
@@ -74,6 +72,7 @@ const Lightbox = ({
   const pendingCenter = useRef<ImagePoint | null>(null);
   const naturalRef = useRef({ width: 0, height: 0 });
   const frameRef = useRef<Frame | null>(null);
+  const layoutSizeRef = useRef({ w: 0, h: 0 });
   const scaleRef = useRef(1);
   const indexRef = useRef(index);
   const onIndexRef = useRef(onIndex);
@@ -103,39 +102,27 @@ const Lightbox = ({
     const next = {
       fitW: Math.max(1, Math.floor(width * ratio)),
       fitH: Math.max(1, Math.floor(height * ratio)),
-      stageW,
-      stageH,
     };
-    setFrame((current) => {
-      if (
-        current &&
-        Math.abs(current.fitW - next.fitW) < 0.5 &&
-        Math.abs(current.fitH - next.fitH) < 0.5 &&
-        current.stageW === next.stageW &&
-        current.stageH === next.stageH
-      ) {
-        return current;
-      }
-      return next;
-    });
+    const { current } = frameRef;
+    if (current && current.fitW === next.fitW && current.fitH === next.fitH) {
+      pendingCenter.current = null;
+      return;
+    }
+    setFrame(next);
   };
 
   const captureCenter = () => {
     const stage = stageRef.current;
-    const currentFrame = frameRef.current;
-    if (!stage || !currentFrame) return;
-    const renderedW = currentFrame.fitW * scaleRef.current;
-    const renderedH = currentFrame.fitH * scaleRef.current;
-    if (renderedW <= 0 || renderedH <= 0) return;
-    const canvasW = Math.max(stage.clientWidth, renderedW);
-    const canvasH = Math.max(stage.clientHeight, renderedH);
-    const imageLeft = (canvasW - renderedW) / 2;
-    const imageTop = (canvasH - renderedH) / 2;
-    const centerX = stage.scrollLeft + stage.clientWidth / 2;
-    const centerY = stage.scrollTop + stage.clientHeight / 2;
+    const photo = imageRef.current;
+    if (!stage || !photo) return;
+    const stageRect = stage.getBoundingClientRect();
+    const imageRect = photo.getBoundingClientRect();
+    if (imageRect.width <= 0 || imageRect.height <= 0) return;
+    const centerX = stageRect.left + stage.clientWidth / 2;
+    const centerY = stageRect.top + stage.clientHeight / 2;
     pendingCenter.current = {
-      rx: clamp((centerX - imageLeft) / renderedW, 0, 1),
-      ry: clamp((centerY - imageTop) / renderedH, 0, 1),
+      rx: clamp((centerX - imageRect.left) / imageRect.width, 0, 1),
+      ry: clamp((centerY - imageRect.top) / imageRect.height, 0, 1),
     };
   };
 
@@ -168,6 +155,19 @@ const Lightbox = ({
     const stage = stageRef.current;
     if (!stage || typeof ResizeObserver === "undefined") return undefined;
     const refit = () => {
+      const boxW = stage.offsetWidth;
+      const boxH = stage.offsetHeight;
+      // Scrollbars change clientWidth/clientHeight without changing the
+      // stage's border box. Refitting on that feedback resized the image,
+      // which toggled the bars again and shook the picture after reset.
+      if (
+        frameRef.current &&
+        boxW === layoutSizeRef.current.w &&
+        boxH === layoutSizeRef.current.h
+      ) {
+        return;
+      }
+      layoutSizeRef.current = { w: boxW, h: boxH };
       if (scaleRef.current > 1.001) captureCenter();
       else pendingCenter.current = null;
       measure();
@@ -183,28 +183,26 @@ const Lightbox = ({
 
   useLayoutEffect(() => {
     const stage = stageRef.current;
+    const photo = imageRef.current;
+    if (!stage || !photo) return;
+    if (scale <= 1.001) {
+      pendingCenter.current = null;
+      stage.scrollTop = 0;
+      stage.scrollLeft = 0;
+      return;
+    }
     const point = pendingCenter.current;
-    const currentFrame = frameRef.current;
-    if (!stage || !point || !currentFrame) return;
     pendingCenter.current = null;
-    const renderedW = currentFrame.fitW * scale;
-    const renderedH = currentFrame.fitH * scale;
-    const canvasW = Math.max(stage.clientWidth, renderedW);
-    const canvasH = Math.max(stage.clientHeight, renderedH);
-    const imageLeft = (canvasW - renderedW) / 2;
-    const imageTop = (canvasH - renderedH) / 2;
-    const maxX = Math.max(0, stage.scrollWidth - stage.clientWidth);
-    const maxY = Math.max(0, stage.scrollHeight - stage.clientHeight);
-    stage.scrollLeft = clamp(
-      imageLeft + point.rx * renderedW - stage.clientWidth / 2,
-      0,
-      maxX
-    );
-    stage.scrollTop = clamp(
-      imageTop + point.ry * renderedH - stage.clientHeight / 2,
-      0,
-      maxY
-    );
+    if (!point) return;
+    const stageRect = stage.getBoundingClientRect();
+    const imageRect = photo.getBoundingClientRect();
+    if (imageRect.width <= 0 || imageRect.height <= 0) return;
+    const centerX = stageRect.left + stage.clientWidth / 2;
+    const centerY = stageRect.top + stage.clientHeight / 2;
+    const desiredLeft = centerX - point.rx * imageRect.width;
+    const desiredTop = centerY - point.ry * imageRect.height;
+    stage.scrollLeft += imageRect.left - desiredLeft;
+    stage.scrollTop += imageRect.top - desiredTop;
   }, [scale, frame]);
 
   useEffect(() => {
@@ -278,11 +276,6 @@ const Lightbox = ({
         event.preventDefault();
         pendingCenter.current = null;
         setScale(1);
-        const stage = stageRef.current;
-        if (stage) {
-          stage.scrollTop = 0;
-          stage.scrollLeft = 0;
-        }
       } else if (event.key === "Tab") {
         const dialog = dialogRef.current;
         if (!dialog) return;
@@ -318,8 +311,8 @@ const Lightbox = ({
       : 2;
   const atMin = scale <= 1.001;
   const atMax = scale >= maxScale - 0.001;
-  const renderedW = frame ? frame.fitW * scale : 0;
-  const renderedH = frame ? frame.fitH * scale : 0;
+  const renderedW = frame ? Math.round(frame.fitW * scale) : 0;
+  const renderedH = frame ? Math.round(frame.fitH * scale) : 0;
 
   const changeZoom = (direction: 1 | -1) => {
     const next = stepZoom(scale, direction, maxScale);
@@ -331,11 +324,6 @@ const Lightbox = ({
   const resetFit = () => {
     pendingCenter.current = null;
     setScale(1);
-    const stage = stageRef.current;
-    if (stage) {
-      stage.scrollTop = 0;
-      stage.scrollLeft = 0;
-    }
   };
 
   const showPrevious = () =>
@@ -497,46 +485,30 @@ const Lightbox = ({
             </button>
           </div>
         )}
-        <div
-          ref={stageRef}
-          className="min-h-0 min-w-0 flex-1 overflow-auto overscroll-contain"
-        >
-          <div
+        <div ref={stageRef} className="lightbox-stage min-h-0 min-w-0 flex-1">
+          <img
+            ref={imageRef}
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            width={renderedW > 0 ? renderedW : undefined}
+            height={renderedH > 0 ? renderedH : undefined}
+            draggable={false}
+            decoding="async"
+            onLoad={(event) => rememberNaturalSize(event.currentTarget)}
+            className="block max-w-none shrink-0 select-none"
             style={
-              frame
+              renderedW > 0
                 ? {
-                    width: Math.max(frame.stageW, renderedW),
-                    height: Math.max(frame.stageH, renderedH),
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    width: renderedW,
+                    height: renderedH,
+                    maxWidth: "none",
+                    maxHeight: "none",
+                    objectFit: "contain",
                   }
-                : { width: "100%", height: "100%" }
+                : { visibility: "hidden" }
             }
-          >
-            <img
-              ref={imageRef}
-              key={image.src}
-              src={image.src}
-              alt={image.alt}
-              width={renderedW > 0 ? Math.round(renderedW) : undefined}
-              height={renderedH > 0 ? Math.round(renderedH) : undefined}
-              draggable={false}
-              decoding="async"
-              onLoad={(event) => rememberNaturalSize(event.currentTarget)}
-              className="block select-none"
-              style={
-                renderedW > 0
-                  ? {
-                      width: renderedW,
-                      height: renderedH,
-                      maxWidth: "none",
-                      maxHeight: "none",
-                    }
-                  : { visibility: "hidden" }
-              }
-            />
-          </div>
+          />
         </div>
         {multiple && (
           <div className="hidden items-center pr-[max(0.75rem,env(safe-area-inset-right))] sm:flex">
